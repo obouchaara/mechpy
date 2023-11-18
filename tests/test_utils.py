@@ -6,7 +6,7 @@ import unittest
 sys.path.append("../src")
 
 
-class TestCore(unittest.TestCase):
+class TestUtils(unittest.TestCase):
     pass
 
 
