@@ -21,7 +21,7 @@ class StressTensor(SymmetricThreeByThreeTensor):
     def tresca(self):
         stress_tensor = self.to_general_tensor().data
         principal_stresses = np.linalg.eigvals(stress_tensor)
-        tresca_stress = np.max(np.abs(np.diff(np.sort(principal_stresses))))
+        tresca_stress = np.max(principal_stresses) - np.min(principal_stresses)
         return tresca_stress
 
     def von_mises(self):
