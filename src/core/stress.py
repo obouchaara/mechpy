@@ -19,18 +19,10 @@ class StressTensor(SymmetricThreeByThreeTensor):
         return self.normal_components().sum() / 3.0
 
     def tresca(self):
-        sigma_11, sigma_22, sigma_33, sigma_23, sigma_13, sigma_12 = self.data
-
-        max_shear_stress = max(
-            abs(sigma_11 - sigma_22),
-            abs(sigma_22 - sigma_33),
-            abs(sigma_33 - sigma_11),
-            abs(sigma_23),
-            abs(sigma_13),
-            abs(sigma_12),
-        )
-
-        return max_shear_stress
+        stress_tensor = self.to_general_tensor().data
+        principal_stresses = np.linalg.eigvals(stress_tensor)
+        tresca_stress = np.max(np.abs(np.diff(np.sort(principal_stresses))))
+        return tresca_stress
 
     def von_mises(self):
         sigma_11, sigma_22, sigma_33, sigma_23, sigma_13, sigma_12 = self.data
