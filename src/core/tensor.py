@@ -124,13 +124,13 @@ class SymbolicThreeByThreeTensor:
                     self.data[1, 0],
                 ]
             )
-            return SymmetricSymbolicThreeByThreeTensor(data)
+            return SymbolicSymmetricThreeByThreeTensor(data)
         raise ValueError(
             "The tensor is not symmetric, and it cannot be converted to a symmetric tensor."
         )
 
 
-class SymmetricSymbolicThreeByThreeTensor:
+class SymbolicSymmetricThreeByThreeTensor:
     def __init__(self, data: sp.Matrix):
         if not isinstance(data, sp.Matrix) or data.shape != (6, 1):
             raise ValueError("Input data must be a 6x1 SymPy Matrix")
