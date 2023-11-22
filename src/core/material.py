@@ -13,11 +13,17 @@ class AnisotropicMaterial:
 
 
 class ComplianceTensor(SixBySixTensor):
+    def __init__(self, data):
+        super().__init__(data)
+
     def __repr__(self):
         return f"ComplianceTensor(\n{self.data}\n)"
 
 
 class StiffnessTensor(SixBySixTensor):
+    def __init__(self, data):
+        super().__init__(data)
+
     def __repr__(self):
         return f"StiffnessTensor(\n{self.data}\n)"
 
@@ -30,6 +36,7 @@ class IsotropicMaterial(AnisotropicMaterial):
 
             self.lames_lambda = youngs_modulus * poisson_ratio / (1 - 2 * poisson_ratio)
             self.lames_mu = youngs_modulus / 2 / (1 + poisson_ratio)
+
         elif lames_lambda and lames_mu:
             self.youngs_modulus = 2 * lames_mu * (1 + poisson_ratio)
             self.poisson_ratio = (2 * lames_mu + 3 * lames_lambda) / (
@@ -38,6 +45,7 @@ class IsotropicMaterial(AnisotropicMaterial):
 
             self.lames_lambda = lames_lambda
             self.lames_mu = lames_mu
+
         else:
             raise ValueError(
                 "Either Young's modulus and Poisson's ratio or Lame's lambda and Lame's mu must be provided."

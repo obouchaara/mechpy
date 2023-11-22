@@ -29,13 +29,22 @@ class Tensor:
         return self.data.shape == (3, 3, 3, 3)
 
     @classmethod
-    def from_list(cls, components, shape, is_symmetric=False, symmetric_mode=1):
+    def from_list(cls, components, shape, symmetric=False, mode=1):
         if isinstance(components, list):
-            if is_symmetric:
-                if len(shape) == 2 and symmetric_mode == 1:
+            if symmetric:
+                if shape == (3, 3) and mode == 1:
                     if len(components) != shape[0] * (shape[1] + 1) // 2:
                         raise ValueError("Invalid components for symmetric tensor")
-
+                    components = [float(_) for _ in components]
+                    data = np.array([
+                        [components[0], components[5], components[4]],
+                        [components[5], components[1], components[3]],
+                        [components[4], components[3], components[2]],
+                    ])
+                    return cls(data)
+                elif len(shape) == 2 and mode == 2:
+                    if len(components) != shape[0] * (shape[1] + 1) // 2:
+                        raise ValueError("Invalid components for symmetric tensor")
                     data = np.zeros(shape)
                     index = 0
                     for i in range(shape[0]):
