@@ -8,6 +8,9 @@ class StressTensor(SymmetricThreeByThreeTensor):
     def __init__(self, data):
         super().__init__(data)
 
+    def __repr__(self):
+        return f"StressTensor(\n{self.data}\n)"
+
     def normal_components(self):
         return self.data[:3]
 
