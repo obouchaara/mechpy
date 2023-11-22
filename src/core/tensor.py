@@ -1,4 +1,3 @@
-import math
 import numpy as np
 import sympy as sp
 
@@ -36,11 +35,13 @@ class Tensor:
                     if len(components) != shape[0] * (shape[1] + 1) // 2:
                         raise ValueError("Invalid components for symmetric tensor")
                     components = [float(_) for _ in components]
-                    data = np.array([
-                        [components[0], components[5], components[4]],
-                        [components[5], components[1], components[3]],
-                        [components[4], components[3], components[2]],
-                    ])
+                    data = np.array(
+                        [
+                            [components[0], components[5], components[4]],
+                            [components[5], components[1], components[3]],
+                            [components[4], components[3], components[2]],
+                        ]
+                    )
                     return cls(data)
                 elif len(shape) == 2 and mode == 2:
                     if len(components) != shape[0] * (shape[1] + 1) // 2:
@@ -67,10 +68,12 @@ class Tensor:
             raise ValueError("Input must be a list")
 
 
-class ThreeByThreeTensor:
+class ThreeByThreeTensor(Tensor):
+    shape = (3, 3)
+
     def __init__(self, data):
-        if isinstance(data, np.ndarray) and data.shape == (3, 3):
-            self.data = data
+        if isinstance(data, np.ndarray) and data.shape == self.shape:
+            super().__init__(data)
         else:
             raise ValueError("Input data must be a 3x3 NumPy array")
 
@@ -79,24 +82,7 @@ class ThreeByThreeTensor:
 
     @classmethod
     def from_list(cls, components):
-        if isinstance(components, list):
-            if len(components) == 9:
-                # Create a 3x3 tensor from a flat list of 9 components
-                data = np.array(components).reshape((3, 3))
-                return cls(data)
-            elif len(components) == 3 and all(
-                isinstance(row, list) and len(row) == 3 for row in components
-            ):
-                # Create a 3x3 tensor from a list of 3 lists
-                data = np.array(components)
-                return cls(data)
-            else:
-                raise ValueError("Invalid input for creating a 3x3 tensor")
-        else:
-            raise ValueError("Input must be a list")
-
-    def is_symmetric(self):
-        return np.array_equal(self.data, self.data.T)
+        return super().from_list(components, cls.shape)
 
     def to_symmetric(self):
         if self.is_symmetric():
@@ -117,10 +103,12 @@ class ThreeByThreeTensor:
         )
 
 
-class SixBySixTensor:
+class SixBySixTensor(Tensor):
+    shape = (6, 6)
+
     def __init__(self, data):
-        if isinstance(data, np.ndarray) and data.shape == (6, 6):
-            self.data = data
+        if isinstance(data, np.ndarray) and data.shape == self.shape:
+            super().__init__(data)
         else:
             raise ValueError("Input data must be a 6x6 NumPy array")
 
@@ -129,30 +117,18 @@ class SixBySixTensor:
 
     @classmethod
     def from_list(cls, components):
-        if isinstance(components, list):
-            if len(components) == 36:
-                data = np.array(components).reshape((6, 6))
-                return cls(data)
-            elif len(components) == 6 and all(
-                isinstance(row, list) and len(row) == 6 for row in components
-            ):
-                data = np.array(components)
-                return cls(data)
-            else:
-                raise ValueError("Invalid input for creating a 6x6 tensor")
-        else:
-            raise ValueError("Input must be a list")
-
-    def is_symmetric(self):
-        return np.array_equal(self.data, self.data.T)
+        return super().from_list(components, cls.shape)
 
     def to_symmetric(self):
         pass
 
 
-class SymmetricThreeByThreeTensor:
+class SymmetricThreeByThreeTensor(Tensor):
+    shape = (6, 1)
+
     def __init__(self, data):
-        if isinstance(data, np.ndarray) and data.shape in [(6,), (6, 1)]:
+        print(data.shape)
+        if isinstance(data, np.ndarray) and data.shape == self.shape:
             self.data = data
         else:
             raise ValueError("Input data must be a 6x1 tensor")
@@ -162,13 +138,7 @@ class SymmetricThreeByThreeTensor:
 
     @classmethod
     def from_list(cls, components):
-        if isinstance(components, list) and len(components) == 6:
-            data = np.array(components)
-            return cls(data)
-        else:
-            raise ValueError(
-                "Invalid input for creating a symmetric 3x3 tensor. Provide a list of 6 components."
-            )
+        return super().from_list(components, cls.shape)
 
     def to_general_tensor(self):
         components = [
@@ -176,9 +146,7 @@ class SymmetricThreeByThreeTensor:
             [self.data[5], self.data[1], self.data[3]],
             [self.data[4], self.data[3], self.data[2]],
         ]
-        data = np.array(components)
-        data = data.reshape((3, 3))
-        return ThreeByThreeTensor(data)
+        return ThreeByThreeTensor(np.array(components).reshape((3, 3)))
 
 
 class SymbolicThreeByThreeTensor:
