@@ -3,12 +3,27 @@ import numpy as np
 from .tensor import SixBySixTensor
 
 
-class AnisotropicMaterial:
-    def __init__(self):
-        pass
+class Material:
+    def __init__(self, mechanical_props=None, thermic_props=None):
+        self.mechanical_props = mechanical_props or {}
+        self.thermic_props = thermic_props or {}
 
     def __repr__(self):
-        return f"AnisotropicMaterial()"
+        return f"Material(mechanical_props={self.mechanical_props}, thermic_props={self.thermic_props})"
+
+
+class ElasticMaterial(Material):
+    def __init__(self, mechanical_props):
+        super().__init__(mechanical_props)
+
+    def __repr__(self):
+        return f"ElasticMaterial()"
+
+    def compliance_tensor(self):
+        raise NotImplementedError("Subclasses must implement this method.")
+
+    def stiffness_tensor(self):
+        raise NotImplementedError("Subclasses must implement this method.")
 
 
 class ComplianceTensor(SixBySixTensor):
@@ -27,36 +42,58 @@ class StiffnessTensor(SixBySixTensor):
         return f"StiffnessTensor(\n{self.data}\n)"
 
 
-class IsotropicMaterial(AnisotropicMaterial):
-    def __init__(self, youngs_modulus, poisson_ratio, lames_lambda=None, lames_mu=None):
+class AnisotropicMaterial(ElasticMaterial):
+    def __init__(self):
+        super().__init__()
+
+    def __repr__(self):
+        return f"AnisotropicMaterial()"
+
+    def compliance_tensor(self) -> ComplianceTensor:
+        pass
+
+    def stiffness_tensor(self) -> StiffnessTensor:
+        pass
+
+
+class IsotropicMaterial(ElasticMaterial):
+    def __init__(
+        self, youngs_modulus=None, poisson_ratio=None, lames_lambda=None, lames_mu=None
+    ):
         if youngs_modulus and poisson_ratio:
             self.youngs_modulus = youngs_modulus
             self.poisson_ratio = poisson_ratio
 
-            self.lames_lambda = youngs_modulus * poisson_ratio / (1 - 2 * poisson_ratio)
-            self.lames_mu = youngs_modulus / 2 / (1 + poisson_ratio)
-
         elif lames_lambda and lames_mu:
-            self.youngs_modulus = 2 * lames_mu * (1 + poisson_ratio)
-            self.poisson_ratio = (2 * lames_mu + 3 * lames_lambda) / (
-                2 * lames_mu + 2 * lames_lambda
-            )
-
-            self.lames_lambda = lames_lambda
-            self.lames_mu = lames_mu
+            self.youngs_modulus = 2 * lames_mu * (1 + lames_lambda)
+            self.poisson_ratio = (lames_lambda) / (2 * (1 + lames_lambda))
 
         else:
             raise ValueError(
                 "Either Young's modulus and Poisson's ratio or Lame's lambda and Lame's mu must be provided."
             )
+        super().__init__(
+            mechanical_props={
+                "youngs_modulus": self.youngs_modulus,
+                "poisson_ratio": self.poisson_ratio,
+            }
+        )
 
     def __repr__(self):
-        return f"IsotropicMaterial({self.youngs_modulus}, {self.poisson_ratio}, {self.lames_lambda}, {self.lames_mu})"
+        return f"IsotropicMaterial({self.youngs_modulus}, {self.poisson_ratio})"
+
+    def get_lame_params(self):
+        E = self.youngs_modulus
+        v = self.poisson_ratio
+        lames_lambda = E * v / (1 - 2 * v)
+        lames_mu = E / 2 / (1 + v)
+        return (lames_lambda, lames_mu)
 
     def compliance_tensor(self):
-        C_11 = self.lames_lambda + 2 * self.lames_mu
-        C_12 = self.lames_lambda
-        C_44 = self.lames_mu
+        lames_lambda, lames_mu = self.get_lame_params()
+        C_11 = lames_lambda + 2 * lames_mu
+        C_12 = lames_lambda
+        C_44 = lames_mu
 
         return ComplianceTensor(
             np.array(
@@ -72,9 +109,11 @@ class IsotropicMaterial(AnisotropicMaterial):
         )
 
     def stiffness_tensor(self):
-        S_11 = 1 / self.youngs_modulus
-        S_12 = -(self.poisson_ratio / self.youngs_modulus)
-        S_44 = (2 * (1 + self.poisson_ratio)) / self.youngs_modulus
+        E = self.youngs_modulus
+        v = self.poisson_ratio
+        S_11 = 1 / E
+        S_12 = -(v / E)
+        S_44 = (2 * (1 + v)) / E
 
         return StiffnessTensor(
             np.array(
@@ -90,7 +129,7 @@ class IsotropicMaterial(AnisotropicMaterial):
         )
 
 
-class TransverseIsotropicMaterial(AnisotropicMaterial):
+class TransverseIsotropicMaterial(ElasticMaterial):
     def __init__(
         self,
         youngs_modulus_parallel,
@@ -103,6 +142,15 @@ class TransverseIsotropicMaterial(AnisotropicMaterial):
         self.poisson_ratio_transverse = poisson_ratio_transverse
         self.shear_modulus = shear_modulus
 
+        mechanical_props = {
+            youngs_modulus_parallel: youngs_modulus_parallel,
+            youngs_modulus_transverse: youngs_modulus_transverse,
+            poisson_ratio_transverse: poisson_ratio_transverse,
+            shear_modulus: shear_modulus,
+        }
+
+        super().__init__(mechanical_props=mechanical_props)
+
     def __repr__(self):
         return (
             f"TransverseIsotropicMaterial({self.youngs_modulus_parallel}, "
@@ -114,15 +162,15 @@ class TransverseIsotropicMaterial(AnisotropicMaterial):
         return ComplianceTensor(np.linalg.inv(self.stiffness_tensor().data))
 
     def stiffness_tensor(self):
-        S_11 = 1 / self.youngs_modulus_parallel
-        S_12 = -self.poisson_ratio_transverse / self.youngs_modulus_parallel
-        S_33 = 1 / self.youngs_modulus_transverse
-        S_44 = (
-            1
-            / (2 * (1 + self.poisson_ratio_transverse))
-            * (self.youngs_modulus_transverse - self.youngs_modulus_parallel)
-        )
-        S_66 = (2 * (1 + self.poisson_ratio_transverse)) / self.youngs_modulus_parallel
+        Ex = self.youngs_modulus_parallel
+        Eyz = self.youngs_modulus_transverse
+        vx = self.poisson_ratio_transverse
+        vzy = self.poisson_ratio_transverse
+        S_11 = 1 / Ex
+        S_12 = -vx / Ex
+        S_33 = 1 / Eyz
+        S_44 = 1 / (2 * (1 + vzy)) * (Eyz - Ex)
+        S_66 = (2 * (1 + vzy)) / Ex
 
         return StiffnessTensor(
             np.array(

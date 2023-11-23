@@ -126,7 +126,6 @@ class SymmetricThreeByThreeTensor(Tensor):
     shape = (6, 1)
 
     def __init__(self, data):
-        print(data.shape)
         if isinstance(data, np.ndarray) and data.shape == self.shape:
             self.data = data
         else:
