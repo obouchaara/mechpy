@@ -1,5 +1,4 @@
 import numpy as np
-import sympy as sp
 
 from .tensor import SixBySixTensor
 

@@ -1,5 +1,4 @@
 import numpy as np
-import sympy as sp
 
 from .strain import StrainTensor
 from .stress import StressTensor
