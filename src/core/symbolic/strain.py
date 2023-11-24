@@ -8,21 +8,8 @@ class SymbolicStrainTensor(SymbolicSymmetricThreeByThreeTensor):
         super().__init__(data)
 
     @classmethod
-    def create(cls):
-        (
-            epsilon_11,
-            epsilon_22,
-            epsilon_33,
-            epsilon_23,
-            epsilon_13,
-            epsilon_12,
-        ) = sp.symbols(
-            "epsilon_11 epsilon_22 epsilon_33 epsilon_23 epsilon_13 epsilon_12"
-        )
-        epsilon = sp.Matrix(
-            [epsilon_11, epsilon_22, epsilon_33, epsilon_23, epsilon_13, epsilon_12]
-        )
-        return cls(epsilon)
+    def create(cls, name="\\epsilon"):
+        return super().create(name)
 
     def normal_components(self):
         pass

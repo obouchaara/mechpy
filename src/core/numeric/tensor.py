@@ -8,7 +8,32 @@ class Tensor:
         else:
             raise ValueError("Input data must be a NumPy array")
 
+    def __repr__(self):
+        return f"Tensor(\n{self.data}\n)"
+
+    def __matmul__(self, other):
+        if isinstance(self, SymmetricThreeByThreeTensor):
+            self_data = self.to_general_tensor().data
+        else:
+            self_data = self.data
+
+        if isinstance(other, SymmetricThreeByThreeTensor):
+            other_data = other.to_general_tensor().data
+        else:
+            other_data = other.data
+
+        result = Tensor(self_data @ other_data)
+        if result.is_3x3():
+            if result.is_symmetric():
+                return result.to_sym_3x3()
+            return result.to_3x3
+        elif result.is_6x6():
+            return result.to_6x6()
+        return result
+
     def is_symmetric(self):
+        # if isinstance(self, SymmetricThreeByThreeTensor):
+        #     return True
         return np.array_equal(self.data, self.data.T)
 
     def is_second_rank(self):
@@ -18,6 +43,8 @@ class Tensor:
         return self.data.ndim == 4
 
     def is_3x3(self):
+        # if isinstance(self, SymmetricThreeByThreeTensor):
+        #     return True
         return self.data.shape == (3, 3)
 
     def is_6x6(self):
@@ -25,6 +52,21 @@ class Tensor:
 
     def is_3x3x3x3(self):
         return self.data.shape == (3, 3, 3, 3)
+
+    def to_3x3(self):
+        if self.is_3x3():
+            return ThreeByThreeTensor(self.data)
+        raise ValueError("The tensor is not a 3x3 Tensor.")
+
+    def to_sym_3x3(self):
+        if self.is_3x3() and self.is_symmetric():
+            return ThreeByThreeTensor(self.data).to_symmetric()
+        raise ValueError("The tensor is not a symetric 3x3 Tensor.")
+
+    def to_6x6(self):
+        if self.is_6x6():
+            return SixBySixTensor(self.data)
+        raise ValueError("The tensor is not a 6x6 Tensor.")
 
     @classmethod
     def from_list(cls, components, shape, symmetric=False, mode=1):
@@ -66,6 +108,9 @@ class Tensor:
         else:
             raise ValueError("Input must be a list")
 
+    def __getitem__(self, key):
+        return self.data[key]
+
 
 class ThreeByThreeTensor(Tensor):
     shape = (3, 3)
@@ -85,16 +130,8 @@ class ThreeByThreeTensor(Tensor):
 
     def to_symmetric(self):
         if self.is_symmetric():
-            data = np.array(
-                [
-                    self.data[0, 0],
-                    self.data[1, 1],
-                    self.data[2, 2],
-                    self.data[2, 1],
-                    self.data[2, 0],
-                    self.data[1, 0],
-                ]
-            )
+            IVM = SymmetricThreeByThreeTensor.INVERSE_VOIGT_MAPPING
+            data = np.array([self.data[IVM[i]] for i in range(6)])
             data = data.reshape((6, 1))  # Ensure the shape is (6, 1)
             return SymmetricThreeByThreeTensor(data)
         raise ValueError(
@@ -118,30 +155,56 @@ class SixBySixTensor(Tensor):
     def from_list(cls, components):
         return super().from_list(components, cls.shape)
 
-    def to_symmetric(self):
-        pass
-
 
 class SymmetricThreeByThreeTensor(Tensor):
     shape = (6, 1)
+
+    VOIGT_MAPPING = {
+        (0, 0): 0,
+        (1, 1): 1,
+        (2, 2): 2,
+        (1, 2): 3,
+        (2, 1): 3,
+        (0, 2): 4,
+        (2, 0): 4,
+        (0, 1): 5,
+        (1, 0): 5,
+    }
+
+    INVERSE_VOIGT_MAPPING = {
+        0: (0, 0),
+        1: (1, 1),
+        2: (2, 2),
+        3: (1, 2),
+        4: (0, 2),
+        5: (0, 1),
+    }
 
     def __init__(self, data):
         if isinstance(data, np.ndarray) and data.shape == self.shape:
             self.data = data
         else:
-            raise ValueError("Input data must be a 6x1 tensor")
+            raise ValueError("Input data must be a 6x1 NumPy array")
 
     def __repr__(self):
         return f"SymmetricThreeByThreeTensor(\n{self.data}\n)"
+
+    def is_symmetric(self):
+        return True
 
     @classmethod
     def from_list(cls, components):
         return super().from_list(components, cls.shape)
 
     def to_general_tensor(self):
-        components = [
-            [self.data[0], self.data[5], self.data[4]],
-            [self.data[5], self.data[1], self.data[3]],
-            [self.data[4], self.data[3], self.data[2]],
-        ]
+        VM = self.VOIGT_MAPPING
+        components = [[self.data[VM[(i, j)]] for i in range(3)] for j in range(3)]
         return ThreeByThreeTensor(np.array(components).reshape((3, 3)))
+
+    def __getitem__(self, key):
+        if isinstance(key, int):
+            return self.data[key]
+        elif isinstance(key, tuple) and len(key) == 2:
+            return self.to_general_tensor().data[key]
+        else:
+            raise ValueError("Key must be int or tuple of 2 elements")

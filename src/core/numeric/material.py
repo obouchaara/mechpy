@@ -42,20 +42,6 @@ class StiffnessTensor(SixBySixTensor):
         return f"StiffnessTensor(\n{self.data}\n)"
 
 
-class AnisotropicMaterial(ElasticMaterial):
-    def __init__(self):
-        super().__init__()
-
-    def __repr__(self):
-        return f"AnisotropicMaterial()"
-
-    def compliance_tensor(self) -> ComplianceTensor:
-        pass
-
-    def stiffness_tensor(self) -> StiffnessTensor:
-        pass
-
-
 class IsotropicMaterial(ElasticMaterial):
     def __init__(
         self, youngs_modulus=None, poisson_ratio=None, lames_lambda=None, lames_mu=None
@@ -89,7 +75,7 @@ class IsotropicMaterial(ElasticMaterial):
         lames_mu = E / 2 / (1 + v)
         return (lames_lambda, lames_mu)
 
-    def compliance_tensor(self):
+    def compliance_tensor(self) -> ComplianceTensor:
         lames_lambda, lames_mu = self.get_lame_params()
         C_11 = lames_lambda + 2 * lames_mu
         C_12 = lames_lambda
@@ -108,7 +94,7 @@ class IsotropicMaterial(ElasticMaterial):
             )
         )
 
-    def stiffness_tensor(self):
+    def stiffness_tensor(self) -> StiffnessTensor:
         E = self.youngs_modulus
         v = self.poisson_ratio
         S_11 = 1 / E
@@ -158,10 +144,10 @@ class TransverseIsotropicMaterial(ElasticMaterial):
             f"{self.shear_modulus})"
         )
 
-    def compliance_tensor(self):
+    def compliance_tensor(self) -> ComplianceTensor:
         return ComplianceTensor(np.linalg.inv(self.stiffness_tensor().data))
 
-    def stiffness_tensor(self):
+    def stiffness_tensor(self) -> StiffnessTensor:
         Ex = self.youngs_modulus_parallel
         Eyz = self.youngs_modulus_transverse
         vx = self.poisson_ratio_transverse
@@ -184,3 +170,17 @@ class TransverseIsotropicMaterial(ElasticMaterial):
                 ]
             )
         )
+
+
+class AnisotropicMaterial(ElasticMaterial):
+    def __init__(self):
+        super().__init__()
+
+    def __repr__(self):
+        return f"AnisotropicMaterial()"
+
+    def compliance_tensor(self) -> ComplianceTensor:
+        pass
+
+    def stiffness_tensor(self) -> StiffnessTensor:
+        pass
