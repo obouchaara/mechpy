@@ -20,18 +20,7 @@ class LinearElasticity:
         stiffness_tensor: StiffnessTensor, stress_tensor: StressTensor
     ) -> StrainTensor:
         # Voigt notation correction
-        correction_tensor = np.array(
-            [
-                [1, 1, 1, 2, 2, 2],
-                [1, 1, 1, 2, 2, 2],
-                [1, 1, 1, 2, 2, 2],
-                [2, 2, 2, 4, 4, 4],
-                [2, 2, 2, 4, 4, 4],
-                [2, 2, 2, 4, 4, 4],
-            ]
-        ).reshape(6, 6)
         correction_vector = np.array([1, 1, 1, 0.5, 0.5, 0.5]).reshape(6, 1)
-        corrected_stiffness_tensor_data = stiffness_tensor.data * correction_tensor
-        strain_tensor_data = corrected_stiffness_tensor_data @ stress_tensor.data
+        strain_tensor_data = stiffness_tensor.data @ stress_tensor.data
         corrected_strain_tensor_data = strain_tensor_data * correction_vector
         return StrainTensor(corrected_strain_tensor_data)

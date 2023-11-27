@@ -208,3 +208,9 @@ class SymmetricThreeByThreeTensor(Tensor):
             return self.to_general_tensor().data[key]
         else:
             raise ValueError("Key must be int or tuple of 2 elements")
+
+    def eigenvalues(self):
+        # return np.linalg.eigvals(self.to_general_tensor().data)
+
+        eigenvalues, _ = np.linalg.eigh(self.to_general_tensor().data)
+        return eigenvalues

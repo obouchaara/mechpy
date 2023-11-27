@@ -198,3 +198,6 @@ class SymbolicSymmetricThreeByThreeTensor(SymbolicTensor):
             return self.data[self.VOIGT_MAPPING[key]]
         else:
             raise ValueError("Key must be int or tuple of 2 elements")
+        
+    def eigenvalues(self):
+        return self.to_general_tensor().data.eigenvals()
