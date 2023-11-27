@@ -28,6 +28,4 @@ class LinearElasticity:
 
     @staticmethod
     def strain_from_displacement(displacement: Displacement) -> StrainTensor:
-        displacement_gradient = displacement.gradient()
-        strain = 0.5 * (displacement_gradient + np.transpose(displacement_gradient, axes=(0, 2, 1)))
-        return StrainTensor(strain)
+        pass
