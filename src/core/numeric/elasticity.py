@@ -1,5 +1,6 @@
 import numpy as np
 
+from .displacement import Displacement
 from .strain import StrainTensor
 from .stress import StressTensor
 from .material import ComplianceTensor, StiffnessTensor
@@ -24,3 +25,9 @@ class LinearElasticity:
         strain_tensor_data = stiffness_tensor.data @ stress_tensor.data
         corrected_strain_tensor_data = strain_tensor_data * correction_vector
         return StrainTensor(corrected_strain_tensor_data)
+
+    @staticmethod
+    def strain_from_displacement(displacement: Displacement) -> StrainTensor:
+        displacement_gradient = displacement.gradient()
+        strain = 0.5 * (displacement_gradient + np.transpose(displacement_gradient, axes=(0, 2, 1)))
+        return StrainTensor(strain)
