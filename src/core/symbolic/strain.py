@@ -12,10 +12,10 @@ class SymbolicStrainTensor(SymbolicSymmetricThreeByThreeTensor):
         return super().create(name)
 
     def normal_components(self):
-        pass
+        return self.data[:3]
 
     def shear_components(self):
-        pass
+        return self.data[3:]
 
     def volumetric_strain(self):
         pass
