@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class Field:
     def __init__(self, data):
         if isinstance(data, np.ndarray):
@@ -12,3 +13,14 @@ class Field:
 
     def gradient(self):
         return np.gradient(self.data)
+    
+
+class Field3D(Field):
+    def __init__(self, data):
+        if isinstance(data, np.ndarray):
+            self.data = data
+        else:
+            raise ValueError("Input data must be a NumPy array")
+
+    def __repr__(self):
+        return f"Field3D(\n{self.data}\n)"

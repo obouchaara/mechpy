@@ -1,6 +1,7 @@
 import numpy as np
 
 from .tensor import SymmetricThreeByThreeTensor
+from .field import Field
 
 
 class StressTensor(SymmetricThreeByThreeTensor):
@@ -39,3 +40,14 @@ class StressTensor(SymmetricThreeByThreeTensor):
         )
 
         return von_mises
+    
+
+class StressField(Field):
+    def __init__(self, data):
+        super().__init__(data)
+
+    def __repr__(self):
+        return f"StressField(\n{self.data}\n)"
+    
+    def get(self, position) -> StressTensor:
+        pass
