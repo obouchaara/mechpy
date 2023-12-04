@@ -42,8 +42,6 @@ class SymbolicScalarField(SymbolicField3D):
 
         x, y, z = sp.symbols("x y z")
         scalar_field = sum(data[i] * var for i, var in enumerate([x, y, z]))
-        print(type(scalar_field))
-        print(scalar_field)
         return cls(scalar_field)
 
 

@@ -128,7 +128,8 @@ class SymbolicSixBySixTensor(SymbolicTensor):
     def __init__(self, data):
         if isinstance(data, sp.Matrix) and data.shape == self.shape:
             super().__init__(data)
-        raise ValueError("Input data must be a 6x6 SymPy Matrix")
+        else:
+            raise ValueError("Input data must be a 6x6 SymPy Matrix")
 
     def __repr__(self):
         return f"SymbolicSixBySixTensor(\n{self.data}\n)"
