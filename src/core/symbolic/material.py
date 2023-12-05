@@ -92,10 +92,11 @@ class SymbolicIsotropicMaterial(SymbolicElasticMaterial):
                 [0, 0, 0, 0, 0, C_44],
             ]
         )
-        
+
         if not lames_param:
             lamda_expr, mu_expr = self.get_lame_params()
             C = C.subs({lamda: lamda_expr, mu: mu_expr})
+
         return SymbolicComplianceTensor(C)
 
     def stiffness_tensor(self) -> SymbolicStiffnessTensor:
@@ -117,3 +118,54 @@ class SymbolicIsotropicMaterial(SymbolicElasticMaterial):
         )
 
         return SymbolicStiffnessTensor(S)
+
+
+class SymbolicTransverseIsotropicMaterial(SymbolicElasticMaterial):
+    def __init__(
+        self,
+        youngs_modulus_parallel=None,
+        youngs_modulus_transverse=None,
+        poisson_ratio=None,
+        shear_modulus=None,
+    ):
+        if (
+            youngs_modulus_parallel
+            and youngs_modulus_transverse
+            and poisson_ratio
+            and shear_modulus
+        ):
+            self.youngs_modulus_parallel = youngs_modulus_parallel
+            self.youngs_modulus_transverse = youngs_modulus_transverse
+            self.poisson_ratio = poisson_ratio
+            self.shear_modulus = shear_modulus
+        else:
+            E_L, E_T, nu, G = sp.symbols("E_L E_T nu G")
+            self.youngs_modulus_parallel = E_L
+            self.youngs_modulus_transverse = E_T
+            self.poisson_ratio = nu
+            self.shear_modulus = G
+
+        mechanical_props = {
+            "youngs_modulus_parallel": self.youngs_modulus_parallel,
+            "youngs_modulus_transverse": self.youngs_modulus_transverse,
+            "poisson_ratio": self.poisson_ratio,
+            "shear_modulus": self.shear_modulus,
+        }
+
+        super().__init__(mechanical_props=mechanical_props)
+
+    def __repr__(self):
+        return (
+            f"TransverseIsotropicMaterial({self.youngs_modulus_parallel}, "
+            f"{self.youngs_modulus_transverse}, {self.poisson_ratio}, "
+            f"{self.shear_modulus})"
+        )
+
+    def compliance_tensor(self) -> SymbolicComplianceTensor:
+        E_L = self.youngs_modulus_parallel
+        E_T = self.youngs_modulus_transverse
+        nu = self.poisson_ratio
+        G = self.shear_modulus
+
+    def stiffness_tensor(self) -> SymbolicStiffnessTensor:
+        pass

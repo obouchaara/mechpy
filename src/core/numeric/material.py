@@ -120,19 +120,19 @@ class TransverseIsotropicMaterial(ElasticMaterial):
         self,
         youngs_modulus_parallel,
         youngs_modulus_transverse,
-        poisson_ratio_transverse,
+        poisson_ratio,
         shear_modulus,
     ):
         self.youngs_modulus_parallel = youngs_modulus_parallel
         self.youngs_modulus_transverse = youngs_modulus_transverse
-        self.poisson_ratio_transverse = poisson_ratio_transverse
+        self.poisson_ratio = poisson_ratio
         self.shear_modulus = shear_modulus
 
         mechanical_props = {
-            youngs_modulus_parallel: youngs_modulus_parallel,
-            youngs_modulus_transverse: youngs_modulus_transverse,
-            poisson_ratio_transverse: poisson_ratio_transverse,
-            shear_modulus: shear_modulus,
+            "youngs_modulus_parallel": self.youngs_modulus_parallel,
+            "youngs_modulus_transverse": self.youngs_modulus_transverse,
+            "poisson_ratio": self.poisson_ratio,
+            "shear_modulus": self.shear_modulus,
         }
 
         super().__init__(mechanical_props=mechanical_props)
@@ -140,36 +140,18 @@ class TransverseIsotropicMaterial(ElasticMaterial):
     def __repr__(self):
         return (
             f"TransverseIsotropicMaterial({self.youngs_modulus_parallel}, "
-            f"{self.youngs_modulus_transverse}, {self.poisson_ratio_transverse}, "
+            f"{self.youngs_modulus_transverse}, {self.poisson_ratio}, "
             f"{self.shear_modulus})"
         )
 
     def compliance_tensor(self) -> ComplianceTensor:
-        return ComplianceTensor(np.linalg.inv(self.stiffness_tensor().data))
+        E_L = self.youngs_modulus_parallel
+        E_T = self.youngs_modulus_transverse
+        nu = self.poisson_ratio
+        G = self.shear_modulus
 
     def stiffness_tensor(self) -> StiffnessTensor:
-        Ex = self.youngs_modulus_parallel
-        Eyz = self.youngs_modulus_transverse
-        nu_x = self.poisson_ratio_transverse
-        nu_zy = self.poisson_ratio_transverse
-        S_11 = 1 / Ex
-        S_12 = -nu_x / Ex
-        S_33 = 1 / Eyz
-        S_44 = 1 / (2 * (1 + nu_zy)) * (Eyz - Ex)
-        S_66 = (2 * (1 + nu_zy)) / Ex
-
-        return StiffnessTensor(
-            np.array(
-                [
-                    [S_11, S_12, S_12, 0, 0, 0],
-                    [S_12, S_11, S_12, 0, 0, 0],
-                    [S_12, S_12, S_33, 0, 0, 0],
-                    [0, 0, 0, S_44, 0, 0],
-                    [0, 0, 0, 0, S_44, 0],
-                    [0, 0, 0, 0, 0, S_66],
-                ]
-            )
-        )
+        pass
 
 
 class AnisotropicMaterial(ElasticMaterial):
