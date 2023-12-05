@@ -3,7 +3,7 @@ import sympy as sp
 
 class SymbolicTensor:
     def __init__(self, data):
-        if isinstance(data, sp.Matrix):
+        if isinstance(data, (sp.Matrix, sp.ImmutableMatrix)):
             self.data = data
         else:
             raise ValueError("Input data must be a SymPy Matrix")
@@ -100,7 +100,7 @@ class SymbolicThreeByThreeTensor(SymbolicTensor):
     shape = (3, 3)
 
     def __init__(self, data):
-        if isinstance(data, sp.Matrix) and data.shape == self.shape:
+        if isinstance(data, (sp.Matrix, sp.ImmutableMatrix)) and data.shape == self.shape:
             super().__init__(data)
         else:
             raise ValueError("Input data must be a 3x3 SymPy Matrix")
@@ -126,7 +126,7 @@ class SymbolicSixBySixTensor(SymbolicTensor):
     shape = (6, 6)
 
     def __init__(self, data):
-        if isinstance(data, sp.Matrix) and data.shape == self.shape:
+        if isinstance(data, (sp.Matrix, sp.ImmutableMatrix)) and data.shape == self.shape:
             super().__init__(data)
         else:
             raise ValueError("Input data must be a 6x6 SymPy Matrix")
@@ -164,7 +164,7 @@ class SymbolicSymmetricThreeByThreeTensor(SymbolicTensor):
     }
 
     def __init__(self, data):
-        if isinstance(data, sp.Matrix) and data.shape == self.shape:
+        if isinstance(data, (sp.Matrix, sp.ImmutableMatrix)) and data.shape == self.shape:
             super().__init__(data)
         else:
             raise ValueError("Input data must be a 6x1 SymPy Matrix")

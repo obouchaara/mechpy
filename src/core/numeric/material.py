@@ -76,25 +76,6 @@ class IsotropicMaterial(ElasticMaterial):
         return (lamda, mu)
 
     def compliance_tensor(self) -> ComplianceTensor:
-        lamda, mu = self.get_lame_params()
-        C_11 = lamda + 2 * mu
-        C_12 = lamda
-        C_44 = mu
-
-        C = np.array(
-            [
-                [C_11, C_12, C_12, 0, 0, 0],
-                [C_12, C_11, C_12, 0, 0, 0],
-                [C_12, C_12, C_11, 0, 0, 0],
-                [0, 0, 0, C_44, 0, 0],
-                [0, 0, 0, 0, C_44, 0],
-                [0, 0, 0, 0, 0, C_44],
-            ]
-        )
-
-        return ComplianceTensor(C)
-
-    def stiffness_tensor(self) -> StiffnessTensor:
         E = self.youngs_modulus
         nu = self.poisson_ratio
         S_11 = 1 / E
@@ -112,7 +93,26 @@ class IsotropicMaterial(ElasticMaterial):
             ]
         )
 
-        return StiffnessTensor(S)
+        return ComplianceTensor(S)
+
+    def stiffness_tensor(self) -> StiffnessTensor:
+        lamda, mu = self.get_lame_params()
+        C_11 = lamda + 2 * mu
+        C_12 = lamda
+        C_44 = mu
+
+        C = np.array(
+            [
+                [C_11, C_12, C_12, 0, 0, 0],
+                [C_12, C_11, C_12, 0, 0, 0],
+                [C_12, C_12, C_11, 0, 0, 0],
+                [0, 0, 0, C_44, 0, 0],
+                [0, 0, 0, 0, C_44, 0],
+                [0, 0, 0, 0, 0, C_44],
+            ]
+        )
+
+        return StiffnessTensor(C)
 
 
 class TransverseIsotropicMaterial(ElasticMaterial):
@@ -145,13 +145,32 @@ class TransverseIsotropicMaterial(ElasticMaterial):
         )
 
     def compliance_tensor(self) -> ComplianceTensor:
+        pass
+
+    def stiffness_tensor(self) -> StiffnessTensor:
         E_L = self.youngs_modulus_parallel
         E_T = self.youngs_modulus_transverse
         nu = self.poisson_ratio
         G = self.shear_modulus
 
-    def stiffness_tensor(self) -> StiffnessTensor:
-        pass
+        C_11 = E_L / (1 - nu**2)
+        C_12 = E_L * nu / (1 - nu)
+        C_33 = E_T
+        C_44 = G
+        C_66 = E_T / (2 * (1 + nu))
+
+        C = np.array(
+            [
+                [C_11, C_12, C_12, 0, 0, 0],
+                [C_12, C_11, C_12, 0, 0, 0],
+                [C_12, C_12, C_33, 0, 0, 0],
+                [0, 0, 0, C_44, 0, 0],
+                [0, 0, 0, 0, C_44, 0],
+                [0, 0, 0, 0, 0, C_66],
+            ]
+        )
+
+        return StiffnessTensor(C)
 
 
 class AnisotropicMaterial(ElasticMaterial):

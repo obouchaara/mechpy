@@ -76,7 +76,27 @@ class SymbolicIsotropicMaterial(SymbolicElasticMaterial):
         mu = E / (2 * (1 + nu))
         return (lamda, mu)
 
-    def compliance_tensor(self, lames_param=True) -> SymbolicComplianceTensor:
+    def compliance_tensor(self) -> SymbolicComplianceTensor:
+        E = self.youngs_modulus
+        nu = self.poisson_ratio
+        S_11 = 1 / E
+        S_12 = -(nu / E)
+        S_44 = (2 * (1 + nu)) / E
+
+        S = sp.Matrix(
+            [
+                [S_11, S_12, S_12, 0, 0, 0],
+                [S_12, S_11, S_12, 0, 0, 0],
+                [S_12, S_12, S_11, 0, 0, 0],
+                [0, 0, 0, S_44, 0, 0],
+                [0, 0, 0, 0, S_44, 0],
+                [0, 0, 0, 0, 0, S_44],
+            ]
+        )
+
+        return SymbolicComplianceTensor(sp.simplify(S))
+
+    def stiffness_tensor(self, lames_param=True) -> SymbolicStiffnessTensor:
         lamda, mu = sp.symbols("lamda mu")
         C_11 = lamda + 2 * mu
         C_12 = lamda
@@ -97,27 +117,7 @@ class SymbolicIsotropicMaterial(SymbolicElasticMaterial):
             lamda_expr, mu_expr = self.get_lame_params()
             C = C.subs({lamda: lamda_expr, mu: mu_expr})
 
-        return SymbolicComplianceTensor(C)
-
-    def stiffness_tensor(self) -> SymbolicStiffnessTensor:
-        E = self.youngs_modulus
-        nu = self.poisson_ratio
-        S_11 = 1 / E
-        S_12 = -(nu / E)
-        S_44 = (2 * (1 + nu)) / E
-
-        S = sp.Matrix(
-            [
-                [S_11, S_12, S_12, 0, 0, 0],
-                [S_12, S_11, S_12, 0, 0, 0],
-                [S_12, S_12, S_11, 0, 0, 0],
-                [0, 0, 0, S_44, 0, 0],
-                [0, 0, 0, 0, S_44, 0],
-                [0, 0, 0, 0, 0, S_44],
-            ]
-        )
-
-        return SymbolicStiffnessTensor(S)
+        return SymbolicStiffnessTensor(sp.simplify(C))
 
 
 class SymbolicTransverseIsotropicMaterial(SymbolicElasticMaterial):
@@ -162,10 +162,29 @@ class SymbolicTransverseIsotropicMaterial(SymbolicElasticMaterial):
         )
 
     def compliance_tensor(self) -> SymbolicComplianceTensor:
+        pass
+
+    def stiffness_tensor(self) -> SymbolicStiffnessTensor:
         E_L = self.youngs_modulus_parallel
         E_T = self.youngs_modulus_transverse
         nu = self.poisson_ratio
         G = self.shear_modulus
 
-    def stiffness_tensor(self) -> SymbolicStiffnessTensor:
-        pass
+        C_11 = E_L / (1 - nu**2)
+        C_12 = E_L * nu / (1 - nu)
+        C_33 = E_T
+        C_44 = G
+        C_66 = E_T / (2 * (1 + nu))
+
+        C = sp.Matrix(
+            [
+                [C_11, C_12, C_12, 0, 0, 0],
+                [C_12, C_11, C_12, 0, 0, 0],
+                [C_12, C_12, C_33, 0, 0, 0],
+                [0, 0, 0, C_44, 0, 0],
+                [0, 0, 0, 0, C_44, 0],
+                [0, 0, 0, 0, 0, C_66],
+            ]
+        )
+
+        return SymbolicStiffnessTensor(sp.simplify(C))
