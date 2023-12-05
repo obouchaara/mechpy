@@ -68,12 +68,15 @@ class IsotropicMaterial(ElasticMaterial):
     def __repr__(self):
         return f"IsotropicMaterial({self.youngs_modulus}, {self.poisson_ratio})"
 
-    def get_lame_params(self):
-        E = self.youngs_modulus
-        nu = self.poisson_ratio
+    def get_lame_params(self, E, nu):
         lamda = (E * nu) / ((1 + nu) * (1 - 2 * nu))
         mu = E / (2 * (1 + nu))
         return (lamda, mu)
+
+    def get_youngs_params(self, lamda, mu):
+        E = mu * (3 * lamda + 2 * mu) / (lamda + mu)
+        mu = lamda / (2 * (lamda + mu))
+        return (E, mu)
 
     def compliance_tensor(self) -> ComplianceTensor:
         E = self.youngs_modulus
@@ -96,7 +99,9 @@ class IsotropicMaterial(ElasticMaterial):
         return ComplianceTensor(S)
 
     def stiffness_tensor(self) -> StiffnessTensor:
-        lamda, mu = self.get_lame_params()
+        E = self.youngs_modulus
+        nu = self.poisson_ratio
+        lamda, mu = self.get_lame_params(E, nu)
         C_11 = lamda + 2 * mu
         C_12 = lamda
         C_44 = mu
@@ -121,18 +126,21 @@ class TransverseIsotropicMaterial(ElasticMaterial):
         youngs_modulus_parallel,
         youngs_modulus_transverse,
         poisson_ratio,
-        shear_modulus,
+        shear_modulus_parallel,
+        shear_modulus_transverse,
     ):
         self.youngs_modulus_parallel = youngs_modulus_parallel
         self.youngs_modulus_transverse = youngs_modulus_transverse
         self.poisson_ratio = poisson_ratio
-        self.shear_modulus = shear_modulus
+        self.shear_modulus_parallel = shear_modulus_parallel
+        self.shear_modulus_transverse = shear_modulus_transverse
 
         mechanical_props = {
             "youngs_modulus_parallel": self.youngs_modulus_parallel,
             "youngs_modulus_transverse": self.youngs_modulus_transverse,
             "poisson_ratio": self.poisson_ratio,
-            "shear_modulus": self.shear_modulus,
+            "shear_modulus_parallel": self.shear_modulus_parallel,
+            "shear_modulus_transverse": self.shear_modulus_transverse,
         }
 
         super().__init__(mechanical_props=mechanical_props)
@@ -141,7 +149,7 @@ class TransverseIsotropicMaterial(ElasticMaterial):
         return (
             f"TransverseIsotropicMaterial({self.youngs_modulus_parallel}, "
             f"{self.youngs_modulus_transverse}, {self.poisson_ratio}, "
-            f"{self.shear_modulus})"
+            f"{self.shear_modulus_parallel}, {self.shear_modulus_transverse})"
         )
 
     def compliance_tensor(self) -> ComplianceTensor:
@@ -151,13 +159,14 @@ class TransverseIsotropicMaterial(ElasticMaterial):
         E_L = self.youngs_modulus_parallel
         E_T = self.youngs_modulus_transverse
         nu = self.poisson_ratio
-        G = self.shear_modulus
+        G_L = self.shear_modulus_parallel
+        G_T = self.shear_modulus_transverse
 
         C_11 = E_L / (1 - nu**2)
         C_12 = E_L * nu / (1 - nu)
         C_33 = E_T
-        C_44 = G
-        C_66 = E_T / (2 * (1 + nu))
+        C_44 = G_L
+        C_66 = G_T
 
         C = np.array(
             [

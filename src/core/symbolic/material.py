@@ -69,12 +69,15 @@ class SymbolicIsotropicMaterial(SymbolicElasticMaterial):
     def __repr__(self):
         return f"SymbolicIsotropicMaterial({self.youngs_modulus}, {self.poisson_ratio})"
 
-    def get_lame_params(self):
-        E = self.youngs_modulus
-        nu = self.poisson_ratio
+    def get_lame_params(self, E, nu):
         lamda = (E * nu) / ((1 + nu) * (1 - 2 * nu))
         mu = E / (2 * (1 + nu))
         return (lamda, mu)
+
+    def get_youngs_params(self, lamda, mu):
+        E = mu * (3 * lamda + 2 * mu) / (lamda + mu)
+        mu = lamda / (2 * (lamda + mu))
+        return (E, mu)
 
     def compliance_tensor(self) -> SymbolicComplianceTensor:
         E = self.youngs_modulus
@@ -114,7 +117,9 @@ class SymbolicIsotropicMaterial(SymbolicElasticMaterial):
         )
 
         if not lames_param:
-            lamda_expr, mu_expr = self.get_lame_params()
+            E = self.youngs_modulus
+            nu = self.poisson_ratio
+            lamda_expr, mu_expr = self.get_lame_params(E, nu)
             C = C.subs({lamda: lamda_expr, mu: mu_expr})
 
         return SymbolicStiffnessTensor(sp.simplify(C))
@@ -126,30 +131,35 @@ class SymbolicTransverseIsotropicMaterial(SymbolicElasticMaterial):
         youngs_modulus_parallel=None,
         youngs_modulus_transverse=None,
         poisson_ratio=None,
-        shear_modulus=None,
+        shear_modulus_parallel=None,
+        shear_modulus_transverse=None,
     ):
         if (
             youngs_modulus_parallel
             and youngs_modulus_transverse
             and poisson_ratio
-            and shear_modulus
+            and shear_modulus_parallel
+            and shear_modulus_transverse
         ):
             self.youngs_modulus_parallel = youngs_modulus_parallel
             self.youngs_modulus_transverse = youngs_modulus_transverse
             self.poisson_ratio = poisson_ratio
-            self.shear_modulus = shear_modulus
+            self.shear_modulus_parallel = shear_modulus_parallel
+            self.shear_modulus_transverse = shear_modulus_transverse
         else:
-            E_L, E_T, nu, G = sp.symbols("E_L E_T nu G")
+            E_L, E_T, nu, G_L, G_T = sp.symbols("E_L E_T nu G_L G_T")
             self.youngs_modulus_parallel = E_L
             self.youngs_modulus_transverse = E_T
             self.poisson_ratio = nu
-            self.shear_modulus = G
+            self.shear_modulus_parallel = G_L
+            self.shear_modulus_transverse = G_T
 
         mechanical_props = {
             "youngs_modulus_parallel": self.youngs_modulus_parallel,
             "youngs_modulus_transverse": self.youngs_modulus_transverse,
             "poisson_ratio": self.poisson_ratio,
-            "shear_modulus": self.shear_modulus,
+            "shear_modulus_parallel": self.shear_modulus_parallel,
+            "shear_modulus_transverse": self.shear_modulus_transverse,
         }
 
         super().__init__(mechanical_props=mechanical_props)
@@ -158,7 +168,7 @@ class SymbolicTransverseIsotropicMaterial(SymbolicElasticMaterial):
         return (
             f"TransverseIsotropicMaterial({self.youngs_modulus_parallel}, "
             f"{self.youngs_modulus_transverse}, {self.poisson_ratio}, "
-            f"{self.shear_modulus})"
+            f"{self.shear_modulus_parallel}, {self.shear_modulus_transverse})"
         )
 
     def compliance_tensor(self) -> SymbolicComplianceTensor:
@@ -168,13 +178,14 @@ class SymbolicTransverseIsotropicMaterial(SymbolicElasticMaterial):
         E_L = self.youngs_modulus_parallel
         E_T = self.youngs_modulus_transverse
         nu = self.poisson_ratio
-        G = self.shear_modulus
+        G_L = self.shear_modulus_parallel
+        G_T = self.shear_modulus_transverse
 
         C_11 = E_L / (1 - nu**2)
         C_12 = E_L * nu / (1 - nu)
         C_33 = E_T
-        C_44 = G
-        C_66 = E_T / (2 * (1 + nu))
+        C_44 = G_L
+        C_66 = G_T
 
         C = sp.Matrix(
             [
@@ -184,6 +195,70 @@ class SymbolicTransverseIsotropicMaterial(SymbolicElasticMaterial):
                 [0, 0, 0, C_44, 0, 0],
                 [0, 0, 0, 0, C_44, 0],
                 [0, 0, 0, 0, 0, C_66],
+            ]
+        )
+
+        return SymbolicStiffnessTensor(sp.simplify(C))
+
+
+class SymbolicOrthotropicMaterial(SymbolicElasticMaterial):
+    def __init__(
+        self,
+        E1=None,
+        E2=None,
+        E3=None,
+        G12=None,
+        G23=None,
+        G31=None,
+        nu12=None,
+        nu23=None,
+        nu31=None,
+    ):
+        if E1 and E2 and E3 and G12 and G23 and G31 and nu12 and nu23 and nu31:
+            self.E1, self.E2, self.E3 = E1, E2, E3
+            self.G12, self.G23, self.G31 = G12, G23, G31
+            self.nu12, self.nu23, self.nu31 = nu12, nu23, nu31
+        else:
+            E1, E2, E3, G12, G23, G31, nu12, nu23, nu31 = sp.symbols(
+                "E1 E2 E3 G12 G23 G31 nu12 nu23 nu31"
+            )
+            self.E1, self.E2, self.E3 = E1, E2, E3
+            self.G12, self.G23, self.G31 = G12, G23, G31
+            self.nu12, self.nu23, self.nu31 = nu12, nu23, nu31
+
+        mechanical_props = {
+            "E1": self.E1,
+            "E2": self.E2,
+            "E3": self.E3,
+            "G12": self.G12,
+            "G23": self.G23,
+            "G31": self.G31,
+            "nu12": self.nu12,
+            "nu23": self.nu23,
+            "nu31": self.nu31,
+        }
+
+        super().__init__(mechanical_props=mechanical_props)
+
+    def __repr__(self):
+        return f"SymbolicOrthotropicMaterial({self.mechanical_props})"
+
+    def stiffness_tensor(self) -> SymbolicStiffnessTensor:
+        # define all the releation here
+        C11, C22, C33 = self.E1, self.E2, self.E3
+        C44, C55, C66 = self.G23, self.G31, self.G12
+        C12 = self.nu12 * C22
+        C13 = self.nu31 * C11
+        C23 = self.nu23 * C33
+
+        C = sp.Matrix(
+            [
+                [C11, C12, C13, 0, 0, 0],
+                [C12, C22, C23, 0, 0, 0],
+                [C13, C23, C33, 0, 0, 0],
+                [0, 0, 0, C44, 0, 0],
+                [0, 0, 0, 0, C55, 0],
+                [0, 0, 0, 0, 0, C66],
             ]
         )
 
