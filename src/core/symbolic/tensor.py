@@ -9,7 +9,7 @@ class SymbolicTensor:
             raise ValueError("Input data must be a SymPy Matrix")
 
     def __repr__(self):
-        return f"SymbolicTensor(\n{self.data}\n)"
+        return f"{self.__class__.__name__}(\n{self.data}\n)"
 
     def __matmul__(self, other):
         pass
@@ -100,13 +100,13 @@ class SymbolicThreeByThreeTensor(SymbolicTensor):
     shape = (3, 3)
 
     def __init__(self, data):
-        if isinstance(data, (sp.Matrix, sp.ImmutableMatrix)) and data.shape == self.shape:
+        if (
+            isinstance(data, (sp.Matrix, sp.ImmutableMatrix))
+            and data.shape == self.shape
+        ):
             super().__init__(data)
         else:
             raise ValueError("Input data must be a 3x3 SymPy Matrix")
-
-    def __repr__(self):
-        return f"SymbolicThreeByThreeTensor(\n{self.data}\n)"
 
     @classmethod
     def from_list(cls, components):
@@ -126,13 +126,13 @@ class SymbolicSixBySixTensor(SymbolicTensor):
     shape = (6, 6)
 
     def __init__(self, data):
-        if isinstance(data, (sp.Matrix, sp.ImmutableMatrix)) and data.shape == self.shape:
+        if (
+            isinstance(data, (sp.Matrix, sp.ImmutableMatrix))
+            and data.shape == self.shape
+        ):
             super().__init__(data)
         else:
             raise ValueError("Input data must be a 6x6 SymPy Matrix")
-
-    def __repr__(self):
-        return f"SymbolicSixBySixTensor(\n{self.data}\n)"
 
     @classmethod
     def from_list(cls, components):
@@ -164,13 +164,13 @@ class SymbolicSymmetricThreeByThreeTensor(SymbolicTensor):
     }
 
     def __init__(self, data):
-        if isinstance(data, (sp.Matrix, sp.ImmutableMatrix)) and data.shape == self.shape:
+        if (
+            isinstance(data, (sp.Matrix, sp.ImmutableMatrix))
+            and data.shape == self.shape
+        ):
             super().__init__(data)
         else:
             raise ValueError("Input data must be a 6x1 SymPy Matrix")
-
-    def __repr__(self):
-        return f"SymmetricSymbolicThreeByThreeTensor(\n{self.data}\n)"
 
     def is_symmetric(self):
         return True
@@ -199,6 +199,6 @@ class SymbolicSymmetricThreeByThreeTensor(SymbolicTensor):
             return self.data[self.VOIGT_MAPPING[key]]
         else:
             raise ValueError("Key must be int or tuple of 2 elements")
-        
+
     def eigenvalues(self):
         return self.to_general_tensor().data.eigenvals()
