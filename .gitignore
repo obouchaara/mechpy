@@ -4,4 +4,4 @@ venv/
 
 private_notebooks/
 
-docs/
+docs/build
