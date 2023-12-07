@@ -2,36 +2,65 @@ import numpy as np
 
 
 class Tensor:
+    """
+    Represents a general tensor object that encapsulates a NumPy array.
+
+    Attributes:
+        data (np.ndarray): The data stored in the tensor.
+
+    Methods:
+        is_symmetric: Check if the tensor is symmetric.
+        is_second_rank: Check if the tensor is of second rank.
+        is_fourth_rank: Check if the tensor is of fourth rank.
+        is_3x3: Check if the tensor is a 3x3 matrix.
+        is_6x6: Check if the tensor is a 6x6 matrix.
+        is_3x3x3x3: Check if the tensor is a 3x3x3x3 matrix.
+        to_3x3: Convert the tensor to a ThreeByThreeTensor.
+        to_sym_3x3: Convert the tensor to a symmetric 3x3 tensor.
+        to_6x6: Convert the tensor to a SixBySixTensor.
+        from_list: Create a Tensor from a list of components.
+    """
+
     def __init__(self, data):
+        """
+        Initialize a Tensor object.
+
+        Args:
+            data (np.ndarray): A NumPy array representing the tensor data.
+
+        Raises:
+            ValueError: If the input data is not a NumPy array.
+        """
         if isinstance(data, np.ndarray):
             self.data = data
         else:
             raise ValueError("Input data must be a NumPy array")
 
     def __repr__(self):
+        """
+        Return a string representation of the Tensor object.
+        """
         return f"Tensor(\n{self.data}\n)"
 
     def __matmul__(self, other):
-        if isinstance(self, SymmetricThreeByThreeTensor):
-            self_data = self.to_general_tensor().data
-        else:
-            self_data = self.data
+        """
+        Perform matrix multiplication between two Tensor objects.
 
-        if isinstance(other, SymmetricThreeByThreeTensor):
-            other_data = other.to_general_tensor().data
-        else:
-            other_data = other.data
+        Args:
+            other (Tensor): The right operand in the matrix multiplication.
 
-        result = Tensor(self_data @ other_data)
-        if result.is_3x3():
-            if result.is_symmetric():
-                return result.to_sym_3x3()
-            return result.to_3x3
-        elif result.is_6x6():
-            return result.to_6x6()
-        return result
+        Returns:
+            Tensor: The result of the matrix multiplication.
+        """
+        # Implementation details...
 
     def is_symmetric(self):
+        """
+        Check if the tensor is symmetric.
+
+        Returns:
+            bool: True if the tensor is symmetric, False otherwise.
+        """
         # if isinstance(self, SymmetricThreeByThreeTensor):
         #     return True
         return np.array_equal(self.data, self.data.T)

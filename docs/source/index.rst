@@ -10,7 +10,9 @@ Welcome to MechPy's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   usage/quickstart
 
+   reference/numeric/tensor
 
 Indices and tables
 ==================
