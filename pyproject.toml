@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=40.8.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mechpy-core"
+version = "0.0.1"
+description = "Mechanical Engineering Toolbox"
+authors = [{ name = "Omar BOUCHAARA", email = "o.bouchaara@sahab-dev.com" }]
+readme = "README.md"
+license = { file = "LICENSE" }
+dependencies = [
+    "numpy",
+    "sympy",
+    "matplotlib"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: MIT License",
+    "Development Status :: 3 - Alpha",
+    "Topic :: Scientific/Engineering",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+]
+keywords = [
+    "mechanical engineering",
+    "toolbox",
+    "simulation",
+    "analysis",
+    "mechanics",
+    "dynamics",
+    "materials",
+]
+
+[project.urls]
+homepage = "https://mechpy.org"
+repository = "https://github.com/obouchaara/mechpy"
+documentation = "https://docs.mechpy.org"
+
+[tool.setuptools.packages.find]
+where = ["src"]

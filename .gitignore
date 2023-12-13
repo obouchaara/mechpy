@@ -1,7 +1,8 @@
-venv/
-
-*.pyc
-
 private_notebooks/
 
+venv/
+
+build/
 docs/build
+
+*.pyc
