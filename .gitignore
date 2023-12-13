@@ -7,3 +7,4 @@ build/
 docs/build
 
 *.pyc
+src/mechpy_core.egg-info
