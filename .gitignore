@@ -1,5 +1,10 @@
+private_notebooks/
+
+src/
+build/
+docs/
+
 venv/
+venv_test/
 
 *.pyc
-
-docs/
