@@ -1,6 +1,7 @@
 private_notebooks/
 
 venv/
+venv_test/
 
 build/
 docs/build
