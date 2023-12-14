@@ -3,8 +3,6 @@ import numpy as np
 import sympy as sp
 import unittest
 
-sys.path.append("../src")
-
 
 class TestUtils(unittest.TestCase):
     pass

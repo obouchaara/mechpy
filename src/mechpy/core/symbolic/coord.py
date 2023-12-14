@@ -16,41 +16,44 @@ class SymbolicCartesianCoordSystem(SymbolicCoordSystem):
         basis_symbols = basis_symbols or [sp.symbols(_) for _ in ["x", "y", "z"]]
         super().__init__(origin, basis_symbols)
 
-    def to_cylindrical(self):
+    def get_basis_cylindrical_exprs(self) -> dict:
         x, y, z = self.basis_symbols
-        r = sp.sqrt(x**2 + y**2)
-        theta = sp.atan2(y, x)
-        basis_symbols = sp.ImmutableDenseNDimArray([r, theta, z])
+        r_expr = sp.sqrt(x**2 + y**2)
+        theta_expr = sp.atan2(y, x)
+        z_expr = z  # z coordinate remains the same
+        return {"r": r_expr, "theta": theta_expr, "z": z_expr}
+
+    def get_basis_spherical_exprs(self) -> dict:
+        x, y, z = self.basis_symbols
+        r_expr = sp.sqrt(x**2 + y**2 + z**2)
+        theta_expr = sp.atan2(y, x)
+        phi_expr = sp.acos(z / r_expr)
+        return {"r": r_expr, "theta": theta_expr, "phi": phi_expr}
+
+    def to_cylindrical(self):
+        expr_dict = self.get_basis_cylindrical_exprs()
+        basis_symbols = sp.ImmutableDenseNDimArray(list(expr_dict.values()))
         return SymbolicCylindricalCoordSystem(basis_symbols=basis_symbols)
 
     def to_spherical(self):
-        x, y, z = self.basis_symbols
-        r = sp.sqrt(x**2 + y**2 + z**2)
-        theta = sp.atan2(y, x)
-        phi = sp.acos(z / r)
-        basis_symbols = sp.ImmutableDenseNDimArray([r, theta, phi])
+        expr_dict = self.get_basis_spherical_exprs()
+        basis_symbols = sp.ImmutableDenseNDimArray(list(expr_dict.values()))
         return SymbolicSphericalCoordSystem(basis_symbols=basis_symbols)
 
     def get_cylindrical_coord(self, values):
         if not isinstance(values, (list, tuple)) or len(values) != 3:
             raise ValueError("values must be a list or tuple of length 3")
-
-        x, y, z = self.basis_symbols
-        value_dict = {x: values[0], y: values[1], z: values[2]}
         cylindrical_system = self.to_cylindrical()
+        value_dict = dict(zip(self.basis_symbols, values))
         cylindrical_coords = cylindrical_system.basis_symbols.subs(value_dict)
-
         return cylindrical_coords
 
     def get_spherical_coord(self, values):
         if not isinstance(values, (list, tuple)) or len(values) != 3:
             raise ValueError("values must be a list or tuple of length 3")
-
-        x, y, z = self.basis_symbols
-        value_dict = {x: values[0], y: values[1], z: values[2]}
         spherical_system = self.to_spherical()
+        value_dict = dict(zip(self.basis_symbols, values))
         spherical_coords = spherical_system.basis_symbols.subs(value_dict)
-
         return spherical_coords
 
 
@@ -60,19 +63,34 @@ class SymbolicCylindricalCoordSystem(SymbolicCoordSystem):
         basis_symbols = basis_symbols or [sp.symbols(_) for _ in ["r", "theta", "z"]]
         super().__init__(origin, basis_symbols)
 
+    def get_basis_cartesian_exprs(self, cartesian_basis_symbols=None) -> dict:
+        if not cartesian_basis_symbols:
+            cartesian_basis_symbols = sp.symbols("x y z")
+        if (
+            not isinstance(cartesian_basis_symbols, (list, tuple))
+            or len(cartesian_basis_symbols) != 3
+        ):
+            raise ValueError("values must be a list or tuple of length 3")
+
+        r, theta, z_cyl = self.basis_symbols
+        x, y, z_cart = cartesian_basis_symbols
+
+        r_expr = sp.sqrt(x**2 + y**2)
+        theta_expr = sp.atan2(y, x)
+        z_expr = z_cart
+
+        return {r: r_expr, theta: theta_expr, z_cyl: z_expr}
+
     def to_cartesian(self):
-        r, theta, z = self.basis_symbols
-        x = r * sp.cos(theta)
-        y = r * sp.sin(theta)
-        basis_symbols = sp.ImmutableDenseNDimArray([x, y, z])
+        expr_dict = self.get_basis_cartesian_exprs()
+        basis_symbols = sp.ImmutableDenseNDimArray(list(expr_dict.values()))
         return SymbolicCartesianCoordSystem(basis_symbols=basis_symbols)
 
     def get_cartesian_coords(self, values):
         if not isinstance(values, (list, tuple)) or len(values) != 3:
             raise ValueError("values must be a list or tuple of length 3")
-        r, theta, z = self.basis_symbols
-        value_dict = {r: values[0], theta: values[1], z: values[2]}
         cartesian_system = self.to_cartesian()
+        value_dict = dict(zip(self.basis_symbols, values))
         cartesian_coords = cartesian_system.basis_symbols.subs(value_dict)
         return cartesian_coords
 
@@ -83,22 +101,32 @@ class SymbolicSphericalCoordSystem(SymbolicCoordSystem):
         basis_symbols = basis_symbols or [sp.symbols(_) for _ in ["r", "theta", "phi"]]
         super().__init__(origin, basis_symbols)
 
-    def to_cartesian(self):
+    def get_basis_cartesian_exprs(self, cartesian_basis_symbols=None) -> dict:
+        if not cartesian_basis_symbols:
+            cartesian_basis_symbols = sp.symbols("x y z")
+        if (
+            not isinstance(cartesian_basis_symbols, (list, tuple))
+            or len(cartesian_basis_symbols) != 3
+        ):
+            raise ValueError("values must be a list or tuple of length 3")
+
         r, theta, phi = self.basis_symbols
-        x = r * sp.sin(phi) * sp.cos(theta)
-        y = r * sp.sin(phi) * sp.sin(theta)
-        z = r * sp.cos(phi)
-        basis_symbols = sp.ImmutableDenseNDimArray([x, y, z])
+        x, y, z = cartesian_basis_symbols
+        r_expr = sp.sqrt(x**2 + y**2 + z**2)
+        theta_expr = sp.atan2(y, x)
+        phi_expr = sp.acos(z / r_expr)
+
+        return {r: r_expr, theta: theta_expr, phi: phi_expr}
+
+    def to_cartesian(self):
+        expr_dict = self.get_basis_cartesian_exprs()
+        basis_symbols = sp.ImmutableDenseNDimArray(list(expr_dict.values()))
         return SymbolicCartesianCoordSystem(basis_symbols=basis_symbols)
 
     def get_cartesian_coords(self, values):
         if not isinstance(values, (list, tuple)) or len(values) != 3:
             raise ValueError("values must be a list or tuple of length 3")
-
-        r, theta, phi = self.basis_symbols
-        value_dict = {r: values[0], theta: values[1], phi: values[2]}
-
         cartesian_system = self.to_cartesian()
+        value_dict = dict(zip(self.basis_symbols, values))
         cartesian_coords = cartesian_system.basis_symbols.subs(value_dict)
-
         return cartesian_coords
