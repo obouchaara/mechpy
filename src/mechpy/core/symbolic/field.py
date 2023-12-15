@@ -13,10 +13,11 @@ from .coord import (
 
 
 class SymbolicField:
-    def __init__(self, data, coord_system):
+    def __init__(self, data, coord_system, field_params=None):
         if isinstance(coord_system, SymbolicCoordSystem):
-            self.coord_system = coord_system
             self.data = data
+            self.coord_system = coord_system
+            self.field_params = field_params or []
         else:
             raise ValueError("coord system must be a SymbolicCoordSystem")
 
@@ -37,12 +38,12 @@ class SymbolicField:
 
 
 class SymbolicField3D(SymbolicField):
-    def __init__(self, data, coord_system):
+    def __init__(self, data, coord_system, field_params=None):
         if isinstance(data, sp.MutableDenseNDimArray):
             data = sp.ImmutableDenseNDimArray(data)
 
         if isinstance(data, (sp.Expr, sp.ImmutableDenseNDimArray)):
-            super().__init__(data, coord_system)
+            super().__init__(data, coord_system, field_params)
         else:
             raise ValueError("Input data must be a SymPy Expr or SymPy Array")
 
@@ -51,15 +52,15 @@ class SymbolicScalarField(SymbolicField3D):
     shape = (3,)
 
     @classmethod
-    def create(cls, coord_system=None):
+    def create(cls, coord_system=None, field_params=None):
         if not coord_system:
             coord_system = SymbolicCartesianCoordSystem()
 
         f = sp.Function("f")(*coord_system.basis_symbols)
-        return cls(f, coord_system)
+        return cls(f, coord_system, field_params)
 
     @classmethod
-    def create_linear(cls, data, coord_system=None):
+    def create_linear(cls, data, coord_system=None, field_params=None):
         if not coord_system:
             coord_system = SymbolicCartesianCoordSystem()
 
@@ -70,7 +71,7 @@ class SymbolicScalarField(SymbolicField3D):
         basis_symbols = coord_system.basis_symbols
 
         scalar_field = sum(var * coeff for coeff, var in zip(data, basis_symbols))
-        return cls(scalar_field, coord_system)
+        return cls(scalar_field, coord_system, field_params)
 
     def plot(self, x_limits=[-100, 100], y_limits=[-100, 100], z_limits=[-100, 100]):
         x, y, z = sp.symbols("x y z")
@@ -122,7 +123,7 @@ class SymbolicVectorField(SymbolicField3D):
     shape = (3, 3)
 
     @classmethod
-    def create(cls, coord_system=None):
+    def create(cls, coord_system=None, field_params=None):
         if not coord_system:
             coord_system = SymbolicCartesianCoordSystem()
 
@@ -131,10 +132,10 @@ class SymbolicVectorField(SymbolicField3D):
         f2 = f2(*coord_system.basis_symbols)
         f3 = f3(*coord_system.basis_symbols)
         vector_field = sp.ImmutableDenseNDimArray([f1, f2, f3])
-        return cls(vector_field, coord_system)
+        return cls(vector_field, coord_system, field_params)
 
     @classmethod
-    def create_linear(cls, data, coord_system=None):
+    def create_linear(cls, data, coord_system=None, field_params=None):
         if not coord_system:
             coord_system = SymbolicCartesianCoordSystem()
 
@@ -150,7 +151,7 @@ class SymbolicVectorField(SymbolicField3D):
         ]
 
         vector_field = sp.ImmutableDenseNDimArray(vector_field_components)
-        return cls(vector_field, coord_system)
+        return cls(vector_field, coord_system, field_params)
 
     def plot(self, x_limits=[-100, 100], y_limits=[-100, 100], z_limits=[-100, 100]):
         # Create a grid of points within the specified limits
@@ -198,7 +199,7 @@ class SymbolicTensorField(SymbolicField3D):
     shape = (3, 3, 3)
 
     @classmethod
-    def create(cls, coord_system=None):
+    def create(cls, coord_system=None, field_params=None):
         if not coord_system:
             coord_system = SymbolicCartesianCoordSystem()
 
@@ -207,10 +208,10 @@ class SymbolicTensorField(SymbolicField3D):
             for i in range(3)
         ]
         tensor_field = sp.tensor.Array(tensor_components)
-        return cls(tensor_field, coord_system)
+        return cls(tensor_field, coord_system, field_params)
 
     @classmethod
-    def create_linear(cls, data, coord_system=None):
+    def create_linear(cls, data, coord_system=None, field_params=None):
         if not coord_system:
             coord_system = SymbolicCartesianCoordSystem()
 
@@ -233,4 +234,4 @@ class SymbolicTensorField(SymbolicField3D):
             tensor_field_components.append(tensor_row)
 
         tensor_field = sp.ImmutableDenseNDimArray(tensor_field_components)
-        return cls(tensor_field, coord_system)
+        return cls(tensor_field, coord_system, field_params)
