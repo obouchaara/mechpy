@@ -12,8 +12,8 @@ class SymbolicCoordSystem:
 
 class SymbolicCartesianCoordSystem(SymbolicCoordSystem):
     def __init__(self, basis_symbols=None):
-        origin = sp.ImmutableDenseNDimArray([0, 0, 0])
-        basis_symbols = basis_symbols or [sp.symbols(_) for _ in ["x", "y", "z"]]
+        origin = (0, 0, 0)
+        basis_symbols = basis_symbols or sp.symbols("x y z")
         super().__init__(origin, basis_symbols)
 
     def get_basis_cylindrical_exprs(self) -> dict:
@@ -59,8 +59,8 @@ class SymbolicCartesianCoordSystem(SymbolicCoordSystem):
 
 class SymbolicCylindricalCoordSystem(SymbolicCoordSystem):
     def __init__(self, basis_symbols=None):
-        origin = sp.ImmutableDenseNDimArray([0, 0, 0])
-        basis_symbols = basis_symbols or [sp.symbols(_) for _ in ["r", "theta", "z"]]
+        origin = (0, 0, 0)
+        basis_symbols = basis_symbols or sp.symbols("r theta z")
         super().__init__(origin, basis_symbols)
 
     def get_basis_cartesian_exprs(self, cartesian_basis_symbols=None) -> dict:
@@ -97,8 +97,8 @@ class SymbolicCylindricalCoordSystem(SymbolicCoordSystem):
 
 class SymbolicSphericalCoordSystem(SymbolicCoordSystem):
     def __init__(self, basis_symbols=None):
-        origin = sp.ImmutableDenseNDimArray([0, 0, 0])
-        basis_symbols = basis_symbols or [sp.symbols(_) for _ in ["r", "theta", "phi"]]
+        origin = (0, 0, 0)
+        basis_symbols = basis_symbols or sp.symbols("r theta phi")
         super().__init__(origin, basis_symbols)
 
     def get_basis_cartesian_exprs(self, cartesian_basis_symbols=None) -> dict:
