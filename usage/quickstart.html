@@ -19,6 +19,7 @@
         <script src="../_static/documentation_options.js?v=d45e8c67"></script>
         <script src="../_static/doctools.js?v=888ff710"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -54,6 +55,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/numeric/tensor.html">Numeric Tensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/symbolic/tensor.html">Symbolic Tensor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/tensors.html">Tensors Notebook</a></li>
 </ul>
 
         </div>
@@ -85,36 +88,36 @@
 <p>This guide will walk you through the basics of getting started with [Your Project]. You’ll learn how to install the software and run a simple example to see it in action.</p>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
-<p>Begin by installing [Your Project]. You can do this using pip:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>your_project_name
+<p>Begin by installing MechPy. You can do this using pip:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>mechpy-core
 </pre></div>
 </div>
 <p>Ensure you have the necessary prerequisites installed (list any prerequisites if applicable).</p>
 </section>
 <section id="running-your-first-example">
 <h2>Running Your First Example<a class="headerlink" href="#running-your-first-example" title="Link to this heading"></a></h2>
-<p>Now that you have [Your Project] installed, let’s run a simple example to see how it works.</p>
+<p>Now that you have MechPy installed, let’s run a simple example to see how it works.</p>
 <ol class="arabic">
 <li><p>First, create a new Python script or open an interactive Python session.</p></li>
-<li><p>Import the necessary modules from [Your Project]:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">your_project</span> <span class="kn">import</span> <span class="n">some_module</span>
+<li><p>Import the necessary modules from MechPy:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mechpy.core</span> <span class="kn">import</span> <span class="n">ThreeByThreeTensor</span>
 </pre></div>
 </div>
 </li>
 <li><p>Now, let’s execute a simple function:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">some_module</span><span class="o">.</span><span class="n">example_function</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">M</span> <span class="o">=</span> <span class="n">ThreeByThreeTensor</span><span class="o">.</span><span class="n">from_list</span><span class="p">([[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">is_symmetric</span><span class="p">())</span>
 </pre></div>
 </div>
 </li>
 </ol>
-<p>This script demonstrates a basic functionality of [Your Project]. For more complex use cases, refer to the documentation.</p>
+<p>This script demonstrates a basic functionality of MechPy. For more complex use cases, refer to the documentation.</p>
 </section>
 <section id="next-steps">
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
-<p>Congratulations, you’ve successfully run your first example using [Your Project]! To dive deeper, consider exploring the following resources:</p>
+<p>Congratulations, you’ve successfully run your first example using MechPy! To dive deeper, consider exploring the following resources:</p>
 <ul class="simple">
-<li><p><strong>User Guide:</strong> For more detailed information about using [Your Project], check out the [user guide](link_to_user_guide).</p></li>
+<li><p><strong>User Guide:</strong> For more detailed information about using MechPy, check out the [user guide](link_to_user_guide).</p></li>
 <li><p><strong>API Reference:</strong> If you’re looking for detailed information on classes and functions, the [API reference](link_to_api_reference) is a great resource.</p></li>
 <li><p><strong>Examples:</strong> For more examples, visit our [examples page](link_to_examples).</p></li>
 </ul>
