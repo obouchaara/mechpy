@@ -13,6 +13,8 @@ Welcome to MechPy's documentation!
    usage/quickstart
 
    reference/numeric/tensor
+   reference/symbolic/tensor
+   notebooks/tensors.ipynb
 
 Indices and tables
 ==================
