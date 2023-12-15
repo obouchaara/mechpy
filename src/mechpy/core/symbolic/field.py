@@ -42,27 +42,9 @@ class SymbolicField3D(SymbolicField):
             data = sp.ImmutableDenseNDimArray(data)
 
         if isinstance(data, (sp.Expr, sp.ImmutableDenseNDimArray)):
-            self.validate_coord_system(data, coord_system)
             super().__init__(data, coord_system)
         else:
             raise ValueError("Input data must be a SymPy Expr or SymPy Array")
-
-    def validate_coord_system(self, data, coord_system):
-        # Extract symbols from the coordinate system
-        coord_symbols = coord_system.basis_symbols
-
-        # Extract free symbols from the data
-        free_symbols = (
-            data.free_symbols
-            if isinstance(data, sp.Expr)
-            else set().union(*[element.free_symbols for element in data])
-        )
-
-        # Check if all coordinate system symbols are present in the data
-        if not all(symbol in free_symbols for symbol in coord_symbols):
-            raise ValueError(
-                f"Symbolic data must be a function of the coordinate system variables: {', '.join(str(symbol) for symbol in coord_symbols)}"
-            )
 
 
 class SymbolicScalarField(SymbolicField3D):
