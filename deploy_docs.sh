@@ -4,7 +4,7 @@
 set -e
 
 # Build the docs
-rm -rf docs/build/html/*
+rm -rf docs/build/*
 sphinx-build -M html docs/source/ docs/build/
 
 # Stash any changes in main branch
