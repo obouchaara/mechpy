@@ -271,12 +271,12 @@ class SymbolicSymmetricThreeByThreeTensor(SymbolicTensor):
         raise ValueError("Input must be a list")
 
     @classmethod
-    def create(cls, name, mode=1):
-        if mode == 1:
+    def create(cls, name, mode=0):
+        if mode == 0:
             return super().create(name, cls.shape)
-        elif mode == 2:
-            VM = cls.INVERSE_VOIGT_MAPPING
-            components = [sp.symbols(f"{name}_{i+1}{j+1}") for i, j in VM.values()]
+        elif mode == 1:
+            mapping = cls.INVERSE_VOIGT_MAPPING
+            components = [sp.symbols(f"{name}_{i+1}{j+1}") for i, j in mapping.values()]
             return cls.from_list(components)
         else:
             raise NotImplementedError(f"Mode {mode} not implemented")
