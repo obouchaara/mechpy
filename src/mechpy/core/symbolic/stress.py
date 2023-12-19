@@ -21,7 +21,7 @@ class SymbolicStressTensor(SymbolicSymmetricThreeByThreeTensor):
         return sum(self.normal_components()) / 3.0
     
     def tresca(self):
-        principal_stresses = self.to_general_tensor().data.eigenvals()
+        principal_stresses = self.to_general().data.eigenvals()
 
         principal_stresses = sp.Matrix(list(principal_stresses.keys()))
 
