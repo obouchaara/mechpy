@@ -21,7 +21,7 @@ class StressTensor(SymmetricThreeByThreeTensor):
         return self.normal_components().sum() / 3.0
 
     def tresca(self):
-        stress_tensor = self.to_general_tensor().data
+        stress_tensor = self.to_general().data
         principal_stresses = np.linalg.eigvals(stress_tensor)
         tresca_stress = np.max(principal_stresses) - np.min(principal_stresses)
         return tresca_stress

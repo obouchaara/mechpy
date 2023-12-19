@@ -225,7 +225,7 @@ class SymmetricThreeByThreeTensor(Tensor):
     def from_list(cls, components):
         return super().from_list(components, cls.shape)
 
-    def to_general_tensor(self):
+    def to_general(self):
         VM = self.VOIGT_MAPPING
         components = [[self.data[VM[(i, j)]] for i in range(3)] for j in range(3)]
         return ThreeByThreeTensor(np.array(components).reshape((3, 3)))
@@ -234,12 +234,12 @@ class SymmetricThreeByThreeTensor(Tensor):
         if isinstance(key, int):
             return self.data[key]
         elif isinstance(key, tuple) and len(key) == 2:
-            return self.to_general_tensor().data[key]
+            return self.to_general().data[key]
         else:
             raise ValueError("Key must be int or tuple of 2 elements")
 
     def eigenvalues(self):
-        # return np.linalg.eigvals(self.to_general_tensor().data)
+        # return np.linalg.eigvals(self.to_general().data)
 
-        eigenvalues, _ = np.linalg.eigh(self.to_general_tensor().data)
+        eigenvalues, _ = np.linalg.eigh(self.to_general().data)
         return eigenvalues
