@@ -19,25 +19,25 @@ class TestCore(unittest.TestCase):
 
 class TestSymbolicThreeByThreeTensor(unittest.TestCase):
     def test_initialization_valid_data(self):
-        valid_matrix = sp.Matrix([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
-        tensor = SymbolicThreeByThreeTensor(valid_matrix)
-        self.assertEqual(tensor.data, valid_matrix)
+        valid_array = sp.ImmutableDenseNDimArray([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+        tensor = SymbolicThreeByThreeTensor(valid_array)
+        self.assertEqual(tensor.data, valid_array)
 
     def test_initialization_invalid_data(self):
-        invalid_matrix = sp.Matrix([[1, 2], [3, 4]])
+        invalid_matrix = sp.ImmutableDenseNDimArray([[1, 2], [3, 4]])
         with self.assertRaises(ValueError):
             SymbolicThreeByThreeTensor(invalid_matrix)
 
     def test_to_symmetric_valid(self):
-        symmetric_matrix = sp.Matrix([[1, 2, 3], [2, 4, 5], [3, 5, 6]])
-        tensor = SymbolicThreeByThreeTensor(symmetric_matrix)
+        symmetric_array = sp.ImmutableDenseNDimArray([[1, 2, 3], [2, 4, 5], [3, 5, 6]])
+        tensor = SymbolicThreeByThreeTensor(symmetric_array)
         symmetric_tensor = tensor.to_symmetric()
         self.assertIsInstance(symmetric_tensor, SymbolicSymmetricThreeByThreeTensor)
         self.assertTrue(symmetric_tensor.is_symmetric())
 
     def test_to_symmetric_invalid(self):
-        non_symmetric_matrix = sp.Matrix([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
-        tensor = SymbolicThreeByThreeTensor(non_symmetric_matrix)
+        non_symmetric_array = sp.ImmutableDenseNDimArray([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+        tensor = SymbolicThreeByThreeTensor(non_symmetric_array)
         with self.assertRaises(ValueError):
             tensor.to_symmetric()
 
