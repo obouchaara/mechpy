@@ -8,8 +8,8 @@ class SymbolicStrainTensor(SymbolicSymmetricThreeByThreeTensor):
         super().__init__(data)
 
     @classmethod
-    def create(cls, name="\\epsilon"):
-        return super().create(name)
+    def create(cls, name="\\epsilon", mode=0):
+        return super().create(name, mode)
 
     def normal_components(self):
         return self.data[:3]
@@ -18,7 +18,4 @@ class SymbolicStrainTensor(SymbolicSymmetricThreeByThreeTensor):
         return self.data[3:]
 
     def volumetric_strain(self):
-        pass
-
-    def shear_strain(self):
-        pass
+        return sum(self.normal_components())
