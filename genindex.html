@@ -48,7 +48,7 @@
 <li class="toctree-l1"><a class="reference internal" href="usage/quickstart.html">Quickstart Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference/numeric/tensor.html">Numeric Tensor</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference/symbolic/tensor.html">Symbolic Tensor</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/tensors.html">Tensors Notebook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/symbolic/tensor.html">Symbolic Tensor Notebook</a></li>
 </ul>
 
         </div>
@@ -79,6 +79,7 @@
 
 <div class="genindex-jumpbox">
  <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#I"><strong>I</strong></a>
@@ -91,8 +92,28 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.create">create() (mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor class method)</a>
+      <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicSixBySixTensor.create">create() (mechpy.core.symbolic.tensor.SymbolicSixBySixTensor class method)</a>
+
+      <ul>
+        <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.create">(mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor class method)</a>
 </li>
+        <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor.create">(mechpy.core.symbolic.tensor.SymbolicTensor class method)</a>
+</li>
+        <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor.create">(mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor class method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.diagonalize">diagonalize() (mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor method)</a>
+
+      <ul>
+        <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor.diagonalize">(mechpy.core.symbolic.tensor.SymbolicTensor method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -103,6 +124,16 @@
 
       <ul>
         <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.eigenvalues">(mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor method)</a>
+</li>
+        <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor.eigenvalues">(mechpy.core.symbolic.tensor.SymbolicTensor method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.eigenvectors">eigenvectors() (mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor method)</a>
+
+      <ul>
+        <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor.eigenvectors">(mechpy.core.symbolic.tensor.SymbolicTensor method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -142,37 +173,27 @@
 </li>
       </ul></li>
       <li><a href="reference/numeric/tensor.html#mechpy.core.numeric.tensor.Tensor.is_3x3">is_3x3() (mechpy.core.numeric.tensor.Tensor method)</a>
-
-      <ul>
-        <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor.is_3x3">(mechpy.core.symbolic.tensor.SymbolicTensor method)</a>
 </li>
-      </ul></li>
       <li><a href="reference/numeric/tensor.html#mechpy.core.numeric.tensor.Tensor.is_3x3x3x3">is_3x3x3x3() (mechpy.core.numeric.tensor.Tensor method)</a>
-
-      <ul>
-        <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor.is_3x3x3x3">(mechpy.core.symbolic.tensor.SymbolicTensor method)</a>
 </li>
-      </ul></li>
       <li><a href="reference/numeric/tensor.html#mechpy.core.numeric.tensor.Tensor.is_6x6">is_6x6() (mechpy.core.numeric.tensor.Tensor method)</a>
-
-      <ul>
-        <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor.is_6x6">(mechpy.core.symbolic.tensor.SymbolicTensor method)</a>
 </li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/numeric/tensor.html#mechpy.core.numeric.tensor.Tensor.is_fourth_rank">is_fourth_rank() (mechpy.core.numeric.tensor.Tensor method)</a>
 
       <ul>
         <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor.is_fourth_rank">(mechpy.core.symbolic.tensor.SymbolicTensor method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/numeric/tensor.html#mechpy.core.numeric.tensor.Tensor.is_second_rank">is_second_rank() (mechpy.core.numeric.tensor.Tensor method)</a>
 
       <ul>
         <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor.is_second_rank">(mechpy.core.symbolic.tensor.SymbolicTensor method)</a>
 </li>
       </ul></li>
+      <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor.is_square">is_square() (mechpy.core.symbolic.tensor.SymbolicTensor method)</a>
+</li>
       <li><a href="reference/numeric/tensor.html#mechpy.core.numeric.tensor.SymmetricThreeByThreeTensor.is_symmetric">is_symmetric() (mechpy.core.numeric.tensor.SymmetricThreeByThreeTensor method)</a>
 
       <ul>
@@ -205,6 +226,10 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor.mode2_map">mode2_map() (mechpy.core.symbolic.tensor.SymbolicTensor static method)</a>
+</li>
+      <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor.mode2_map_inverse">mode2_map_inverse() (mechpy.core.symbolic.tensor.SymbolicTensor static method)</a>
+</li>
       <li>
     module
 
@@ -272,12 +297,14 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="reference/numeric/tensor.html#mechpy.core.numeric.tensor.SymmetricThreeByThreeTensor.to_general_tensor">to_general_tensor() (mechpy.core.numeric.tensor.SymmetricThreeByThreeTensor method)</a>
+      <li><a href="reference/numeric/tensor.html#mechpy.core.numeric.tensor.SymmetricThreeByThreeTensor.to_general">to_general() (mechpy.core.numeric.tensor.SymmetricThreeByThreeTensor method)</a>
 
       <ul>
-        <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.to_general_tensor">(mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor method)</a>
+        <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.to_general">(mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor method)</a>
 </li>
       </ul></li>
+      <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor.to_matrix">to_matrix() (mechpy.core.symbolic.tensor.SymbolicTensor method)</a>
+</li>
       <li><a href="reference/numeric/tensor.html#mechpy.core.numeric.tensor.Tensor.to_sym_3x3">to_sym_3x3() (mechpy.core.numeric.tensor.Tensor method)</a>
 
       <ul>
