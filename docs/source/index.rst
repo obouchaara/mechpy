@@ -14,7 +14,7 @@ Welcome to MechPy's documentation!
 
    reference/numeric/tensor
    reference/symbolic/tensor
-   notebooks/tensors.ipynb
+   notebooks/symbolic/tensor.ipynb
 
 Indices and tables
 ==================

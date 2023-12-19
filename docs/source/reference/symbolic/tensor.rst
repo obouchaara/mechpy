@@ -5,8 +5,3 @@ Symbolic Tensor
     :members:
     :undoc-members:
     :show-inheritance:
-
-.. automodule:: .tensors
-    :members:
-    :undoc-members:
-    :show-inheritance:
