@@ -117,7 +117,7 @@ class SymbolicTensor:
         raise ValueError("Input must be a list")
 
     @classmethod
-    def create(cls, shape, name=None):
+    def create(cls, shape, name):
         if not isinstance(shape, tuple):
             raise ValueError("Shape must be a tuple")
         indices = itertools.product(*(range(1, dim_len + 1) for dim_len in shape))
