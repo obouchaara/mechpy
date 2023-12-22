@@ -26,42 +26,39 @@ import sympy as sp
 
 class SymbolicTensor:
     @staticmethod
-    def mode2_map(n):
+    def notation_standard_map(n):
         """
         Create a dictionary with tuple (i, j) as key and index in the flattened list as value.
-        The dictionary maps the position in an nxn matrix to its corresponding index in a flattened list.
+        The dictionary maps the position in an nxn symmetric matrix to its corresponding index in a flattened list.
 
         :param n: Size of the matrix (nxn).
         :return: Dictionary mapping (i, j) to index.
         """
         index_map = {}
+        index = 0
         for i in range(n):
-            for j in range(n):
-                if j >= i:
-                    index = i * n + j - int(i * (i + 1) / 2)
-                else:
-                    index = j * n + i - int(j * (j + 1) / 2)
+            for j in range(i, n):
                 index_map[(i, j)] = index
+                index_map[(j, i)] = index  # Mirror for symmetry
+                index += 1
 
         return index_map
 
     @staticmethod
-    def mode2_map_inverse(n):
+    def notation_standard_inverse_map(n):
         """
         Create a dictionary with index in the flattened list as key and tuple (i, j) as value.
-        The dictionary inversely maps the index in a flattened list to its corresponding position in an nxn matrix.
+        The dictionary inversely maps the index in a flattened list to its corresponding position in an nxn symmetric matrix.
 
         :param n: Size of the matrix (nxn).
         :return: Dictionary mapping index to (i, j).
         """
         index_map_inverse = {}
+        index = 0
         for i in range(n):
-            for j in range(n):
-                if j >= i:
-                    index = i * n + j - int(i * (i + 1) / 2)
-                else:
-                    index = j * n + i - int(j * (j + 1) / 2)
+            for j in range(i, n):
                 index_map_inverse[index] = (i, j)
+                index += 1
 
         return index_map_inverse
 
@@ -96,9 +93,9 @@ class SymbolicTensor:
             return SymbolicThreeByThreeTensor(self.data)
         raise ValueError("The tensor is not a 3x3 Array.")
 
-    def to_sym_3x3(self, mode=1):
+    def to_sym_3x3(self, notation=1):
         if self.data.shape == (3, 3) and self.is_symmetric():
-            return self.to_3x3().to_symmetric(mode)
+            return self.to_3x3().to_symmetric(notation)
         raise ValueError("The tensor is not a symmetric 3x3 Array.")
 
     def to_6x6(self):
@@ -112,13 +109,11 @@ class SymbolicTensor:
             if isinstance(shape, tuple):
                 try:
                     data = sp.ImmutableDenseNDimArray(components, shape)
+                    return cls(data)
                 except:
                     raise ValueError("Invalid components or shape value")
-                return cls(data)
-            else:
-                raise ValueError("Invalid shape parameter")
-        else:
-            raise ValueError("Input must be a list")
+            raise ValueError("Invalid shape parameter")
+        raise ValueError("Input must be a list")
 
     @classmethod
     def create(cls, name, shape):
@@ -177,20 +172,16 @@ class SymbolicThreeByThreeTensor(SymbolicTensor):
     def create(cls, name):
         return super().create(name, cls.shape)
 
-    def to_symmetric(self, mode=1):
+    def to_symmetric(self, notation=1):
         if self.is_symmetric():
-            if mode == 1:
-                mapping = SymbolicSymmetricThreeByThreeTensor.INVERSE_VOIGT_MAPPING
-            elif mode == 2:
-                mapping = SymbolicSymmetricThreeByThreeTensor.mode2_map_inverse(3)
-            else:
-                raise NotImplementedError(f"Mode {mode} not implemented")
-            components = [self.data[mapping[i]] for i in range(6)]
-            data = sp.ImmutableDenseNDimArray(components)
-            return SymbolicSymmetricThreeByThreeTensor(data)
-        raise ValueError(
-            "The tensor is not symmetric, and it cannot be converted to a symmetric tensor."
-        )
+            NOTATIONS = SymbolicSymmetricThreeByThreeTensor.NOTATIONS
+            if notation in NOTATIONS.keys():
+                mapping = NOTATIONS[notation]["inverse_map"]
+                components = [self.data[mapping[i]] for i in range(6)]
+                data = sp.ImmutableDenseNDimArray(components)
+                return SymbolicSymmetricThreeByThreeTensor(data, notation)
+            raise NotImplementedError(f"Notation {notation} not implemented")
+        raise ValueError("The tensor is not symmetric")
 
 
 class SymbolicSixBySixTensor(SymbolicTensor):
@@ -216,6 +207,27 @@ class SymbolicSixBySixTensor(SymbolicTensor):
 class SymbolicSymmetricThreeByThreeTensor(SymbolicTensor):
     shape = (6,)
 
+    STANDARD_MAPPING = {
+        (0, 0): 0,
+        (0, 1): 1,
+        (0, 2): 2,
+        (1, 0): 1,
+        (1, 1): 3,
+        (1, 2): 4,
+        (2, 0): 2,
+        (2, 1): 4,
+        (2, 2): 5,
+    }
+
+    INVERSE_STANDARD_MAPPING = {
+        0: (0, 0),
+        1: (0, 1),
+        2: (0, 2),
+        3: (1, 1),
+        4: (1, 2),
+        5: (2, 2),
+    }
+
     VOIGT_MAPPING = {
         (0, 0): 0,
         (1, 1): 1,
@@ -237,53 +249,66 @@ class SymbolicSymmetricThreeByThreeTensor(SymbolicTensor):
         5: (0, 1),
     }
 
-    def __init__(self, data):
+    NOTATIONS = {
+        1: {
+            "name": "Standard notation",
+            "map": STANDARD_MAPPING,
+            "inverse_map": INVERSE_STANDARD_MAPPING,
+        },
+        2: {
+            "name": "Voight notation",
+            "map": VOIGT_MAPPING,
+            "inverse_map": INVERSE_VOIGT_MAPPING,
+        },
+    }
+
+    def __init__(self, data, notation=1):
         if isinstance(data, sp.MutableDenseNDimArray):
             data = sp.ImmutableDenseNDimArray(data)
         if isinstance(data, sp.ImmutableDenseNDimArray) and data.shape == self.shape:
-            super().__init__(data)
+            if notation in self.NOTATIONS.keys():
+                super().__init__(data)
+                self.notation = notation
+            else:
+                raise NotImplementedError(f"Notation {notation} not implemented")
         else:
             raise ValueError(f"Input data must be a SymPy Array ans sahpe={self.shape}")
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}(\n{self.data},\n{self.notation}\n)"
 
     def is_symmetric(self):
         return True
 
     @classmethod
-    def from_list(cls, components, mode=1):
+    def from_list(cls, components, notation=1):
         if isinstance(components, list):
             if len(components) == 6:
-                if mode == 1:
-                    mapping = cls.VOIGT_MAPPING
-                elif mode == 2:
-                    mapping = cls.mode2_map(3)
-                else:
-                    raise NotImplementedError(f"Mode {mode} not implemented")
-                new_components = [
-                    components[mapping[(i // 3, i % 3)]] for i in range(9)
-                ]
-                if len(new_components) != 9:
-                    raise ValueError("len(new_components) != 9")
-                return cls.from_list(new_components, mode=1)
+                if notation in cls.NOTATIONS.keys():
+                    data = sp.ImmutableDenseNDimArray(components)
+                    return cls(data, notation)
+                raise NotImplementedError(f"Notation {notation} not implemented")
             elif len(components) == 9:
-                return SymbolicThreeByThreeTensor.from_list(components).to_sym_3x3(mode)
-            else:
-                raise ValueError("Imput must be a list of 6 or 9 elements")
+                return SymbolicThreeByThreeTensor.from_list(components).to_symmetric(
+                    notation
+                )
+            raise ValueError("Imput must be a list of 6 or 9 elements")
         raise ValueError("Input must be a list")
 
     @classmethod
-    def create(cls, name, mode=0):
-        if mode == 0:
+    def create(cls, name, notation=1):
+        if notation == 1:
             return super().create(name, cls.shape)
-        elif mode == 1:
+        elif notation == 2:
             mapping = cls.INVERSE_VOIGT_MAPPING
             components = [sp.symbols(f"{name}_{i+1}{j+1}") for i, j in mapping.values()]
-            return cls.from_list(components)
+            return cls.from_list(components, notation)
         else:
-            raise NotImplementedError(f"Mode {mode} not implemented")
+            raise NotImplementedError(f"Notation {notation} not implemented")
 
     def to_general(self):
-        VM = self.VOIGT_MAPPING
-        components = [[self.data[VM[(i, j)]] for j in range(3)] for i in range(3)]
+        mapping = self.NOTATIONS[self.notation]["map"]
+        components = [[self.data[mapping[(i, j)]] for j in range(3)] for i in range(3)]
         data = sp.ImmutableDenseNDimArray(components)
         return SymbolicThreeByThreeTensor(data)
 

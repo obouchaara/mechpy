@@ -36,10 +36,78 @@ class TestSymbolicThreeByThreeTensor(unittest.TestCase):
         self.assertTrue(symmetric_tensor.is_symmetric())
 
     def test_to_symmetric_invalid(self):
-        non_symmetric_array = sp.ImmutableDenseNDimArray([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+        non_symmetric_array = sp.ImmutableDenseNDimArray(
+            [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+        )
         tensor = SymbolicThreeByThreeTensor(non_symmetric_array)
         with self.assertRaises(ValueError):
             tensor.to_symmetric()
+
+
+class TestSymbolicSymmetricThreeByThreeTensor(unittest.TestCase):
+    def test_notation_standard_map(self):
+        expected_maps = {
+            2: {(0, 0): 0, (0, 1): 1, (1, 0): 1, (1, 1): 2},
+            3: {
+                (0, 0): 0,
+                (0, 1): 1,
+                (0, 2): 2,
+                (1, 0): 1,
+                (1, 1): 3,
+                (1, 2): 4,
+                (2, 0): 2,
+                (2, 1): 4,
+                (2, 2): 5,
+            },
+            4: {
+                (0, 0): 0,
+                (0, 1): 1,
+                (0, 2): 2,
+                (0, 3): 3,
+                (1, 0): 1,
+                (1, 1): 4,
+                (1, 2): 5,
+                (1, 3): 6,
+                (2, 0): 2,
+                (2, 1): 5,
+                (2, 2): 7,
+                (2, 3): 8,
+                (3, 0): 3,
+                (3, 1): 6,
+                (3, 2): 8,
+                (3, 3): 9,
+            },
+        }
+
+        for n, expected_map in expected_maps.items():
+            assert (
+                SymbolicSymmetricThreeByThreeTensor.notation_standard_map(n)
+                == expected_map
+            )
+
+    def test_notation_standard_inverse_map(self):
+        expected_inverse_maps = {
+            2: {0: (0, 0), 1: (0, 1), 2: (1, 1)},
+            3: {0: (0, 0), 1: (0, 1), 2: (0, 2), 3: (1, 1), 4: (1, 2), 5: (2, 2)},
+            4: {
+                0: (0, 0),
+                1: (0, 1),
+                2: (0, 2),
+                3: (0, 3),
+                4: (1, 1),
+                5: (1, 2),
+                6: (1, 3),
+                7: (2, 2),
+                8: (2, 3),
+                9: (3, 3),
+            },
+        }
+
+        for n, expected_inverse_map in expected_inverse_maps.items():
+            assert (
+                SymbolicSymmetricThreeByThreeTensor.notation_standard_inverse_map(n)
+                == expected_inverse_map
+            )
 
 
 class TestSymbolicCartesianCoordSystem(unittest.TestCase):
