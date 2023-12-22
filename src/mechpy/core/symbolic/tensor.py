@@ -62,14 +62,15 @@ class SymbolicTensor:
 
         return index_map_inverse
 
-    def __init__(self, data):
+    def __init__(self, data, name=None):
         if isinstance(data, sp.ImmutableDenseNDimArray):
             self.data = data
+            self.name = name
         else:
             raise ValueError("Input data must be a SymPy ImmutableDenseNDimArray")
 
     def __repr__(self):
-        return f"{self.__class__.__name__}(\n{self.data}\n)"
+        return f"{self.__class__.__name__}(\n{self.data},\n{self.name}\n)"
 
     def is_second_rank(self):
         return len(self.data.shape) == 2
@@ -116,14 +117,13 @@ class SymbolicTensor:
         raise ValueError("Input must be a list")
 
     @classmethod
-    def create(cls, name, shape):
+    def create(cls, shape, name=None):
         if not isinstance(shape, tuple):
             raise ValueError("Shape must be a tuple")
-
         indices = itertools.product(*(range(1, dim_len + 1) for dim_len in shape))
         components = [sp.symbols(f"{name}_{''.join(map(str, idx))}") for idx in indices]
         data = sp.ImmutableDenseNDimArray(components, shape)
-        return cls(data)
+        return cls(data, name=name)
 
     def __matmul__(self, other):
         if not isinstance(other, SymbolicTensor):
@@ -156,11 +156,11 @@ class SymbolicTensor:
 class SymbolicThreeByThreeTensor(SymbolicTensor):
     shape = (3, 3)
 
-    def __init__(self, data):
+    def __init__(self, data, name=None):
         if isinstance(data, sp.MutableDenseNDimArray):
             data = sp.ImmutableDenseNDimArray(data)
         if isinstance(data, sp.ImmutableDenseNDimArray) and data.shape == self.shape:
-            super().__init__(data)
+            super().__init__(data, name)
         else:
             raise ValueError("Input data must be a 3x3 SymPy Array")
 
@@ -169,8 +169,8 @@ class SymbolicThreeByThreeTensor(SymbolicTensor):
         return super().from_list(components, cls.shape)
 
     @classmethod
-    def create(cls, name):
-        return super().create(name, cls.shape)
+    def create(cls, name=None):
+        return super().create(cls.shape, name=name)
 
     def to_symmetric(self, notation=1):
         if self.is_symmetric():
@@ -179,7 +179,7 @@ class SymbolicThreeByThreeTensor(SymbolicTensor):
                 mapping = NOTATIONS[notation]["inverse_map"]
                 components = [self.data[mapping[i]] for i in range(6)]
                 data = sp.ImmutableDenseNDimArray(components)
-                return SymbolicSymmetricThreeByThreeTensor(data, notation)
+                return SymbolicSymmetricThreeByThreeTensor(data, notation=notation)
             raise NotImplementedError(f"Notation {notation} not implemented")
         raise ValueError("The tensor is not symmetric")
 
@@ -187,11 +187,11 @@ class SymbolicThreeByThreeTensor(SymbolicTensor):
 class SymbolicSixBySixTensor(SymbolicTensor):
     shape = (6, 6)
 
-    def __init__(self, data):
+    def __init__(self, data, name=None):
         if isinstance(data, sp.MutableDenseNDimArray):
             data = sp.ImmutableDenseNDimArray(data)
         if isinstance(data, sp.ImmutableDenseNDimArray) and data.shape == self.shape:
-            super().__init__(data)
+            super().__init__(data, name)
         else:
             raise ValueError("Input data must be a 6x6 SymPy Array")
 
@@ -200,8 +200,8 @@ class SymbolicSixBySixTensor(SymbolicTensor):
         return super().from_list(components, cls.shape)
 
     @classmethod
-    def create(cls, name):
-        return super().create(name, cls.shape)
+    def create(cls, name=None):
+        return super().create(cls.shape, name=name)
 
 
 class SymbolicSymmetricThreeByThreeTensor(SymbolicTensor):
@@ -262,12 +262,12 @@ class SymbolicSymmetricThreeByThreeTensor(SymbolicTensor):
         },
     }
 
-    def __init__(self, data, notation=1):
+    def __init__(self, data, name=None, notation=1):
         if isinstance(data, sp.MutableDenseNDimArray):
             data = sp.ImmutableDenseNDimArray(data)
         if isinstance(data, sp.ImmutableDenseNDimArray) and data.shape == self.shape:
             if notation in self.NOTATIONS.keys():
-                super().__init__(data)
+                super().__init__(data, name)
                 self.notation = notation
             else:
                 raise NotImplementedError(f"Notation {notation} not implemented")
@@ -275,18 +275,18 @@ class SymbolicSymmetricThreeByThreeTensor(SymbolicTensor):
             raise ValueError(f"Input data must be a SymPy Array ans sahpe={self.shape}")
 
     def __repr__(self):
-        return f"{self.__class__.__name__}(\n{self.data},\n{self.notation}\n)"
+        return f"{self.__class__.__name__}(\n{self.data},\n{self.name},\n{self.notation}\n)"
 
     def is_symmetric(self):
         return True
 
     @classmethod
-    def from_list(cls, components, notation=1):
+    def from_list(cls, components, name=None, notation=1):
         if isinstance(components, list):
             if len(components) == 6:
                 if notation in cls.NOTATIONS.keys():
                     data = sp.ImmutableDenseNDimArray(components)
-                    return cls(data, notation)
+                    return cls(data, name=name, notation=notation)
                 raise NotImplementedError(f"Notation {notation} not implemented")
             elif len(components) == 9:
                 return SymbolicThreeByThreeTensor.from_list(components).to_symmetric(
@@ -296,13 +296,13 @@ class SymbolicSymmetricThreeByThreeTensor(SymbolicTensor):
         raise ValueError("Input must be a list")
 
     @classmethod
-    def create(cls, name, notation=1):
+    def create(cls, name="x", notation=1):
         if notation == 1:
-            return super().create(name, cls.shape)
+            return super().create(cls.shape, name)
         elif notation == 2:
             mapping = cls.INVERSE_VOIGT_MAPPING
             components = [sp.symbols(f"{name}_{i+1}{j+1}") for i, j in mapping.values()]
-            return cls.from_list(components, notation)
+            return cls.from_list(components, name=name, notation=notation)
         else:
             raise NotImplementedError(f"Notation {notation} not implemented")
 
