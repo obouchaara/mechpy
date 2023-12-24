@@ -19,15 +19,6 @@ class SymbolicStrainTensor(SS3X3T):
             strain_tensor = cls.from_list(new_components, notation=notation, name=name)
         return strain_tensor
 
-    def normal_components(self):
-        return self.data[:3]
-
-    def shear_components(self):
-        return self.data[3:]
-
-    def volumetric_strain(self):
-        return sum(self.normal_components())
-
     def to_general(self):
         if self.notation == 1:
             if self.name:
@@ -41,3 +32,15 @@ class SymbolicStrainTensor(SS3X3T):
             new_components = [data[key] / value for key, value in mapping.items()]
             return SS3X3T.from_list(new_components, self.notation).to_general()
         raise ValueError()
+
+    def normal_components(self):
+        return self.data[:3]
+
+    def shear_components(self):
+        return self.data[3:]
+
+    def principal_components(self):
+        return self.eigenvalues().keys()
+
+    def volumetric_strain(self):
+        return sum(self.normal_components())

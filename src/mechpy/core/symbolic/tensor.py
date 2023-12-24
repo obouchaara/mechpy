@@ -125,6 +125,9 @@ class SymbolicTensor:
         data = sp.ImmutableDenseNDimArray(components, shape)
         return cls(data, name=name)
 
+    def subs(self, sub_dict):
+        self.data = self.data.subs(sub_dict)
+
     def __matmul__(self, other):
         if not isinstance(other, SymbolicTensor):
             raise ValueError("The other operand must be an instance of SymbolicTensor")
@@ -296,7 +299,7 @@ class SymbolicSymmetricThreeByThreeTensor(SymbolicTensor):
         raise ValueError("Input must be a list")
 
     @classmethod
-    def create(cls, name="x", notation=1):
+    def create(cls, name, notation=1):
         if notation == 1:
             return super().create(cls.shape, name)
         elif notation == 2:
