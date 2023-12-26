@@ -5,16 +5,16 @@ SymbolicTensor Module
 This module offers classes for symbolic tensor manipulation using SymPy. It's designed to handle various tensor operations in a symbolic manner, ideal for applications in physics, engineering, and related fields.
 
 Classes:
-    `SymbolicTensor <#mechpy.core.symbolic.tensor.SymbolicTensor>`_:
+    SymbolicTensor:
         A base class for symbolic tensors. It handles initialization with SymPy Array objects and provides basic tensor properties and operations, including checks for symmetry and shape.
 
-    `SymbolicThreeByThreeTensor <#mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor>`_:
+    SymbolicThreeByThreeTensor:
         Inherits from SymbolicTensor, specifically representing a 3x3 symbolic tensor. Offers additional methods and properties tailored to the 3x3 tensor structure.
 
-    `SymbolicSixBySixTensor <#mechpy.core.symbolic.tensor.SymbolicSixBySixTensor>`_:
+    SymbolicSixBySixTensor:
         Extends SymbolicTensor for 6x6 symbolic tensors. Includes specific functionalities for working with 6x6 tensor.
 
-    `SymbolicSymmetricThreeByThreeTensor <#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor>`_:
+    SymbolicSymmetricThreeByThreeTensor:
         A specialization for 3x3 symmetric tensors. It incorporates Voigt mapping for tensor transformations and eigenvalue computations, focusing on symmetric properties.
 
 The module emphasizes ease of use and flexibility in symbolic tensor computations, leveraging the power of SymPy for mathematical expressions.
