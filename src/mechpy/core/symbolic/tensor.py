@@ -125,8 +125,18 @@ class SymbolicTensor:
         data = sp.ImmutableDenseNDimArray(components, shape)
         return cls(data, name=name)
 
-    def subs(self, sub_dict):
-        self.data = self.data.subs(sub_dict)
+    def subs(self, subs_dict, keys=False):
+        try:
+            if keys:
+                for k, v in subs_dict.items():
+                    if k in self.data:
+                        self.data = self.data.subs({k: v})
+                    else:
+                        raise KeyError(f"Key '{k}' not found in data.")
+            else:
+                self.data = self.data.subs(subs_dict)
+        except Exception as e:
+            raise RuntimeError(f"An error occurred during substitution: {e}")
 
     def __matmul__(self, other):
         if not isinstance(other, SymbolicTensor):
@@ -172,7 +182,7 @@ class SymbolicThreeByThreeTensor(SymbolicTensor):
         return super().from_list(components, cls.shape)
 
     @classmethod
-    def create(cls, name=None):
+    def create(cls, name):
         return super().create(cls.shape, name=name)
 
     def to_symmetric(self, notation=1):
@@ -203,7 +213,7 @@ class SymbolicSixBySixTensor(SymbolicTensor):
         return super().from_list(components, cls.shape)
 
     @classmethod
-    def create(cls, name=None):
+    def create(cls, name):
         return super().create(cls.shape, name=name)
 
 
