@@ -23,8 +23,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Symbolic Tensor Notebook" href="../../notebooks/symbolic/tensor.html" />
-    <link rel="prev" title="Numeric Tensor" href="../numeric/tensor.html" /> 
+    <link rel="next" title="Symbolic Strain Tensor" href="strain.html" />
+    <link rel="prev" title="Symbolic" href="../../symbolic.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -49,56 +49,66 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../usage/quickstart.html">Quickstart Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../numeric/tensor.html">Numeric Tensor</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Symbolic Tensor</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#symbolictensor-module">SymbolicTensor Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.mode2_map"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.mode2_map()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.mode2_map_inverse"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.mode2_map_inverse()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.is_second_rank"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.is_second_rank()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.is_fourth_rank"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.is_fourth_rank()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.is_square"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.is_square()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.is_symmetric"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.is_symmetric()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.to_matrix"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.to_matrix()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.to_3x3"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.to_3x3()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.to_sym_3x3"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.to_sym_3x3()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.to_6x6"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.to_6x6()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.from_list"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.from_list()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.create"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.create()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.eigenvalues"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.eigenvalues()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.eigenvectors"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.eigenvectors()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.diagonalize"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.diagonalize()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../numeric.html">Numeric</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../symbolic.html">Symbolic</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Symbolic Tensor</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#symbolictensor-module">SymbolicTensor Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.notation_standard_map"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.notation_standard_map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.notation_standard_inverse_map"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.notation_standard_inverse_map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.is_second_rank"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.is_second_rank()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.is_fourth_rank"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.is_fourth_rank()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.is_square"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.is_square()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.is_symmetric"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.is_symmetric()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.to_matrix"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.to_matrix()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.to_3x3"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.to_3x3()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.to_sym_3x3"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.to_sym_3x3()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.to_6x6"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.to_6x6()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.from_list"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.from_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.create"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.create()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.subs"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.subs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.eigenvalues"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.eigenvalues()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.eigenvectors"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.eigenvectors()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor.diagonalize"><code class="docutils literal notranslate"><span class="pre">SymbolicTensor.diagonalize()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor"><code class="docutils literal notranslate"><span class="pre">SymbolicThreeByThreeTensor</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor.shape"><code class="docutils literal notranslate"><span class="pre">SymbolicThreeByThreeTensor.shape</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor.from_list"><code class="docutils literal notranslate"><span class="pre">SymbolicThreeByThreeTensor.from_list()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor.create"><code class="docutils literal notranslate"><span class="pre">SymbolicThreeByThreeTensor.create()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor.to_symmetric"><code class="docutils literal notranslate"><span class="pre">SymbolicThreeByThreeTensor.to_symmetric()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor"><code class="docutils literal notranslate"><span class="pre">SymbolicThreeByThreeTensor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor.shape"><code class="docutils literal notranslate"><span class="pre">SymbolicThreeByThreeTensor.shape</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor.from_list"><code class="docutils literal notranslate"><span class="pre">SymbolicThreeByThreeTensor.from_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor.create"><code class="docutils literal notranslate"><span class="pre">SymbolicThreeByThreeTensor.create()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor.to_symmetric"><code class="docutils literal notranslate"><span class="pre">SymbolicThreeByThreeTensor.to_symmetric()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSixBySixTensor"><code class="docutils literal notranslate"><span class="pre">SymbolicSixBySixTensor</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSixBySixTensor.shape"><code class="docutils literal notranslate"><span class="pre">SymbolicSixBySixTensor.shape</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSixBySixTensor.from_list"><code class="docutils literal notranslate"><span class="pre">SymbolicSixBySixTensor.from_list()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSixBySixTensor.create"><code class="docutils literal notranslate"><span class="pre">SymbolicSixBySixTensor.create()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSixBySixTensor"><code class="docutils literal notranslate"><span class="pre">SymbolicSixBySixTensor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSixBySixTensor.shape"><code class="docutils literal notranslate"><span class="pre">SymbolicSixBySixTensor.shape</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSixBySixTensor.from_list"><code class="docutils literal notranslate"><span class="pre">SymbolicSixBySixTensor.from_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSixBySixTensor.create"><code class="docutils literal notranslate"><span class="pre">SymbolicSixBySixTensor.create()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor"><code class="docutils literal notranslate"><span class="pre">SymbolicSymmetricThreeByThreeTensor</span></code></a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.shape"><code class="docutils literal notranslate"><span class="pre">SymbolicSymmetricThreeByThreeTensor.shape</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.VOIGT_MAPPING"><code class="docutils literal notranslate"><span class="pre">SymbolicSymmetricThreeByThreeTensor.VOIGT_MAPPING</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.INVERSE_VOIGT_MAPPING"><code class="docutils literal notranslate"><span class="pre">SymbolicSymmetricThreeByThreeTensor.INVERSE_VOIGT_MAPPING</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.is_symmetric"><code class="docutils literal notranslate"><span class="pre">SymbolicSymmetricThreeByThreeTensor.is_symmetric()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.from_list"><code class="docutils literal notranslate"><span class="pre">SymbolicSymmetricThreeByThreeTensor.from_list()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.create"><code class="docutils literal notranslate"><span class="pre">SymbolicSymmetricThreeByThreeTensor.create()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.to_general"><code class="docutils literal notranslate"><span class="pre">SymbolicSymmetricThreeByThreeTensor.to_general()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.eigenvalues"><code class="docutils literal notranslate"><span class="pre">SymbolicSymmetricThreeByThreeTensor.eigenvalues()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.eigenvectors"><code class="docutils literal notranslate"><span class="pre">SymbolicSymmetricThreeByThreeTensor.eigenvectors()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.diagonalize"><code class="docutils literal notranslate"><span class="pre">SymbolicSymmetricThreeByThreeTensor.diagonalize()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor"><code class="docutils literal notranslate"><span class="pre">SymbolicSymmetricThreeByThreeTensor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.shape"><code class="docutils literal notranslate"><span class="pre">SymbolicSymmetricThreeByThreeTensor.shape</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.STANDARD_MAPPING"><code class="docutils literal notranslate"><span class="pre">SymbolicSymmetricThreeByThreeTensor.STANDARD_MAPPING</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.INVERSE_STANDARD_MAPPING"><code class="docutils literal notranslate"><span class="pre">SymbolicSymmetricThreeByThreeTensor.INVERSE_STANDARD_MAPPING</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.VOIGT_MAPPING"><code class="docutils literal notranslate"><span class="pre">SymbolicSymmetricThreeByThreeTensor.VOIGT_MAPPING</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.INVERSE_VOIGT_MAPPING"><code class="docutils literal notranslate"><span class="pre">SymbolicSymmetricThreeByThreeTensor.INVERSE_VOIGT_MAPPING</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.NOTATIONS"><code class="docutils literal notranslate"><span class="pre">SymbolicSymmetricThreeByThreeTensor.NOTATIONS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.is_symmetric"><code class="docutils literal notranslate"><span class="pre">SymbolicSymmetricThreeByThreeTensor.is_symmetric()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.from_list"><code class="docutils literal notranslate"><span class="pre">SymbolicSymmetricThreeByThreeTensor.from_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.create"><code class="docutils literal notranslate"><span class="pre">SymbolicSymmetricThreeByThreeTensor.create()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.to_general"><code class="docutils literal notranslate"><span class="pre">SymbolicSymmetricThreeByThreeTensor.to_general()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.eigenvalues"><code class="docutils literal notranslate"><span class="pre">SymbolicSymmetricThreeByThreeTensor.eigenvalues()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.eigenvectors"><code class="docutils literal notranslate"><span class="pre">SymbolicSymmetricThreeByThreeTensor.eigenvectors()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.diagonalize"><code class="docutils literal notranslate"><span class="pre">SymbolicSymmetricThreeByThreeTensor.diagonalize()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../notebooks/symbolic/tensor.html">Symbolic Tensor Notebook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="strain.html">Symbolic Strain Tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stress.html">Symbolic Stress Tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="material.html">Symbolic Material</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks.html">Notebooks</a></li>
 </ul>
 
         </div>
@@ -115,6 +125,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../symbolic.html">Symbolic</a></li>
       <li class="breadcrumb-item active">Symbolic Tensor</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/reference/symbolic/tensor.rst.txt" rel="nofollow"> View page source</a>
@@ -132,13 +143,13 @@
 <p>This module offers classes for symbolic tensor manipulation using SymPy. It’s designed to handle various tensor operations in a symbolic manner, ideal for applications in physics, engineering, and related fields.</p>
 <dl class="simple">
 <dt>Classes:</dt><dd><dl class="simple">
-<dt><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor"><span class="std std-ref">SymbolicTensor</span></a>:</dt><dd><p>A base class for symbolic tensors. It handles initialization with SymPy Array objects and provides basic tensor properties and operations, including checks for symmetry and shape.</p>
+<dt>SymbolicTensor:</dt><dd><p>A base class for symbolic tensors. It handles initialization with SymPy Array objects and provides basic tensor properties and operations, including checks for symmetry and shape.</p>
 </dd>
-<dt><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor"><span class="std std-ref">SymbolicThreeByThreeTensor</span></a>:</dt><dd><p>Inherits from SymbolicTensor, specifically representing a 3x3 symbolic tensor. Offers additional methods and properties tailored to the 3x3 tensor structure.</p>
+<dt>SymbolicThreeByThreeTensor:</dt><dd><p>Inherits from SymbolicTensor, specifically representing a 3x3 symbolic tensor. Offers additional methods and properties tailored to the 3x3 tensor structure.</p>
 </dd>
-<dt><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSixBySixTensor"><span class="std std-ref">SymbolicSixBySixTensor</span></a>:</dt><dd><p>Extends SymbolicTensor for 6x6 symbolic tensors. Includes specific functionalities for working with 6x6 tensor.</p>
+<dt>SymbolicSixBySixTensor:</dt><dd><p>Extends SymbolicTensor for 6x6 symbolic tensors. Includes specific functionalities for working with 6x6 tensor.</p>
 </dd>
-<dt><a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor"><span class="std std-ref">SymbolicSymmetricThreeByThreeTensor</span></a>:</dt><dd><p>A specialization for 3x3 symmetric tensors. It incorporates Voigt mapping for tensor transformations and eigenvalue computations, focusing on symmetric properties.</p>
+<dt>SymbolicSymmetricThreeByThreeTensor:</dt><dd><p>A specialization for 3x3 symmetric tensors. It incorporates Voigt mapping for tensor transformations and eigenvalue computations, focusing on symmetric properties.</p>
 </dd>
 </dl>
 </dd>
@@ -147,13 +158,13 @@
 </section>
 <dl class="py class">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.tensor.SymbolicTensor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.tensor.</span></span><span class="sig-name descname"><span class="pre">SymbolicTensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicTensor" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.tensor.</span></span><span class="sig-name descname"><span class="pre">SymbolicTensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicTensor" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
-<dt class="sig sig-object py" id="mechpy.core.symbolic.tensor.SymbolicTensor.mode2_map">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mode2_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicTensor.mode2_map" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="mechpy.core.symbolic.tensor.SymbolicTensor.notation_standard_map">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">notation_standard_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicTensor.notation_standard_map" title="Link to this definition"></a></dt>
 <dd><p>Create a dictionary with tuple (i, j) as key and index in the flattened list as value.
-The dictionary maps the position in an nxn matrix to its corresponding index in a flattened list.</p>
+The dictionary maps the position in an nxn symmetric matrix to its corresponding index in a flattened list.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>n</strong> – Size of the matrix (nxn).</p>
@@ -165,10 +176,10 @@ The dictionary maps the position in an nxn matrix to its corresponding index in 
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="mechpy.core.symbolic.tensor.SymbolicTensor.mode2_map_inverse">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mode2_map_inverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicTensor.mode2_map_inverse" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="mechpy.core.symbolic.tensor.SymbolicTensor.notation_standard_inverse_map">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">notation_standard_inverse_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicTensor.notation_standard_inverse_map" title="Link to this definition"></a></dt>
 <dd><p>Create a dictionary with index in the flattened list as key and tuple (i, j) as value.
-The dictionary inversely maps the index in a flattened list to its corresponding position in an nxn matrix.</p>
+The dictionary inversely maps the index in a flattened list to its corresponding position in an nxn symmetric matrix.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>n</strong> – Size of the matrix (nxn).</p>
@@ -211,7 +222,7 @@ The dictionary inversely maps the index in a flattened list to its corresponding
 
 <dl class="py method">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.tensor.SymbolicTensor.to_sym_3x3">
-<span class="sig-name descname"><span class="pre">to_sym_3x3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicTensor.to_sym_3x3" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">to_sym_3x3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">notation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicTensor.to_sym_3x3" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -226,7 +237,12 @@ The dictionary inversely maps the index in a flattened list to its corresponding
 
 <dl class="py method">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.tensor.SymbolicTensor.create">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicTensor.create" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicTensor.create" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.tensor.SymbolicTensor.subs">
+<span class="sig-name descname"><span class="pre">subs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subs_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicTensor.subs" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -248,7 +264,7 @@ The dictionary inversely maps the index in a flattened list to its corresponding
 
 <dl class="py class">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.tensor.</span></span><span class="sig-name descname"><span class="pre">SymbolicThreeByThreeTensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.tensor.</span></span><span class="sig-name descname"><span class="pre">SymbolicThreeByThreeTensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor" title="mechpy.core.symbolic.tensor.SymbolicTensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolicTensor</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor.shape">
@@ -267,14 +283,14 @@ The dictionary inversely maps the index in a flattened list to its corresponding
 
 <dl class="py method">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor.to_symmetric">
-<span class="sig-name descname"><span class="pre">to_symmetric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor.to_symmetric" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">to_symmetric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">notation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor.to_symmetric" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.tensor.SymbolicSixBySixTensor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.tensor.</span></span><span class="sig-name descname"><span class="pre">SymbolicSixBySixTensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicSixBySixTensor" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.tensor.</span></span><span class="sig-name descname"><span class="pre">SymbolicSixBySixTensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicSixBySixTensor" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor" title="mechpy.core.symbolic.tensor.SymbolicTensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolicTensor</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.tensor.SymbolicSixBySixTensor.shape">
@@ -295,11 +311,21 @@ The dictionary inversely maps the index in a flattened list to its corresponding
 
 <dl class="py class">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.tensor.</span></span><span class="sig-name descname"><span class="pre">SymbolicSymmetricThreeByThreeTensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.tensor.</span></span><span class="sig-name descname"><span class="pre">SymbolicSymmetricThreeByThreeTensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">notation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#mechpy.core.symbolic.tensor.SymbolicTensor" title="mechpy.core.symbolic.tensor.SymbolicTensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolicTensor</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.shape">
 <span class="sig-name descname"><span class="pre">shape</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(6,)</span></em><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.shape" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.STANDARD_MAPPING">
+<span class="sig-name descname"><span class="pre">STANDARD_MAPPING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{(0,</span> <span class="pre">0):</span> <span class="pre">0,</span> <span class="pre">(0,</span> <span class="pre">1):</span> <span class="pre">1,</span> <span class="pre">(0,</span> <span class="pre">2):</span> <span class="pre">2,</span> <span class="pre">(1,</span> <span class="pre">0):</span> <span class="pre">1,</span> <span class="pre">(1,</span> <span class="pre">1):</span> <span class="pre">3,</span> <span class="pre">(1,</span> <span class="pre">2):</span> <span class="pre">4,</span> <span class="pre">(2,</span> <span class="pre">0):</span> <span class="pre">2,</span> <span class="pre">(2,</span> <span class="pre">1):</span> <span class="pre">4,</span> <span class="pre">(2,</span> <span class="pre">2):</span> <span class="pre">5}</span></em><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.STANDARD_MAPPING" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.INVERSE_STANDARD_MAPPING">
+<span class="sig-name descname"><span class="pre">INVERSE_STANDARD_MAPPING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{0:</span> <span class="pre">(0,</span> <span class="pre">0),</span> <span class="pre">1:</span> <span class="pre">(0,</span> <span class="pre">1),</span> <span class="pre">2:</span> <span class="pre">(0,</span> <span class="pre">2),</span> <span class="pre">3:</span> <span class="pre">(1,</span> <span class="pre">1),</span> <span class="pre">4:</span> <span class="pre">(1,</span> <span class="pre">2),</span> <span class="pre">5:</span> <span class="pre">(2,</span> <span class="pre">2)}</span></em><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.INVERSE_STANDARD_MAPPING" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -312,6 +338,11 @@ The dictionary inversely maps the index in a flattened list to its corresponding
 <span class="sig-name descname"><span class="pre">INVERSE_VOIGT_MAPPING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{0:</span> <span class="pre">(0,</span> <span class="pre">0),</span> <span class="pre">1:</span> <span class="pre">(1,</span> <span class="pre">1),</span> <span class="pre">2:</span> <span class="pre">(2,</span> <span class="pre">2),</span> <span class="pre">3:</span> <span class="pre">(1,</span> <span class="pre">2),</span> <span class="pre">4:</span> <span class="pre">(0,</span> <span class="pre">2),</span> <span class="pre">5:</span> <span class="pre">(0,</span> <span class="pre">1)}</span></em><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.INVERSE_VOIGT_MAPPING" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.NOTATIONS">
+<span class="sig-name descname"><span class="pre">NOTATIONS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{1:</span> <span class="pre">{'inverse_map':</span> <span class="pre">{0:</span> <span class="pre">(0,</span> <span class="pre">0),</span> <span class="pre">1:</span> <span class="pre">(0,</span> <span class="pre">1),</span> <span class="pre">2:</span> <span class="pre">(0,</span> <span class="pre">2),</span> <span class="pre">3:</span> <span class="pre">(1,</span> <span class="pre">1),</span> <span class="pre">4:</span> <span class="pre">(1,</span> <span class="pre">2),</span> <span class="pre">5:</span> <span class="pre">(2,</span> <span class="pre">2)},</span> <span class="pre">'map':</span> <span class="pre">{(0,</span> <span class="pre">0):</span> <span class="pre">0,</span> <span class="pre">(0,</span> <span class="pre">1):</span> <span class="pre">1,</span> <span class="pre">(0,</span> <span class="pre">2):</span> <span class="pre">2,</span> <span class="pre">(1,</span> <span class="pre">0):</span> <span class="pre">1,</span> <span class="pre">(1,</span> <span class="pre">1):</span> <span class="pre">3,</span> <span class="pre">(1,</span> <span class="pre">2):</span> <span class="pre">4,</span> <span class="pre">(2,</span> <span class="pre">0):</span> <span class="pre">2,</span> <span class="pre">(2,</span> <span class="pre">1):</span> <span class="pre">4,</span> <span class="pre">(2,</span> <span class="pre">2):</span> <span class="pre">5},</span> <span class="pre">'name':</span> <span class="pre">'Standard</span> <span class="pre">notation'},</span> <span class="pre">2:</span> <span class="pre">{'inverse_map':</span> <span class="pre">{0:</span> <span class="pre">(0,</span> <span class="pre">0),</span> <span class="pre">1:</span> <span class="pre">(1,</span> <span class="pre">1),</span> <span class="pre">2:</span> <span class="pre">(2,</span> <span class="pre">2),</span> <span class="pre">3:</span> <span class="pre">(1,</span> <span class="pre">2),</span> <span class="pre">4:</span> <span class="pre">(0,</span> <span class="pre">2),</span> <span class="pre">5:</span> <span class="pre">(0,</span> <span class="pre">1)},</span> <span class="pre">'map':</span> <span class="pre">{(0,</span> <span class="pre">0):</span> <span class="pre">0,</span> <span class="pre">(0,</span> <span class="pre">1):</span> <span class="pre">5,</span> <span class="pre">(0,</span> <span class="pre">2):</span> <span class="pre">4,</span> <span class="pre">(1,</span> <span class="pre">0):</span> <span class="pre">5,</span> <span class="pre">(1,</span> <span class="pre">1):</span> <span class="pre">1,</span> <span class="pre">(1,</span> <span class="pre">2):</span> <span class="pre">3,</span> <span class="pre">(2,</span> <span class="pre">0):</span> <span class="pre">4,</span> <span class="pre">(2,</span> <span class="pre">1):</span> <span class="pre">3,</span> <span class="pre">(2,</span> <span class="pre">2):</span> <span class="pre">2},</span> <span class="pre">'name':</span> <span class="pre">'Voight</span> <span class="pre">notation'}}</span></em><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.NOTATIONS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.is_symmetric">
 <span class="sig-name descname"><span class="pre">is_symmetric</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.is_symmetric" title="Link to this definition"></a></dt>
@@ -319,12 +350,12 @@ The dictionary inversely maps the index in a flattened list to its corresponding
 
 <dl class="py method">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.from_list">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">components</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.from_list" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">components</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">notation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.from_list" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.create">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.create" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">notation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.create" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -355,8 +386,8 @@ The dictionary inversely maps the index in a flattened list to its corresponding
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../numeric/tensor.html" class="btn btn-neutral float-left" title="Numeric Tensor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../../notebooks/symbolic/tensor.html" class="btn btn-neutral float-right" title="Symbolic Tensor Notebook" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../../symbolic.html" class="btn btn-neutral float-left" title="Symbolic" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="strain.html" class="btn btn-neutral float-right" title="Symbolic Strain Tensor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

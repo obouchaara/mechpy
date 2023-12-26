@@ -46,9 +46,9 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="usage/quickstart.html">Quickstart Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reference/numeric/tensor.html">Numeric Tensor</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reference/symbolic/tensor.html">Symbolic Tensor</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/symbolic/tensor.html">Symbolic Tensor Notebook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="numeric.html">Numeric</a></li>
+<li class="toctree-l1"><a class="reference internal" href="symbolic.html">Symbolic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks.html">Notebooks</a></li>
 </ul>
 
         </div>
@@ -82,8 +82,11 @@
  | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#P"><strong>P</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
  | <a href="#V"><strong>V</strong></a>
@@ -92,9 +95,19 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicSixBySixTensor.create">create() (mechpy.core.symbolic.tensor.SymbolicSixBySixTensor class method)</a>
+      <li><a href="reference/symbolic/material.html#mechpy.core.symbolic.material.SymbolicElasticMaterial.compliance_tensor">compliance_tensor() (mechpy.core.symbolic.material.SymbolicElasticMaterial method)</a>
 
       <ul>
+        <li><a href="reference/symbolic/material.html#mechpy.core.symbolic.material.SymbolicIsotropicMaterial.compliance_tensor">(mechpy.core.symbolic.material.SymbolicIsotropicMaterial method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/symbolic/strain.html#mechpy.core.symbolic.strain.SymbolicStrainTensor.create">create() (mechpy.core.symbolic.strain.SymbolicStrainTensor class method)</a>
+
+      <ul>
+        <li><a href="reference/symbolic/stress.html#mechpy.core.symbolic.stress.SymbolicStressTensor.create">(mechpy.core.symbolic.stress.SymbolicStressTensor class method)</a>
+</li>
+        <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicSixBySixTensor.create">(mechpy.core.symbolic.tensor.SymbolicSixBySixTensor class method)</a>
+</li>
         <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.create">(mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor class method)</a>
 </li>
         <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor.create">(mechpy.core.symbolic.tensor.SymbolicTensor class method)</a>
@@ -163,9 +176,23 @@
   </ul></td>
 </tr></table>
 
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/symbolic/material.html#mechpy.core.symbolic.material.SymbolicIsotropicMaterial.get_lame_params">get_lame_params() (mechpy.core.symbolic.material.SymbolicIsotropicMaterial method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/symbolic/material.html#mechpy.core.symbolic.material.SymbolicIsotropicMaterial.get_youngs_params">get_youngs_params() (mechpy.core.symbolic.material.SymbolicIsotropicMaterial method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.INVERSE_STANDARD_MAPPING">INVERSE_STANDARD_MAPPING (mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor attribute)</a>
+</li>
       <li><a href="reference/numeric/tensor.html#mechpy.core.numeric.tensor.SymmetricThreeByThreeTensor.INVERSE_VOIGT_MAPPING">INVERSE_VOIGT_MAPPING (mechpy.core.numeric.tensor.SymmetricThreeByThreeTensor attribute)</a>
 
       <ul>
@@ -218,27 +245,90 @@
 </li>
       </ul></li>
       <li>
+    mechpy.core.symbolic.material
+
+      <ul>
+        <li><a href="reference/symbolic/material.html#module-mechpy.core.symbolic.material">module</a>
+</li>
+      </ul></li>
+      <li>
+    mechpy.core.symbolic.strain
+
+      <ul>
+        <li><a href="reference/symbolic/strain.html#module-mechpy.core.symbolic.strain">module</a>
+</li>
+      </ul></li>
+      <li>
+    mechpy.core.symbolic.stress
+
+      <ul>
+        <li><a href="reference/symbolic/stress.html#module-mechpy.core.symbolic.stress">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
     mechpy.core.symbolic.tensor
 
       <ul>
         <li><a href="reference/symbolic/tensor.html#module-mechpy.core.symbolic.tensor">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor.mode2_map">mode2_map() (mechpy.core.symbolic.tensor.SymbolicTensor static method)</a>
-</li>
-      <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor.mode2_map_inverse">mode2_map_inverse() (mechpy.core.symbolic.tensor.SymbolicTensor static method)</a>
-</li>
       <li>
     module
 
       <ul>
         <li><a href="reference/numeric/tensor.html#module-mechpy.core.numeric.tensor">mechpy.core.numeric.tensor</a>
 </li>
+        <li><a href="reference/symbolic/material.html#module-mechpy.core.symbolic.material">mechpy.core.symbolic.material</a>
+</li>
+        <li><a href="reference/symbolic/strain.html#module-mechpy.core.symbolic.strain">mechpy.core.symbolic.strain</a>
+</li>
+        <li><a href="reference/symbolic/stress.html#module-mechpy.core.symbolic.stress">mechpy.core.symbolic.stress</a>
+</li>
         <li><a href="reference/symbolic/tensor.html#module-mechpy.core.symbolic.tensor">mechpy.core.symbolic.tensor</a>
 </li>
       </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/symbolic/strain.html#mechpy.core.symbolic.strain.SymbolicStrainTensor.normal_components">normal_components() (mechpy.core.symbolic.strain.SymbolicStrainTensor method)</a>
+
+      <ul>
+        <li><a href="reference/symbolic/stress.html#mechpy.core.symbolic.stress.SymbolicStressTensor.normal_components">(mechpy.core.symbolic.stress.SymbolicStressTensor method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor.notation_standard_inverse_map">notation_standard_inverse_map() (mechpy.core.symbolic.tensor.SymbolicTensor static method)</a>
+</li>
+      <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor.notation_standard_map">notation_standard_map() (mechpy.core.symbolic.tensor.SymbolicTensor static method)</a>
+</li>
+      <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.NOTATIONS">NOTATIONS (mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/symbolic/stress.html#mechpy.core.symbolic.stress.SymbolicStressTensor.pressure">pressure() (mechpy.core.symbolic.stress.SymbolicStressTensor method)</a>
+</li>
+      <li><a href="reference/symbolic/strain.html#mechpy.core.symbolic.strain.SymbolicStrainTensor.principal_components">principal_components() (mechpy.core.symbolic.strain.SymbolicStrainTensor method)</a>
+
+      <ul>
+        <li><a href="reference/symbolic/stress.html#mechpy.core.symbolic.stress.SymbolicStressTensor.principal_components">(mechpy.core.symbolic.stress.SymbolicStressTensor method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/symbolic/material.html#mechpy.core.symbolic.material.SymbolicTransverseIsotropicMaterial.props_dict">props_dict (mechpy.core.symbolic.material.SymbolicTransverseIsotropicMaterial attribute)</a>
+</li>
+      <li><a href="reference/symbolic/material.html#mechpy.core.symbolic.material.SymbolicOrthotropicMaterial.props_keys">props_keys (mechpy.core.symbolic.material.SymbolicOrthotropicMaterial attribute)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -259,17 +349,59 @@
         <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor.shape">(mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/symbolic/strain.html#mechpy.core.symbolic.strain.SymbolicStrainTensor.shear_components">shear_components() (mechpy.core.symbolic.strain.SymbolicStrainTensor method)</a>
+
+      <ul>
+        <li><a href="reference/symbolic/stress.html#mechpy.core.symbolic.stress.SymbolicStressTensor.shear_components">(mechpy.core.symbolic.stress.SymbolicStressTensor method)</a>
+</li>
+      </ul></li>
       <li><a href="reference/numeric/tensor.html#mechpy.core.numeric.tensor.SixBySixTensor">SixBySixTensor (class in mechpy.core.numeric.tensor)</a>
 </li>
+      <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.STANDARD_MAPPING">STANDARD_MAPPING (mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor attribute)</a>
+</li>
+      <li><a href="reference/symbolic/material.html#mechpy.core.symbolic.material.SymbolicElasticMaterial.stiffness_tensor">stiffness_tensor() (mechpy.core.symbolic.material.SymbolicElasticMaterial method)</a>
+
+      <ul>
+        <li><a href="reference/symbolic/material.html#mechpy.core.symbolic.material.SymbolicIsotropicMaterial.stiffness_tensor">(mechpy.core.symbolic.material.SymbolicIsotropicMaterial method)</a>
+</li>
+        <li><a href="reference/symbolic/material.html#mechpy.core.symbolic.material.SymbolicOrthotropicMaterial.stiffness_tensor">(mechpy.core.symbolic.material.SymbolicOrthotropicMaterial method)</a>
+</li>
+        <li><a href="reference/symbolic/material.html#mechpy.core.symbolic.material.SymbolicTransverseIsotropicMaterial.stiffness_tensor">(mechpy.core.symbolic.material.SymbolicTransverseIsotropicMaterial method)</a>
+</li>
+      </ul></li>
+      <li><a href="reference/symbolic/strain.html#mechpy.core.symbolic.strain.SymbolicStrainTensor.STRAIN_VOIGT_MAPPING">STRAIN_VOIGT_MAPPING (mechpy.core.symbolic.strain.SymbolicStrainTensor attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/symbolic/stress.html#mechpy.core.symbolic.stress.SymbolicStressTensor.STRESS_VOIGT_MAPPING">STRESS_VOIGT_MAPPING (mechpy.core.symbolic.stress.SymbolicStressTensor attribute)</a>
+</li>
+      <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor.subs">subs() (mechpy.core.symbolic.tensor.SymbolicTensor method)</a>
+</li>
+      <li><a href="reference/symbolic/material.html#mechpy.core.symbolic.material.SymbolicComplianceTensor">SymbolicComplianceTensor (class in mechpy.core.symbolic.material)</a>
+</li>
+      <li><a href="reference/symbolic/material.html#mechpy.core.symbolic.material.SymbolicElasticMaterial">SymbolicElasticMaterial (class in mechpy.core.symbolic.material)</a>
+</li>
+      <li><a href="reference/symbolic/material.html#mechpy.core.symbolic.material.SymbolicIsotropicMaterial">SymbolicIsotropicMaterial (class in mechpy.core.symbolic.material)</a>
+</li>
+      <li><a href="reference/symbolic/material.html#mechpy.core.symbolic.material.SymbolicMaterial">SymbolicMaterial (class in mechpy.core.symbolic.material)</a>
+</li>
+      <li><a href="reference/symbolic/material.html#mechpy.core.symbolic.material.SymbolicOrthotropicMaterial">SymbolicOrthotropicMaterial (class in mechpy.core.symbolic.material)</a>
+</li>
       <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicSixBySixTensor">SymbolicSixBySixTensor (class in mechpy.core.symbolic.tensor)</a>
+</li>
+      <li><a href="reference/symbolic/material.html#mechpy.core.symbolic.material.SymbolicStiffnessTensor">SymbolicStiffnessTensor (class in mechpy.core.symbolic.material)</a>
+</li>
+      <li><a href="reference/symbolic/strain.html#mechpy.core.symbolic.strain.SymbolicStrainTensor">SymbolicStrainTensor (class in mechpy.core.symbolic.strain)</a>
+</li>
+      <li><a href="reference/symbolic/stress.html#mechpy.core.symbolic.stress.SymbolicStressTensor">SymbolicStressTensor (class in mechpy.core.symbolic.stress)</a>
 </li>
       <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor">SymbolicSymmetricThreeByThreeTensor (class in mechpy.core.symbolic.tensor)</a>
 </li>
       <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor">SymbolicTensor (class in mechpy.core.symbolic.tensor)</a>
 </li>
       <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor">SymbolicThreeByThreeTensor (class in mechpy.core.symbolic.tensor)</a>
+</li>
+      <li><a href="reference/symbolic/material.html#mechpy.core.symbolic.material.SymbolicTransverseIsotropicMaterial">SymbolicTransverseIsotropicMaterial (class in mechpy.core.symbolic.material)</a>
 </li>
       <li><a href="reference/numeric/tensor.html#mechpy.core.numeric.tensor.SymmetricThreeByThreeTensor">SymmetricThreeByThreeTensor (class in mechpy.core.numeric.tensor)</a>
 </li>
@@ -295,14 +427,18 @@
         <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor.to_6x6">(mechpy.core.symbolic.tensor.SymbolicTensor method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/numeric/tensor.html#mechpy.core.numeric.tensor.SymmetricThreeByThreeTensor.to_general">to_general() (mechpy.core.numeric.tensor.SymmetricThreeByThreeTensor method)</a>
 
       <ul>
+        <li><a href="reference/symbolic/strain.html#mechpy.core.symbolic.strain.SymbolicStrainTensor.to_general">(mechpy.core.symbolic.strain.SymbolicStrainTensor method)</a>
+</li>
+        <li><a href="reference/symbolic/stress.html#mechpy.core.symbolic.stress.SymbolicStressTensor.to_general">(mechpy.core.symbolic.stress.SymbolicStressTensor method)</a>
+</li>
         <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.to_general">(mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor.to_matrix">to_matrix() (mechpy.core.symbolic.tensor.SymbolicTensor method)</a>
 </li>
       <li><a href="reference/numeric/tensor.html#mechpy.core.numeric.tensor.Tensor.to_sym_3x3">to_sym_3x3() (mechpy.core.numeric.tensor.Tensor method)</a>
@@ -317,6 +453,8 @@
         <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor.to_symmetric">(mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor method)</a>
 </li>
       </ul></li>
+      <li><a href="reference/symbolic/stress.html#mechpy.core.symbolic.stress.SymbolicStressTensor.tresca">tresca() (mechpy.core.symbolic.stress.SymbolicStressTensor method)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -329,6 +467,12 @@
         <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor.VOIGT_MAPPING">(mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor attribute)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/symbolic/strain.html#mechpy.core.symbolic.strain.SymbolicStrainTensor.volumetric_strain">volumetric_strain() (mechpy.core.symbolic.strain.SymbolicStrainTensor method)</a>
+</li>
+      <li><a href="reference/symbolic/stress.html#mechpy.core.symbolic.stress.SymbolicStressTensor.von_mises">von_mises() (mechpy.core.symbolic.stress.SymbolicStressTensor method)</a>
+</li>
   </ul></td>
 </tr></table>
 

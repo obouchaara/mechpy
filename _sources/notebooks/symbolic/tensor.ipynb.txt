@@ -14,6 +14,8 @@
    "outputs": [],
    "source": [
     "import sympy as sp\n",
+    "from IPython.display import Markdown\n",
+    "\n",
     "\n",
     "from mechpy.core.symbolic.tensor import (\n",
     "    SymbolicTensor,\n",
@@ -54,9 +56,7 @@
     {
      "data": {
       "text/plain": [
-       "SymbolicTensor(\n",
-       "[[a, b], [c, d]]\n",
-       ")"
+       "mechpy.core.symbolic.tensor.SymbolicTensor"
       ]
      },
      "metadata": {},
@@ -78,7 +78,7 @@
    "source": [
     "data = sp.ImmutableDenseNDimArray([[a, b], [c, d]])\n",
     "A = SymbolicTensor(data)\n",
-    "display(A)\n",
+    "display(A.__class__)\n",
     "display(A.data)"
    ]
   },
@@ -104,9 +104,7 @@
     {
      "data": {
       "text/plain": [
-       "SymbolicTensor(\n",
-       "[[a, b], [c, d]]\n",
-       ")"
+       "mechpy.core.symbolic.tensor.SymbolicTensor"
       ]
      },
      "metadata": {},
@@ -123,13 +121,23 @@
      },
      "metadata": {},
      "output_type": "display_data"
-    },
+    }
+   ],
+   "source": [
+    "A = SymbolicTensor.from_list([a, b, c, d], shape=(2, 2))\n",
+    "display(A.__class__)\n",
+    "display(A.data)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [
     {
      "data": {
       "text/plain": [
-       "SymbolicTensor(\n",
-       "[[a, b, c], [d, e, f], [g, h, i]]\n",
-       ")"
+       "mechpy.core.symbolic.tensor.SymbolicTensor"
       ]
      },
      "metadata": {},
@@ -149,12 +157,9 @@
     }
    ],
    "source": [
-    "A = SymbolicTensor.from_list([a, b, c, d], shape=(2, 2))\n",
-    "display(A)\n",
-    "display(A.data)\n",
-    "B = SymbolicTensor.from_list([a, b, c, d, e, f, g, h, i], shape=(3, 3))\n",
-    "display(B)\n",
-    "display(B.data)"
+    "A = SymbolicTensor.from_list([a, b, c, d, e, f, g, h, i], shape=(3, 3))\n",
+    "display(A.__class__)\n",
+    "display(A.data)"
    ]
   },
   {
@@ -166,15 +171,13 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 5,
+   "execution_count": 6,
    "metadata": {},
    "outputs": [
     {
      "data": {
       "text/plain": [
-       "SymbolicThreeByThreeTensor(\n",
-       "[[a, b, c], [d, e, f], [g, h, i]]\n",
-       ")"
+       "mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor"
       ]
      },
      "metadata": {},
@@ -194,9 +197,9 @@
     }
    ],
    "source": [
-    "C = SymbolicThreeByThreeTensor.from_list([a, b, c, d, e, f, g, h, i])\n",
-    "display(C)\n",
-    "display(C.data)"
+    "A = SymbolicThreeByThreeTensor.from_list([a, b, c, d, e, f, g, h, i])\n",
+    "display(A.__class__)\n",
+    "display(A.data)"
    ]
   },
   {
@@ -208,51 +211,26 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 6,
+   "execution_count": 7,
    "metadata": {},
    "outputs": [],
    "source": [
-    "list_mode1 = [a, f, e, f, b, d, e, d, c]\n",
-    "list_mode2 = [a, b, c, b, d, e, c, e, f]"
+    "list_notation_1 = [a, b, c, b, d, e, c, e, f]\n",
+    "list_notation_2 = [a, f, e, f, b, d, e, d, c]"
    ]
   },
   {
-   "cell_type": "code",
-   "execution_count": 7,
+   "cell_type": "markdown",
    "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/latex": [
-       "$\\displaystyle \\left[\\begin{matrix}a & b & c & d & e & f\\end{matrix}\\right]$"
-      ],
-      "text/plain": [
-       "[a, b, c, d, e, f]"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    },
-    {
-     "data": {
-      "text/latex": [
-       "$\\displaystyle \\left[\\begin{matrix}a & f & e\\\\f & b & d\\\\e & d & c\\end{matrix}\\right]$"
-      ],
-      "text/plain": [
-       "[[a, f, e], [f, b, d], [e, d, c]]"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    }
-   ],
    "source": [
-    "A = SymbolicSymmetricThreeByThreeTensor.from_list(list_mode1)\n",
-    "# display(A)\n",
-    "display(A.data)\n",
-    "B = A.to_general()\n",
-    "# display(B)\n",
-    "display(B.data)"
+    "##### List 1"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Default notation"
    ]
   },
   {
@@ -262,11 +240,8 @@
    "outputs": [
     {
      "data": {
-      "text/latex": [
-       "$\\displaystyle \\left[\\begin{matrix}a & d & f & e & c & b\\end{matrix}\\right]$"
-      ],
       "text/plain": [
-       "[a, d, f, e, c, b]"
+       "mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor"
       ]
      },
      "metadata": {},
@@ -275,10 +250,19 @@
     {
      "data": {
       "text/latex": [
-       "$\\displaystyle \\left[\\begin{matrix}a & b & c\\\\b & d & e\\\\c & e & f\\end{matrix}\\right]$"
+       "$\\displaystyle \\left[\\begin{matrix}a & b & c & d & e & f\\end{matrix}\\right]$"
       ],
       "text/plain": [
-       "[[a, b, c], [b, d, e], [c, e, f]]"
+       "[a, b, c, d, e, f]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "1"
       ]
      },
      "metadata": {},
@@ -286,12 +270,10 @@
     }
    ],
    "source": [
-    "A = SymbolicSymmetricThreeByThreeTensor.from_list(list_mode2, mode=1)\n",
-    "# display(A)\n",
+    "A = SymbolicSymmetricThreeByThreeTensor.from_list(list_notation_1)\n",
+    "display(A.__class__)\n",
     "display(A.data)\n",
-    "B = A.to_general()\n",
-    "# display(B)\n",
-    "display(B.data)"
+    "display(A.notation)"
    ]
   },
   {
@@ -301,89 +283,8 @@
    "outputs": [
     {
      "data": {
-      "text/latex": [
-       "$\\displaystyle \\left[\\begin{matrix}a & b & c & d & e & f\\end{matrix}\\right]$"
-      ],
       "text/plain": [
-       "[a, b, c, d, e, f]"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    },
-    {
-     "data": {
-      "text/latex": [
-       "$\\displaystyle \\left[\\begin{matrix}a & f & e\\\\f & b & d\\\\e & d & c\\end{matrix}\\right]$"
-      ],
-      "text/plain": [
-       "[[a, f, e], [f, b, d], [e, d, c]]"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    }
-   ],
-   "source": [
-    "A = SymbolicSymmetricThreeByThreeTensor.from_list(list_mode2, mode=2)\n",
-    "# display(A)\n",
-    "display(A.data)\n",
-    "B = A.to_general()\n",
-    "# display(B)\n",
-    "display(B.data)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 10,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/latex": [
-       "$\\displaystyle \\left[\\begin{matrix}a & b & c & d & e & f\\end{matrix}\\right]$"
-      ],
-      "text/plain": [
-       "[a, b, c, d, e, f]"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    },
-    {
-     "data": {
-      "text/latex": [
-       "$\\displaystyle \\left[\\begin{matrix}a & f & e\\\\f & b & d\\\\e & d & c\\end{matrix}\\right]$"
-      ],
-      "text/plain": [
-       "[[a, f, e], [f, b, d], [e, d, c]]"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    }
-   ],
-   "source": [
-    "A = SymbolicSymmetricThreeByThreeTensor.from_list([a, b, c, d, e, f])\n",
-    "# display(A)\n",
-    "display(A.data)\n",
-    "B = A.to_general()\n",
-    "# display(B)\n",
-    "display(B.data)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 11,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/latex": [
-       "$\\displaystyle \\left[\\begin{matrix}a & d & f & e & c & b\\end{matrix}\\right]$"
-      ],
-      "text/plain": [
-       "[a, d, f, e, c, b]"
+       "mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor"
       ]
      },
      "metadata": {},
@@ -403,11 +304,437 @@
     }
    ],
    "source": [
-    "A = SymbolicSymmetricThreeByThreeTensor.from_list([a, b, c, d, e, f], mode=2)\n",
-    "# display(A)\n",
-    "display(A.data)\n",
     "B = A.to_general()\n",
-    "# display(B)\n",
+    "display(B.__class__)\n",
+    "display(B.data)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Notation 2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle \\left[\\begin{matrix}a & d & f & e & c & b\\end{matrix}\\right]$"
+      ],
+      "text/plain": [
+       "[a, d, f, e, c, b]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "2"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "A = SymbolicSymmetricThreeByThreeTensor.from_list(list_notation_1, notation=2)\n",
+    "display(A.__class__)\n",
+    "display(A.data)\n",
+    "display(A.notation)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle \\left[\\begin{matrix}a & b & c\\\\b & d & e\\\\c & e & f\\end{matrix}\\right]$"
+      ],
+      "text/plain": [
+       "[[a, b, c], [b, d, e], [c, e, f]]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "B = A.to_general()\n",
+    "display(B.__class__)\n",
+    "display(B.data)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "##### List 2"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Default notation"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle \\left[\\begin{matrix}a & f & e & b & d & c\\end{matrix}\\right]$"
+      ],
+      "text/plain": [
+       "[a, f, e, b, d, c]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "1"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "A = SymbolicSymmetricThreeByThreeTensor.from_list(list_notation_2)\n",
+    "display(A.__class__)\n",
+    "display(A.data)\n",
+    "display(A.notation)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle \\left[\\begin{matrix}a & f & e\\\\f & b & d\\\\e & d & c\\end{matrix}\\right]$"
+      ],
+      "text/plain": [
+       "[[a, f, e], [f, b, d], [e, d, c]]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "B = A.to_general()\n",
+    "display(B.__class__)\n",
+    "display(B.data)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Notation 2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle \\left[\\begin{matrix}a & b & c & d & e & f\\end{matrix}\\right]$"
+      ],
+      "text/plain": [
+       "[a, b, c, d, e, f]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "2"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "A = SymbolicSymmetricThreeByThreeTensor.from_list(list_notation_2, notation=2)\n",
+    "display(A.__class__)\n",
+    "display(A.data)\n",
+    "display(A.notation)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle \\left[\\begin{matrix}a & f & e\\\\f & b & d\\\\e & d & c\\end{matrix}\\right]$"
+      ],
+      "text/plain": [
+       "[[a, f, e], [f, b, d], [e, d, c]]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "B = A.to_general()\n",
+    "display(B.__class__)\n",
+    "display(B.data)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### list of 6 elements"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "default notation"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle \\left[\\begin{matrix}a & b & c & d & e & f\\end{matrix}\\right]$"
+      ],
+      "text/plain": [
+       "[a, b, c, d, e, f]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "1"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "A = SymbolicSymmetricThreeByThreeTensor.from_list([a, b, c, d, e, f])\n",
+    "display(A.__class__)\n",
+    "display(A.data)\n",
+    "display(A.notation)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle \\left[\\begin{matrix}a & b & c\\\\b & d & e\\\\c & e & f\\end{matrix}\\right]$"
+      ],
+      "text/plain": [
+       "[[a, b, c], [b, d, e], [c, e, f]]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "B = A.to_general()\n",
+    "display(B.__class__)\n",
+    "display(B.data)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Notation 2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle \\left[\\begin{matrix}a & b & c & d & e & f\\end{matrix}\\right]$"
+      ],
+      "text/plain": [
+       "[a, b, c, d, e, f]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "2"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "A = SymbolicSymmetricThreeByThreeTensor.from_list([a, b, c, d, e, f], notation=2)\n",
+    "display(A.__class__)\n",
+    "display(A.data)\n",
+    "display(A.notation)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle \\left[\\begin{matrix}a & f & e\\\\f & b & d\\\\e & d & c\\end{matrix}\\right]$"
+      ],
+      "text/plain": [
+       "[[a, f, e], [f, b, d], [e, d, c]]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "B = A.to_general()\n",
+    "display(B.__class__)\n",
     "display(B.data)"
    ]
   },
@@ -419,10 +746,26 @@
    ]
   },
   {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "List 36 elements"
+   ]
+  },
+  {
    "cell_type": "code",
-   "execution_count": 12,
+   "execution_count": 20,
    "metadata": {},
    "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "mechpy.core.symbolic.tensor.SymbolicSixBySixTensor"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
     {
      "data": {
       "text/latex": [
@@ -437,18 +780,34 @@
     }
    ],
    "source": [
-    "data_list = list(range(1,36+1))\n",
+    "data_list = list(range(1,37))\n",
     "# display(data_list)\n",
-    "F = SymbolicSixBySixTensor.from_list(data_list)\n",
-    "# display(F)\n",
-    "display(F.data)"
+    "A = SymbolicSixBySixTensor.from_list(data_list)\n",
+    "display(A.__class__)\n",
+    "display(A.data)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "List 6x6 elemnts"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 13,
+   "execution_count": 21,
    "metadata": {},
    "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "mechpy.core.symbolic.tensor.SymbolicSixBySixTensor"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
     {
      "data": {
       "text/latex": [
@@ -465,9 +824,9 @@
    "source": [
     "data_list = [[i * 6 + j + 1 for j in range(6)] for i in range(6)]\n",
     "# display(data_list)\n",
-    "F = SymbolicSixBySixTensor.from_list(data_list)\n",
-    "# display(F)\n",
-    "display(F.data)"
+    "A = SymbolicSixBySixTensor.from_list(data_list)\n",
+    "display(A.__class__)\n",
+    "display(A.data)"
    ]
   },
   {
@@ -478,16 +837,21 @@
    ]
   },
   {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "This method is a simple way to create a tensor."
+   ]
+  },
+  {
    "cell_type": "code",
-   "execution_count": 14,
+   "execution_count": 22,
    "metadata": {},
    "outputs": [
     {
      "data": {
       "text/plain": [
-       "SymbolicTensor(\n",
-       "[[x_11, x_12], [x_21, x_22]]\n",
-       ")"
+       "mechpy.core.symbolic.tensor.SymbolicTensor"
       ]
      },
      "metadata": {},
@@ -507,22 +871,20 @@
     }
    ],
    "source": [
-    "A = SymbolicTensor.create(\"x\", (2, 2))\n",
-    "display(A)\n",
+    "A = SymbolicTensor.create(shape=(2, 2), name=\"x\")\n",
+    "display(A.__class__)\n",
     "display(A.data)"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 15,
+   "execution_count": 23,
    "metadata": {},
    "outputs": [
     {
      "data": {
       "text/plain": [
-       "SymbolicThreeByThreeTensor(\n",
-       "[[x_11, x_12, x_13], [x_21, x_22, x_23], [x_31, x_32, x_33]]\n",
-       ")"
+       "mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor"
       ]
      },
      "metadata": {},
@@ -531,10 +893,10 @@
     {
      "data": {
       "text/latex": [
-       "$\\displaystyle \\left[\\begin{matrix}x_{11} & x_{12} & x_{13}\\\\x_{21} & x_{22} & x_{23}\\\\x_{31} & x_{32} & x_{33}\\end{matrix}\\right]$"
+       "$\\displaystyle \\left[\\begin{matrix}X_{11} & X_{12} & X_{13}\\\\X_{21} & X_{22} & X_{23}\\\\X_{31} & X_{32} & X_{33}\\end{matrix}\\right]$"
       ],
       "text/plain": [
-       "[[x_11, x_12, x_13], [x_21, x_22, x_23], [x_31, x_32, x_33]]"
+       "[[X_11, X_12, X_13], [X_21, X_22, X_23], [X_31, X_32, X_33]]"
       ]
      },
      "metadata": {},
@@ -542,64 +904,202 @@
     }
    ],
    "source": [
-    "B = SymbolicThreeByThreeTensor.create(\"x\")\n",
-    "display(B)\n",
-    "display(B.data)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 16,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "SymbolicSixBySixTensor(\n",
-       "[[x_11, x_12, x_13, x_14, x_15, x_16], [x_21, x_22, x_23, x_24, x_25, x_26], [x_31, x_32, x_33, x_34, x_35, x_36], [x_41, x_42, x_43, x_44, x_45, x_46], [x_51, x_52, x_53, x_54, x_55, x_56], [x_61, x_62, x_63, x_64, x_65, x_66]]\n",
-       ")"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    },
-    {
-     "data": {
-      "text/latex": [
-       "$\\displaystyle \\left[\\begin{matrix}x_{11} & x_{12} & x_{13} & x_{14} & x_{15} & x_{16}\\\\x_{21} & x_{22} & x_{23} & x_{24} & x_{25} & x_{26}\\\\x_{31} & x_{32} & x_{33} & x_{34} & x_{35} & x_{36}\\\\x_{41} & x_{42} & x_{43} & x_{44} & x_{45} & x_{46}\\\\x_{51} & x_{52} & x_{53} & x_{54} & x_{55} & x_{56}\\\\x_{61} & x_{62} & x_{63} & x_{64} & x_{65} & x_{66}\\end{matrix}\\right]$"
-      ],
-      "text/plain": [
-       "[[x_11, x_12, x_13, x_14, x_15, x_16], [x_21, x_22, x_23, x_24, x_25, x_26], [x_31, x_32, x_33, x_34, x_35, x_36], [x_41, x_42, x_43, x_44, x_45, x_46], [x_51, x_52, x_53, x_54, x_55, x_56], [x_61, x_62, x_63, x_64, x_65, x_66]]"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    }
-   ],
-   "source": [
-    "C = SymbolicSixBySixTensor.create(\"x\")\n",
-    "display(C)\n",
-    "display(C.data)"
+    "A = SymbolicThreeByThreeTensor.create(name=\"X\")\n",
+    "display(A.__class__)\n",
+    "display(A.data)"
    ]
   },
   {
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "## Multiplication"
+    "Custom name"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 17,
+   "execution_count": 24,
    "metadata": {},
    "outputs": [
     {
      "data": {
       "text/plain": [
-       "SymbolicTensor(\n",
-       "[[a, a*c], [b, b*d]]\n",
-       ")"
+       "mechpy.core.symbolic.tensor.SymbolicSixBySixTensor"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle \\left[\\begin{matrix}a_{11} & a_{12} & a_{13} & a_{14} & a_{15} & a_{16}\\\\a_{21} & a_{22} & a_{23} & a_{24} & a_{25} & a_{26}\\\\a_{31} & a_{32} & a_{33} & a_{34} & a_{35} & a_{36}\\\\a_{41} & a_{42} & a_{43} & a_{44} & a_{45} & a_{46}\\\\a_{51} & a_{52} & a_{53} & a_{54} & a_{55} & a_{56}\\\\a_{61} & a_{62} & a_{63} & a_{64} & a_{65} & a_{66}\\end{matrix}\\right]$"
+      ],
+      "text/plain": [
+       "[[a_11, a_12, a_13, a_14, a_15, a_16], [a_21, a_22, a_23, a_24, a_25, a_26], [a_31, a_32, a_33, a_34, a_35, a_36], [a_41, a_42, a_43, a_44, a_45, a_46], [a_51, a_52, a_53, a_54, a_55, a_56], [a_61, a_62, a_63, a_64, a_65, a_66]]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "'a'"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "A = SymbolicSixBySixTensor.create(name=\"a\")\n",
+    "display(A.__class__)\n",
+    "display(A.data)\n",
+    "display(A.name)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle \\left[\\begin{matrix}x_{1} & x_{2} & x_{3} & x_{4} & x_{5} & x_{6}\\end{matrix}\\right]$"
+      ],
+      "text/plain": [
+       "[x_1, x_2, x_3, x_4, x_5, x_6]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "'x'"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "1"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle \\left[\\begin{matrix}x_{1} & x_{2} & x_{3}\\\\x_{2} & x_{4} & x_{5}\\\\x_{3} & x_{5} & x_{6}\\end{matrix}\\right]$"
+      ],
+      "text/plain": [
+       "[[x_1, x_2, x_3], [x_2, x_4, x_5], [x_3, x_5, x_6]]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "A = SymbolicSymmetricThreeByThreeTensor.create(name=\"x\")\n",
+    "display(A.__class__)\n",
+    "display(A.data)\n",
+    "display(A.name)\n",
+    "display(A.notation)\n",
+    "display(A.to_general().data)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle \\left[\\begin{matrix}x_{11} & x_{22} & x_{33} & x_{23} & x_{13} & x_{12}\\end{matrix}\\right]$"
+      ],
+      "text/plain": [
+       "[x_11, x_22, x_33, x_23, x_13, x_12]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "'x'"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "2"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle \\left[\\begin{matrix}x_{11} & x_{12} & x_{13}\\\\x_{12} & x_{22} & x_{23}\\\\x_{13} & x_{23} & x_{33}\\end{matrix}\\right]$"
+      ],
+      "text/plain": [
+       "[[x_11, x_12, x_13], [x_12, x_22, x_23], [x_13, x_23, x_33]]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "A = SymbolicSymmetricThreeByThreeTensor.create(name=\"x\", notation=2)\n",
+    "display(A.__class__)\n",
+    "display(A.data)\n",
+    "display(A.name)\n",
+    "display(A.notation)\n",
+    "display(A.to_general().data)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "mechpy.core.symbolic.tensor.SymbolicTensor"
       ]
      },
      "metadata": {},
@@ -622,7 +1122,7 @@
     "A = SymbolicTensor.from_list([a, 0, 0, b], shape=(2, 2))\n",
     "B = SymbolicTensor.from_list([1, c, 1, d], shape=(2, 2))\n",
     "C = A @ B\n",
-    "display(C)\n",
+    "display(C.__class__)\n",
     "display(C.data)"
    ]
   },
@@ -642,15 +1142,13 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 18,
+   "execution_count": 28,
    "metadata": {},
    "outputs": [
     {
      "data": {
       "text/plain": [
-       "SymbolicTensor(\n",
-       "[[a, b, c], [b, d, e], [c, e, f]]\n",
-       ")"
+       "mechpy.core.symbolic.tensor.SymbolicTensor"
       ]
      },
      "metadata": {},
@@ -659,21 +1157,7 @@
     {
      "data": {
       "text/plain": [
-       "SymbolicThreeByThreeTensor(\n",
-       "[[a, b, c], [b, d, e], [c, e, f]]\n",
-       ")"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    },
-    {
-     "data": {
-      "text/latex": [
-       "$\\displaystyle \\left[\\begin{matrix}a & b & c\\\\b & d & e\\\\c & e & f\\end{matrix}\\right]$"
-      ],
-      "text/plain": [
-       "[[a, b, c], [b, d, e], [c, e, f]]"
+       "mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor"
       ]
      },
      "metadata": {},
@@ -682,10 +1166,9 @@
    ],
    "source": [
     "A = SymbolicTensor.from_list([a, b, c, b, d, e, c, e, f], shape=(3,3))\n",
-    "display(A)\n",
+    "display(A.__class__)\n",
     "B = A.to_3x3()\n",
-    "display(B)\n",
-    "display(B.data)"
+    "display(B.__class__)"
    ]
   },
   {
@@ -697,15 +1180,13 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 19,
+   "execution_count": 29,
    "metadata": {},
    "outputs": [
     {
      "data": {
       "text/plain": [
-       "SymbolicTensor(\n",
-       "[[a, f, e], [f, b, d], [e, d, c]]\n",
-       ")"
+       "mechpy.core.symbolic.tensor.SymbolicTensor"
       ]
      },
      "metadata": {},
@@ -723,9 +1204,7 @@
     {
      "data": {
       "text/plain": [
-       "SymbolicSymmetricThreeByThreeTensor(\n",
-       "[a, b, c, d, e, f]\n",
-       ")"
+       "mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor"
       ]
      },
      "metadata": {},
@@ -745,11 +1224,11 @@
     }
    ],
    "source": [
-    "A = SymbolicTensor.from_list([a, f, e, f, b, d, e, d, c], shape=(3,3))\n",
-    "display(A)\n",
+    "A = SymbolicTensor.from_list([a, b, c, b, d, e, c, e, f], shape=(3,3))\n",
+    "display(A.__class__)\n",
     "display(A.is_symmetric())\n",
     "B = A.to_sym_3x3()\n",
-    "display(B)\n",
+    "display(B.__class__)\n",
     "display(B.data)"
    ]
   },
@@ -762,15 +1241,13 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 20,
+   "execution_count": 30,
    "metadata": {},
    "outputs": [
     {
      "data": {
       "text/plain": [
-       "SymbolicThreeByThreeTensor(\n",
-       "[[a, b, c], [b, d, e], [c, e, f]]\n",
-       ")"
+       "mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor"
       ]
      },
      "metadata": {},
@@ -800,55 +1277,7 @@
     {
      "data": {
       "text/plain": [
-       "SymbolicSymmetricThreeByThreeTensor(\n",
-       "[a, d, f, e, c, b]\n",
-       ")"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    },
-    {
-     "data": {
-      "text/latex": [
-       "$\\displaystyle \\left[\\begin{matrix}a & d & f & e & c & b\\end{matrix}\\right]$"
-      ],
-      "text/plain": [
-       "[a, d, f, e, c, b]"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    }
-   ],
-   "source": [
-    "A = SymbolicThreeByThreeTensor.from_list([a, b, c, b, d, e, c, e, f])\n",
-    "display(A)\n",
-    "display(A.data)\n",
-    "display(A.is_symmetric())\n",
-    "B = A.to_symmetric()\n",
-    "display(B)\n",
-    "display(B.data)"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "### Converting to general"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 21,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "SymbolicSymmetricThreeByThreeTensor(\n",
-       "[a, b, c, d, e, f]\n",
-       ")"
+       "mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor"
       ]
      },
      "metadata": {},
@@ -865,13 +1294,34 @@
      },
      "metadata": {},
      "output_type": "display_data"
-    },
+    }
+   ],
+   "source": [
+    "A = SymbolicThreeByThreeTensor.from_list([a, b, c, b, d, e, c, e, f])\n",
+    "display(A.__class__)\n",
+    "display(A.data)\n",
+    "display(A.is_symmetric())\n",
+    "B = A.to_symmetric()\n",
+    "display(B.__class__)\n",
+    "display(B.data)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Converting to general"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "metadata": {},
+   "outputs": [
     {
      "data": {
       "text/plain": [
-       "SymbolicThreeByThreeTensor(\n",
-       "[[a, f, e], [f, b, d], [e, d, c]]\n",
-       ")"
+       "mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor"
       ]
      },
      "metadata": {},
@@ -880,10 +1330,10 @@
     {
      "data": {
       "text/latex": [
-       "$\\displaystyle \\left[\\begin{matrix}a & f & e\\\\f & b & d\\\\e & d & c\\end{matrix}\\right]$"
+       "$\\displaystyle \\left[\\begin{matrix}a & b & c & d & e & f\\end{matrix}\\right]$"
       ],
       "text/plain": [
-       "[[a, f, e], [f, b, d], [e, d, c]]"
+       "[a, b, c, d, e, f]"
       ]
      },
      "metadata": {},
@@ -892,11 +1342,48 @@
    ],
    "source": [
     "A = SymbolicSymmetricThreeByThreeTensor.from_list([a, b, c, d, e, f])\n",
-    "display(A)\n",
-    "display(A.data)\n",
+    "display(A.__class__)\n",
+    "display(A.data)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 32,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle \\left[\\begin{matrix}a & b & c\\\\b & d & e\\\\c & e & f\\end{matrix}\\right]$"
+      ],
+      "text/plain": [
+       "[[a, b, c], [b, d, e], [c, e, f]]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
     "B = A.to_general()\n",
-    "display(B)\n",
+    "display(B.__class__)\n",
     "display(B.data)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Multiplication"
    ]
   },
   {
@@ -908,15 +1395,13 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 22,
+   "execution_count": 33,
    "metadata": {},
    "outputs": [
     {
      "data": {
       "text/plain": [
-       "SymbolicTensor(\n",
-       "[[a, b], [c, d]]\n",
-       ")"
+       "mechpy.core.symbolic.tensor.SymbolicTensor"
       ]
      },
      "metadata": {},
@@ -937,13 +1422,13 @@
    ],
    "source": [
     "A = SymbolicTensor.from_list([a, b, c, d], shape=(2, 2))\n",
-    "display(A)\n",
+    "display(A.__class__)\n",
     "display(A.data)"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 23,
+   "execution_count": 34,
    "metadata": {},
    "outputs": [
     {
@@ -962,7 +1447,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 24,
+   "execution_count": 35,
    "metadata": {},
    "outputs": [
     {
@@ -988,7 +1473,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 25,
+   "execution_count": 36,
    "metadata": {},
    "outputs": [
     {
@@ -1018,7 +1503,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 26,
+   "execution_count": 37,
    "metadata": {},
    "outputs": [
     {
@@ -1054,7 +1539,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 27,
+   "execution_count": 38,
    "metadata": {},
    "outputs": [
     {
@@ -1111,7 +1596,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 28,
+   "execution_count": 39,
    "metadata": {},
    "outputs": [
     {
@@ -1237,7 +1722,7 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 29,
+   "execution_count": 40,
    "metadata": {},
    "outputs": [
     {
@@ -1279,16 +1764,16 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 30,
+   "execution_count": 41,
    "metadata": {},
    "outputs": [
     {
      "data": {
       "text/latex": [
-       "$\\displaystyle \\left[\\begin{matrix}a & 0 & c\\\\0 & b & 0\\\\c & 0 & b\\end{matrix}\\right]$"
+       "$\\displaystyle \\left[\\begin{matrix}a & b & b\\\\b & 0 & c\\\\b & c & 0\\end{matrix}\\right]$"
       ],
       "text/plain": [
-       "[[a, 0, c], [0, b, 0], [c, 0, b]]"
+       "[[a, b, b], [b, 0, c], [b, c, 0]]"
       ]
      },
      "metadata": {},
@@ -1302,19 +1787,19 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 31,
+   "execution_count": 42,
    "metadata": {},
    "outputs": [
     {
      "data": {
       "text/latex": [
-       "$\\displaystyle \\left[\\begin{matrix}0 & \\frac{a - b - \\sqrt{a^{2} - 2 a b + b^{2} + 4 c^{2}}}{2 c} & \\frac{a - b + \\sqrt{a^{2} - 2 a b + b^{2} + 4 c^{2}}}{2 c}\\\\1 & 0 & 0\\\\0 & 1 & 1\\end{matrix}\\right]$"
+       "$\\displaystyle \\left[\\begin{matrix}0 & \\frac{a - c - \\sqrt{a^{2} - 2 a c + 8 b^{2} + c^{2}}}{2 b} & \\frac{a - c + \\sqrt{a^{2} - 2 a c + 8 b^{2} + c^{2}}}{2 b}\\\\-1 & 1 & 1\\\\1 & 1 & 1\\end{matrix}\\right]$"
       ],
       "text/plain": [
        "Matrix([\n",
-       "[0, (a - b - sqrt(a**2 - 2*a*b + b**2 + 4*c**2))/(2*c), (a - b + sqrt(a**2 - 2*a*b + b**2 + 4*c**2))/(2*c)],\n",
-       "[1,                                                  0,                                                  0],\n",
-       "[0,                                                  1,                                                  1]])"
+       "[ 0, (a - c - sqrt(a**2 - 2*a*c + 8*b**2 + c**2))/(2*b), (a - c + sqrt(a**2 - 2*a*c + 8*b**2 + c**2))/(2*b)],\n",
+       "[-1,                                                  1,                                                  1],\n",
+       "[ 1,                                                  1,                                                  1]])"
       ]
      },
      "metadata": {},
@@ -1323,13 +1808,13 @@
     {
      "data": {
       "text/latex": [
-       "$\\displaystyle \\left[\\begin{matrix}b & 0 & 0\\\\0 & \\frac{a}{2} + \\frac{b}{2} - \\frac{\\sqrt{a^{2} - 2 a b + b^{2} + 4 c^{2}}}{2} & 0\\\\0 & 0 & \\frac{a}{2} + \\frac{b}{2} + \\frac{\\sqrt{a^{2} - 2 a b + b^{2} + 4 c^{2}}}{2}\\end{matrix}\\right]$"
+       "$\\displaystyle \\left[\\begin{matrix}- c & 0 & 0\\\\0 & \\frac{a}{2} + \\frac{c}{2} - \\frac{\\sqrt{a^{2} - 2 a c + 8 b^{2} + c^{2}}}{2} & 0\\\\0 & 0 & \\frac{a}{2} + \\frac{c}{2} + \\frac{\\sqrt{a^{2} - 2 a c + 8 b^{2} + c^{2}}}{2}\\end{matrix}\\right]$"
       ],
       "text/plain": [
        "Matrix([\n",
-       "[b,                                                0,                                                0],\n",
-       "[0, a/2 + b/2 - sqrt(a**2 - 2*a*b + b**2 + 4*c**2)/2,                                                0],\n",
-       "[0,                                                0, a/2 + b/2 + sqrt(a**2 - 2*a*b + b**2 + 4*c**2)/2]])"
+       "[-c,                                                0,                                                0],\n",
+       "[ 0, a/2 + c/2 - sqrt(a**2 - 2*a*c + 8*b**2 + c**2)/2,                                                0],\n",
+       "[ 0,                                                0, a/2 + c/2 + sqrt(a**2 - 2*a*c + 8*b**2 + c**2)/2]])"
       ]
      },
      "metadata": {},
@@ -1341,13 +1826,6 @@
     "display(P)\n",
     "display(D)"
    ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": []
   }
  ],
  "metadata": {
