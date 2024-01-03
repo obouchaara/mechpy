@@ -1,7 +1,6 @@
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 import sympy as sp
+import matplotlib.pyplot as plt
 
 
 from .coord import (
@@ -136,8 +135,21 @@ class SymbolicField:
         spherical_coord_system = SymbolicSphericalCoordSystem()
         return self.__class__(spherical_data, spherical_coord_system, self.field_params)
 
+    def subs(self, subs_dict, keys=False):
+        try:
+            if keys:
+                for k, v in subs_dict.items():
+                    if k in self.data:
+                        self.data = self.data.subs({k: v})
+                    else:
+                        raise KeyError(f"Key '{k}' not found in data.")
+            else:
+                self.data = self.data.subs(subs_dict)
+        except Exception as e:
+            raise RuntimeError(f"An error occurred during substitution: {e}")
 
-class SymbolicField3D(SymbolicField):
+
+class SymbolicSpatialField(SymbolicField):
     def __init__(self, data, coord_system, field_params=None):
         if isinstance(data, sp.MutableDenseNDimArray):
             data = sp.ImmutableDenseNDimArray(data)
@@ -166,16 +178,27 @@ class SymbolicField3D(SymbolicField):
         return sp.lambdify(basis_symbols, data, "numpy")
 
 
-class SymbolicScalarField(SymbolicField3D):
+class SymbolicScalarField(SymbolicSpatialField):
     shape = (3,)
 
     @classmethod
-    def create(cls, coord_system=None, field_params=None):
-        if not coord_system:
-            coord_system = SymbolicCartesianCoordSystem()
+    def create(cls, data=None, coord_system=None, field_params=None):
+        if not data:
+            if not coord_system:
+                coord_system = SymbolicCartesianCoordSystem()
+            data = sp.Function("f")(*coord_system.basis_symbols)
+        else:
+            if isinstance(data, sp.Expr):
+                if not coord_system:
+                    # autodetect the coord system
+                    pass
+                # validate the coord system
 
-        f = sp.Function("f")(*coord_system.basis_symbols)
-        return cls(f, coord_system, field_params)
+                # extract the params
+            else:
+                raise ValueError()
+
+        return cls(data, coord_system, field_params)
 
     @classmethod
     def create_linear(cls, data, coord_system=None, field_params=None):
@@ -230,20 +253,30 @@ class SymbolicScalarField(SymbolicField3D):
         plt.show()
 
 
-class SymbolicVectorField(SymbolicField3D):
+class SymbolicVectorField(SymbolicSpatialField):
     shape = (3, 3)
 
     @classmethod
-    def create(cls, coord_system=None, field_params=None):
-        if not coord_system:
-            coord_system = SymbolicCartesianCoordSystem()
+    def create(cls, data=None, coord_system=None, field_params=None):
+        if not data:
+            if not coord_system:
+                coord_system = SymbolicCartesianCoordSystem()
+            f1, f2, f3 = sp.symbols("f_1 f_2 f_3", cls=sp.Function)
+            f1 = f1(*coord_system.basis_symbols)
+            f2 = f2(*coord_system.basis_symbols)
+            f3 = f3(*coord_system.basis_symbols)
+            data = sp.ImmutableDenseNDimArray([f1, f2, f3])
+        else:
+            if isinstance(data, list) and all(isinstance(_, sp.Expr) for _ in data):
+                # autodetect the coord system
+                pass
+            # validate the coord system
 
-        f1, f2, f3 = sp.symbols("f_1 f_2 f_3", cls=sp.Function)
-        f1 = f1(*coord_system.basis_symbols)
-        f2 = f2(*coord_system.basis_symbols)
-        f3 = f3(*coord_system.basis_symbols)
-        vector_field = sp.ImmutableDenseNDimArray([f1, f2, f3])
-        return cls(vector_field, coord_system, field_params)
+            # extract the params
+            else:
+                raise ValueError()
+
+        return cls(data, coord_system, field_params)
 
     @classmethod
     def create_linear(cls, data, coord_system=None, field_params=None):
@@ -294,20 +327,20 @@ class SymbolicVectorField(SymbolicField3D):
         plt.show()
 
 
-class SymbolicTensorField(SymbolicField3D):
+class SymbolicTensorField(SymbolicSpatialField):
     shape = (3, 3, 3)
 
-    @classmethod
-    def create(cls, coord_system=None, field_params=None):
-        if not coord_system:
-            coord_system = SymbolicCartesianCoordSystem()
+    # @classmethod
+    # def create(cls, coord_system=None, field_params=None):
+    #     if not coord_system:
+    #         coord_system = SymbolicCartesianCoordSystem()
 
-        tensor_components = [
-            [sp.Function(f"f_{i}{j}")(*coord_system.basis_symbols) for j in range(3)]
-            for i in range(3)
-        ]
-        tensor_field = sp.tensor.Array(tensor_components)
-        return cls(tensor_field, coord_system, field_params)
+    #     tensor_components = [
+    #         [sp.Function(f"f_{i}{j}")(*coord_system.basis_symbols) for j in range(3)]
+    #         for i in range(3)
+    #     ]
+    #     tensor_field = sp.tensor.Array(tensor_components)
+    #     return cls(tensor_field, coord_system, field_params)
 
     @classmethod
     def create_linear(cls, data, coord_system=None, field_params=None):

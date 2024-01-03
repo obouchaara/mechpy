@@ -9,6 +9,9 @@ class SymbolicCoordSystem:
     def __repr__(self):
         return f"{self.__class__.__name__}(origin={self.origin}, basis_symbols={self.basis_symbols})"
 
+    @classmethod
+    def auto_detect(data) -> SymbolicCoordSystem:
+        pass
 
 class SymbolicCartesianCoordSystem(SymbolicCoordSystem):
     def __init__(self, basis_symbols=None):
