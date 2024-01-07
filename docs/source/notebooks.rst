@@ -6,3 +6,4 @@ Notebooks
 
    notebooks/symbolic/tensor.ipynb
    notebooks/symbolic/material.ipynb
+   notebooks/symbolic/elasticity.ipynb
