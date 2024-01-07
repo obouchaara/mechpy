@@ -129,10 +129,8 @@ class SymbolicTensor:
         try:
             if keys:
                 for k, v in subs_dict.items():
-                    if k in self.data:
-                        self.data = self.data.subs({k: v})
-                    else:
-                        raise KeyError(f"Key '{k}' not found in data.")
+                    component = self.data[k]
+                    self.data = self.data.subs({component: v})
             else:
                 self.data = self.data.subs(subs_dict)
         except Exception as e:
@@ -280,7 +278,7 @@ class SymbolicSymmetricThreeByThreeTensor(SymbolicTensor):
             data = sp.ImmutableDenseNDimArray(data)
         if isinstance(data, sp.ImmutableDenseNDimArray) and data.shape == self.shape:
             if notation in self.NOTATIONS.keys():
-                super().__init__(data, name)
+                super().__init__(data, name=name)
                 self.notation = notation
             else:
                 raise NotImplementedError(f"Notation {notation} not implemented")

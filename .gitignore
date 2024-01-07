@@ -1,5 +1,5 @@
 private_notebooks/
-
+**/.ipynb_checkpoints
 venv/
 venv_test/
 
@@ -8,3 +8,4 @@ docs/build
 
 *.pyc
 src/mechpy_core.egg-info
+

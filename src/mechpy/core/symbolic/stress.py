@@ -30,7 +30,7 @@ class SymbolicStressTensor(SS3X3T):
             data = self.data
             mapping = self.STRESS_VOIGT_MAPPING
             new_components = [data[key] / value for key, value in mapping.items()]
-            return SS3X3T.from_list(new_components, self.notation).to_general()
+            return SS3X3T.from_list(new_components, notation=self.notation).to_general()
         raise ValueError()
 
     def normal_components(self):

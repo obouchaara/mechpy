@@ -59,6 +59,9 @@ class SymbolicField:
             if isinstance(self.data, sp.Expr)
             else set().union(*[element.free_symbols for element in self.data])
         )
+        
+        # Exclude numerical symbols from the free symbols set
+        free_symbols = {sym for sym in free_symbols if not isinstance(sym, sp.Number)}
 
         invalid_symbols = free_symbols - valid_symbols
         if invalid_symbols:
@@ -267,7 +270,11 @@ class SymbolicVectorField(SymbolicSpatialField):
             f3 = f3(*coord_system.basis_symbols)
             data = sp.ImmutableDenseNDimArray([f1, f2, f3])
         else:
+            if not coord_system:
+                coord_system = SymbolicCartesianCoordSystem()
+                
             if isinstance(data, list) and all(isinstance(_, sp.Expr) for _ in data):
+                data = sp.ImmutableDenseNDimArray(data)
                 # autodetect the coord system
                 pass
             # validate the coord system
