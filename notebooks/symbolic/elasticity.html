@@ -58,9 +58,15 @@
 <li class="toctree-l2"><a class="reference internal" href="material.html">Symbolic Material Notebook</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Symblic Elasticity Notebook</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Simple-Traction">Simple Traction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Compliance-Tensor">Compliance Tensor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Stress-Tensor">Stress Tensor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Result">Result</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Simple-Deformation">Simple Deformation</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#Stiffness-Tensor">Stiffness Tensor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Strain-Tensor">Strain Tensor</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Result">Result</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">Result</a></li>
 </ul>
 </li>
 </ul>
@@ -112,10 +118,91 @@
 </div>
 <section id="Simple-Traction">
 <h2>Simple Traction<a class="headerlink" href="#Simple-Traction" title="Link to this heading"></a></h2>
+<section id="Compliance-Tensor">
+<h3>Compliance Tensor<a class="headerlink" href="#Compliance-Tensor" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">symbolic_isotropic_material</span> <span class="o">=</span> <span class="n">SymbolicIsotropicMaterial</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">symbolic_isotropic_material</span><span class="p">)</span>
+<span class="n">compliance_tensor</span> <span class="o">=</span> <span class="n">symbolic_isotropic_material</span><span class="o">.</span><span class="n">compliance_tensor</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">compliance_tensor</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+SymbolicIsotropicMaterial(
+{&#39;youngs_modulus&#39;: E, &#39;poisson_ratio&#39;: nu}
+)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$\displaystyle \left[\begin{matrix}\frac{1}{E} &amp; - \frac{\nu}{E} &amp; - \frac{\nu}{E} &amp; 0 &amp; 0 &amp; 0\\- \frac{\nu}{E} &amp; \frac{1}{E} &amp; - \frac{\nu}{E} &amp; 0 &amp; 0 &amp; 0\\- \frac{\nu}{E} &amp; - \frac{\nu}{E} &amp; \frac{1}{E} &amp; 0 &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; \frac{2 \left(\nu + 1\right)}{E} &amp; 0 &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{2 \left(\nu + 1\right)}{E} &amp; 0\\0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; \frac{2 \left(\nu + 1\right)}{E}\end{matrix}\right]$</div></div>
+</div>
+</section>
+<section id="Stress-Tensor">
+<h3>Stress Tensor<a class="headerlink" href="#Stress-Tensor" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stress_tensor</span> <span class="o">=</span> <span class="n">SymbolicStressTensor</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">notation</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">subs_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">stress_tensor</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">subs_dict</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">stress_tensor</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$\displaystyle \left[\begin{matrix}\sigma_{11} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\end{matrix}\right]$</div></div>
+</div>
+</section>
+<section id="Result">
+<h3>Result<a class="headerlink" href="#Result" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">strain_tensor</span> <span class="o">=</span> <span class="n">SymbolicStrainTensor</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">notation</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">strain_tensor_expr</span> <span class="o">=</span> <span class="n">SymbolicLinearElasticity</span><span class="o">.</span><span class="n">hookes_law</span><span class="p">(</span><span class="n">compliance_tensor</span><span class="p">,</span> <span class="n">stress_tensor</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">strain_tensor</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">strain_tensor_expr</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$\displaystyle \left[\begin{matrix}\epsilon_{11} &amp; \epsilon_{22} &amp; \epsilon_{33} &amp; 2 \epsilon_{23} &amp; 2 \epsilon_{13} &amp; 2 \epsilon_{12}\end{matrix}\right] = \left[\begin{matrix}\frac{\sigma_{11}}{E} &amp; - \frac{\sigma_{11} \nu}{E} &amp; - \frac{\sigma_{11} \nu}{E} &amp; 0 &amp; 0 &amp; 0\end{matrix}\right]$</div></div>
+</div>
+</section>
+</section>
+<section id="Simple-Deformation">
+<h2>Simple Deformation<a class="headerlink" href="#Simple-Deformation" title="Link to this heading"></a></h2>
 <section id="Stiffness-Tensor">
 <h3>Stiffness Tensor<a class="headerlink" href="#Stiffness-Tensor" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">symbolic_isotropic_material</span> <span class="o">=</span> <span class="n">SymbolicIsotropicMaterial</span><span class="p">()</span>
@@ -146,7 +233,7 @@ $\displaystyle \left[\begin{matrix}\frac{E \left(\nu - 1\right)}{\left(\nu + 1\r
 <section id="Strain-Tensor">
 <h3>Strain Tensor<a class="headerlink" href="#Strain-Tensor" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">strain_tensor</span> <span class="o">=</span> <span class="n">SymbolicStrainTensor</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">notation</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
@@ -170,43 +257,32 @@ $\displaystyle \left[\begin{matrix}\frac{E \left(\nu - 1\right)}{\left(\nu + 1\r
 $\displaystyle \left[\begin{matrix}\epsilon_{11} &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0\end{matrix}\right]$</div></div>
 </div>
 </section>
-<section id="Result">
-<h3>Result<a class="headerlink" href="#Result" title="Link to this heading"></a></h3>
+<section id="id1">
+<h3>Result<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stress_tensor</span> <span class="o">=</span> <span class="n">SymbolicStressTensor</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">notation</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">stress_tensor_expr</span> <span class="o">=</span> <span class="n">SymbolicLinearElasticity</span><span class="o">.</span><span class="n">hookes_law</span><span class="p">(</span><span class="n">stiffness_tensor</span><span class="p">,</span> <span class="n">strain_tensor</span><span class="p">)</span>
-<span class="n">stress_eq</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">stress_tensor</span><span class="o">.</span><span class="n">to_general</span><span class="p">()</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">(),</span> <span class="n">stress_tensor_expr</span><span class="o">.</span><span class="n">to_general</span><span class="p">()</span><span class="o">.</span><span class="n">to_matrix</span><span class="p">())</span>
-<span class="n">display</span><span class="p">(</span><span class="n">stress_eq</span><span class="p">)</span>
-<span class="n">solutions</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">stress_eq</span><span class="p">,</span> <span class="n">stress_tensor</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">solutions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
-    <span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="s2">&quot;nu&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})))</span>
+<span class="n">stress_tensor_expr</span> <span class="o">=</span> <span class="n">SymbolicLinearElasticity</span><span class="o">.</span><span class="n">hookes_law_inverse</span><span class="p">(</span><span class="n">stiffness_tensor</span><span class="p">,</span> <span class="n">strain_tensor</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">Eq</span><span class="p">(</span><span class="n">stress_tensor</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">stress_tensor_expr</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="math notranslate nohighlight">
-$\displaystyle \left[\begin{matrix}\sigma_{11} &amp; \sigma_{12} &amp; \sigma_{13}\\\sigma_{12} &amp; \sigma_{22} &amp; \sigma_{23}\\\sigma_{13} &amp; \sigma_{23} &amp; \sigma_{33}\end{matrix}\right] = \left[\begin{matrix}\frac{E \epsilon_{11} \left(\nu - 1\right)}{\left(\nu + 1\right) \left(2 \nu - 1\right)} &amp; 0 &amp; 0\\0 &amp; - \frac{E \epsilon_{11} \nu}{\left(\nu + 1\right) \left(2 \nu - 1\right)} &amp; 0\\0 &amp; 0 &amp; - \frac{E \epsilon_{11} \nu}{\left(\nu + 1\right) \left(2 \nu - 1\right)}\end{matrix}\right]$</div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="math notranslate nohighlight">
-$\displaystyle \sigma_{11} = \frac{E \epsilon_{11} \nu - E \epsilon_{11}}{2 \nu^{2} + \nu - 1}$</div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="math notranslate nohighlight">
-$\displaystyle \sigma_{11} = E \epsilon_{11}$</div></div>
+$\displaystyle \left[\begin{matrix}\sigma_{11} &amp; \sigma_{22} &amp; \sigma_{33} &amp; \sigma_{23} &amp; \sigma_{13} &amp; \sigma_{12}\end{matrix}\right] = \left[\begin{matrix}\frac{E \epsilon_{11} \left(\nu - 1\right)}{\left(\nu + 1\right) \left(2 \nu - 1\right)} &amp; - \frac{E \epsilon_{11} \nu}{\left(\nu + 1\right) \left(2 \nu - 1\right)} &amp; - \frac{E \epsilon_{11} \nu}{\left(\nu + 1\right) \left(2 \nu - 1\right)} &amp; 0 &amp; 0 &amp; 0\end{matrix}\right]$</div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
 </div>
 </section>
 </section>
