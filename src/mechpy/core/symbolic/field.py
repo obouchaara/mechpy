@@ -50,18 +50,33 @@ class SymbolicField:
         This ensures that the field data is properly defined with respect to the
         coordinate system and any additional parameters.
         """
+        # extract basis symbols function arg
+        # extract data function arg
+        
         basis_symbols = set(self.coord_system.basis_symbols)
         field_param_symbols = set(self.field_params)
-        valid_symbols = basis_symbols.union(field_param_symbols)
+        
+        # to remove
+        # Extracting the arguments of each function
+        function_args = set()
+        for element in self.data:
+            for arg in element.args:
+                if arg.is_Function:
+                    function_args.update(arg.args)
+        valid_symbols = basis_symbols.union(field_param_symbols).union(function_args)
+        # to remove
+        
+        # valid_symbols = basis_symbols.union(field_param_symbols)
 
         free_symbols = (
             self.data.free_symbols
             if isinstance(self.data, sp.Expr)
             else set().union(*[element.free_symbols for element in self.data])
         )
-        
+
         # Exclude numerical symbols from the free symbols set
         free_symbols = {sym for sym in free_symbols if not isinstance(sym, sp.Number)}
+
 
         invalid_symbols = free_symbols - valid_symbols
         if invalid_symbols:
@@ -272,16 +287,15 @@ class SymbolicVectorField(SymbolicSpatialField):
         else:
             if not coord_system:
                 coord_system = SymbolicCartesianCoordSystem()
-                
-            if isinstance(data, list) and all(isinstance(_, sp.Expr) for _ in data):
-                data = sp.ImmutableDenseNDimArray(data)
-                # autodetect the coord system
-                pass
-            # validate the coord system
 
-            # extract the params
-            else:
-                raise ValueError()
+            try:
+                components = sp.ImmutableDenseNDimArray(data, shape=(3,))
+                if not all(isinstance(_, (sp.Expr, sp.Number)) for _ in components):
+                    raise ValueError("data type error")
+            except:
+                raise ValueError("Conversion error")
+            
+            data = sp.ImmutableDenseNDimArray(data)
 
         return cls(data, coord_system, field_params)
 
