@@ -13,6 +13,7 @@ class SymbolicCoordSystem:
     def auto_detect(cls, data):
         pass
 
+
 class SymbolicCartesianCoordSystem(SymbolicCoordSystem):
     def __init__(self, basis_symbols=None):
         origin = (0, 0, 0)
@@ -78,11 +79,11 @@ class SymbolicCylindricalCoordSystem(SymbolicCoordSystem):
         r, theta, z_cyl = self.basis_symbols
         x, y, z_cart = cartesian_basis_symbols
 
-        r_expr = sp.sqrt(x**2 + y**2)
-        theta_expr = sp.atan2(y, x)
-        z_expr = z_cart
+        x_expr = r * sp.cos(theta)
+        y_expr = r * sp.sin(theta)
+        z_expr = z_cyl
 
-        return {r: r_expr, theta: theta_expr, z_cyl: z_expr}
+        return {x: x_expr, y: y_expr, z_cart: z_expr}
 
     def to_cartesian(self):
         expr_dict = self.get_basis_cartesian_exprs()
