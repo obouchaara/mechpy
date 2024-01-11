@@ -1,7 +1,8 @@
+import copy
 import numpy as np
 import sympy as sp
 import matplotlib.pyplot as plt
-
+from matplotlib.widgets import Slider
 
 from .coord import (
     SymbolicCoordSystem,
@@ -16,7 +17,7 @@ class SymbolicField:
         if isinstance(coord_system, SymbolicCoordSystem):
             self.data = data
             self.coord_system = coord_system
-            self.field_params = list(field_params or [])
+            self.field_params = field_params or {}
             self.validate_field()
         else:
             raise ValueError("coord system must be a SymbolicCoordSystem")
@@ -52,21 +53,21 @@ class SymbolicField:
         """
         # extract basis symbols function arg
         # extract data function arg
-        
+
         basis_symbols = set(self.coord_system.basis_symbols)
         field_param_symbols = set(self.field_params)
-        
-        # to remove
-        # Extracting the arguments of each function
-        function_args = set()
-        for element in self.data:
-            for arg in element.args:
-                if arg.is_Function:
-                    function_args.update(arg.args)
-        valid_symbols = basis_symbols.union(field_param_symbols).union(function_args)
-        # to remove
-        
-        # valid_symbols = basis_symbols.union(field_param_symbols)
+
+        # # to remove
+        # # Extracting the arguments of each function
+        # function_args = set()
+        # for element in self.data:
+        #     for arg in element.args:
+        #         if arg.is_Function:
+        #             function_args.update(arg.args)
+        # valid_symbols = basis_symbols.union(field_param_symbols).union(function_args)
+        # # to remove
+
+        valid_symbols = basis_symbols.union(field_param_symbols)
 
         free_symbols = (
             self.data.free_symbols
@@ -76,7 +77,6 @@ class SymbolicField:
 
         # Exclude numerical symbols from the free symbols set
         free_symbols = {sym for sym in free_symbols if not isinstance(sym, sp.Number)}
-
 
         invalid_symbols = free_symbols - valid_symbols
         if invalid_symbols:
@@ -232,43 +232,8 @@ class SymbolicScalarField(SymbolicSpatialField):
         scalar_field = sum(var * coeff for coeff, var in zip(data, basis_symbols))
         return cls(scalar_field, coord_system, field_params)
 
-    def plot(self, x_limits=[-100, 100], y_limits=[-100, 100], z_limits=[-100, 100]):
-        if self.field_params:
-            raise ValueError(
-                "Cannot plot field with unresolved parameters: "
-                + ", ".join(str(p) for p in self.field_params)
-            )
-
-        x_vals = np.linspace(*x_limits, 100)
-        y_vals = np.linspace(*y_limits, 100)
-        X, Y = np.meshgrid(x_vals, y_vals)
-
-        f = self.lambdify()
-
-        fig = plt.figure()
-        ax = fig.add_subplot(111, projection="3d")
-
-        # Number of z slices
-        num_slices = 10
-        z_slices = np.linspace(z_limits[0], z_limits[1], num_slices)
-
-        # Plot 2D contour plots at different z slices
-        for z_val in z_slices:
-            Z = f(X, Y, z_val)
-            contour = ax.contourf(
-                X, Y, Z, zdir="z", offset=z_val, levels=20, cmap="viridis", alpha=0.5
-            )
-
-        fig.colorbar(contour, ax=ax, shrink=0.5, aspect=5)
-
-        ax.set_xlim(np.array(x_limits) * 1.2)
-        ax.set_ylim(np.array(y_limits) * 1.2)
-        ax.set_zlim(np.array(z_limits) * 1.2)
-        ax.set_xlabel("X axis")
-        ax.set_ylabel("Y axis")
-        ax.set_zlabel("Z axis")
-
-        plt.show()
+    def plot(self):
+        pass
 
 
 class SymbolicVectorField(SymbolicSpatialField):
@@ -294,7 +259,7 @@ class SymbolicVectorField(SymbolicSpatialField):
                     raise ValueError("data type error")
             except:
                 raise ValueError("Conversion error")
-            
+
             data = sp.ImmutableDenseNDimArray(data)
 
         return cls(data, coord_system, field_params)
@@ -318,34 +283,8 @@ class SymbolicVectorField(SymbolicSpatialField):
         vector_field = sp.ImmutableDenseNDimArray(vector_field_components)
         return cls(vector_field, coord_system, field_params)
 
-    def plot(self, x_limits=[-100, 100], y_limits=[-100, 100], z_limits=[-100, 100]):
-        # Create a grid of points within the specified limits
-        x_vals = np.linspace(*x_limits, 10)
-        y_vals = np.linspace(*y_limits, 10)
-        z_vals = np.linspace(*z_limits, 10)
-        X, Y, Z = np.meshgrid(x_vals, y_vals, z_vals)
-
-        f = self.lambdify()
-
-        # Evaluate the function at each point in the grid
-        U, V, W = f(X, Y, Z)
-
-        # Create a 3D plot
-        fig = plt.figure()
-        ax = fig.add_subplot(111, projection="3d")
-
-        # Plot the vector field using a quiver plot
-        ax.quiver(X, Y, Z, U, V, W, length=0.01)
-
-        # Set the limits and labels
-        ax.set_xlim(np.array(x_limits) * 1.2)
-        ax.set_ylim(np.array(y_limits) * 1.2)
-        ax.set_zlim(np.array(z_limits) * 1.2)
-        ax.set_xlabel("X axis")
-        ax.set_ylabel("Y axis")
-        ax.set_zlabel("Z axis")
-
-        plt.show()
+    def plot(self):
+        pass
 
 
 class SymbolicTensorField(SymbolicSpatialField):

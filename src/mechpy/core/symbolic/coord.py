@@ -70,20 +70,11 @@ class SymbolicCylindricalCoordSystem(SymbolicCoordSystem):
     def get_basis_cartesian_exprs(self, cartesian_basis_symbols=None) -> dict:
         if not cartesian_basis_symbols:
             cartesian_basis_symbols = sp.symbols("x y z")
-        if (
-            not isinstance(cartesian_basis_symbols, (list, tuple))
-            or len(cartesian_basis_symbols) != 3
-        ):
-            raise ValueError("values must be a list or tuple of length 3")
-
         r, theta, z_cyl = self.basis_symbols
         x, y, z_cart = cartesian_basis_symbols
-
-        x_expr = r * sp.cos(theta)
-        y_expr = r * sp.sin(theta)
-        z_expr = z_cyl
-
-        return {x: x_expr, y: y_expr, z_cart: z_expr}
+        r_expr = sp.sqrt(x**2 + y**2)
+        theta_expr = sp.atan2(y, x)
+        return {r: r_expr, theta: theta_expr, z_cyl: z_cart}
 
     def to_cartesian(self):
         expr_dict = self.get_basis_cartesian_exprs()
@@ -108,12 +99,6 @@ class SymbolicSphericalCoordSystem(SymbolicCoordSystem):
     def get_basis_cartesian_exprs(self, cartesian_basis_symbols=None) -> dict:
         if not cartesian_basis_symbols:
             cartesian_basis_symbols = sp.symbols("x y z")
-        if (
-            not isinstance(cartesian_basis_symbols, (list, tuple))
-            or len(cartesian_basis_symbols) != 3
-        ):
-            raise ValueError("values must be a list or tuple of length 3")
-
         r, theta, phi = self.basis_symbols
         x, y, z = cartesian_basis_symbols
         r_expr = sp.sqrt(x**2 + y**2 + z**2)
