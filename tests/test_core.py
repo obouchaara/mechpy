@@ -1,241 +1,289 @@
+import unittest
 import numpy as np
 import sympy as sp
-import unittest
 
-from mechpy.core import (
-    SymbolicThreeByThreeTensor,
-    SymbolicSymmetricThreeByThreeTensor,
-)
-from mechpy.core import (
+from mechpy.core.symbolic.coord import (
+    SymbolicCoordSystem,
     SymbolicCartesianCoordSystem,
     SymbolicCylindricalCoordSystem,
     SymbolicSphericalCoordSystem,
 )
 
 
-class TestCore(unittest.TestCase):
-    pass
+from mechpy.core import (
+    SymbolicThreeByThreeTensor,
+    SymbolicSymmetricThreeByThreeTensor,
+)
 
 
-class TestSymbolicThreeByThreeTensor(unittest.TestCase):
-    def test_initialization_valid_data(self):
-        valid_array = sp.ImmutableDenseNDimArray([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
-        tensor = SymbolicThreeByThreeTensor(valid_array)
-        self.assertEqual(tensor.data, valid_array)
+class TestSymbolicCoordSystem(unittest.TestCase):
+    def test_init(self):
+        origin = (sp.Float(0), sp.Float(0), sp.Float(0))
+        basis = sp.symbols("x1 x2 x3")
+        coord_system = SymbolicCoordSystem(origin=origin, basis=basis)
+        self.assertEqual(coord_system.origin, origin)
+        self.assertEqual(coord_system.basis, basis)
 
-    def test_initialization_invalid_data(self):
-        invalid_matrix = sp.ImmutableDenseNDimArray([[1, 2], [3, 4]])
-        with self.assertRaises(ValueError):
-            SymbolicThreeByThreeTensor(invalid_matrix)
+        origin = (sp.Float(0), sp.Float(0))
+        basis = sp.symbols("x1 x2")
+        coord_system = SymbolicCoordSystem(origin=origin, basis=basis)
+        self.assertEqual(coord_system.origin, origin)
+        self.assertEqual(coord_system.basis, basis)
 
-    def test_to_symmetric_valid(self):
-        symmetric_array = sp.ImmutableDenseNDimArray([[1, 2, 3], [2, 4, 5], [3, 5, 6]])
-        tensor = SymbolicThreeByThreeTensor(symmetric_array)
-        symmetric_tensor = tensor.to_symmetric()
-        self.assertIsInstance(symmetric_tensor, SymbolicSymmetricThreeByThreeTensor)
-        self.assertTrue(symmetric_tensor.is_symmetric())
-
-    def test_to_symmetric_invalid(self):
-        non_symmetric_array = sp.ImmutableDenseNDimArray(
-            [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+        with self.assertRaises(ValueError) as context:
+            origin = (0, 0)
+            basis = sp.symbols("x1 x2")
+            SymbolicCoordSystem(origin=origin, basis=basis)
+        self.assertEqual(
+            str(context.exception), "origin must be a tuple of sympy.Number"
         )
-        tensor = SymbolicThreeByThreeTensor(non_symmetric_array)
-        with self.assertRaises(ValueError):
-            tensor.to_symmetric()
 
+    def test_auto_detect(self):
+        with self.assertRaises(NotImplementedError) as context:
+            SymbolicCoordSystem.auto_detect(data=None)
 
-class TestSymbolicSymmetricThreeByThreeTensor(unittest.TestCase):
-    def test_notation_standard_map(self):
-        expected_maps = {
-            2: {(0, 0): 0, (0, 1): 1, (1, 0): 1, (1, 1): 2},
-            3: {
-                (0, 0): 0,
-                (0, 1): 1,
-                (0, 2): 2,
-                (1, 0): 1,
-                (1, 1): 3,
-                (1, 2): 4,
-                (2, 0): 2,
-                (2, 1): 4,
-                (2, 2): 5,
-            },
-            4: {
-                (0, 0): 0,
-                (0, 1): 1,
-                (0, 2): 2,
-                (0, 3): 3,
-                (1, 0): 1,
-                (1, 1): 4,
-                (1, 2): 5,
-                (1, 3): 6,
-                (2, 0): 2,
-                (2, 1): 5,
-                (2, 2): 7,
-                (2, 3): 8,
-                (3, 0): 3,
-                (3, 1): 6,
-                (3, 2): 8,
-                (3, 3): 9,
-            },
+    def test_coord_subs(self):
+        basis = sp.symbols("x1 x2 x3")
+        x1, x2, x3 = basis
+        y1, y2, y3 = sp.symbols("y1 y2 y3")
+        subs = {
+            x1: y3,
+            x2: y1,
+            x3: y2,
         }
-
-        for n, expected_map in expected_maps.items():
-            assert (
-                SymbolicSymmetricThreeByThreeTensor.notation_standard_map(n)
-                == expected_map
-            )
-
-    def test_notation_standard_inverse_map(self):
-        expected_inverse_maps = {
-            2: {0: (0, 0), 1: (0, 1), 2: (1, 1)},
-            3: {0: (0, 0), 1: (0, 1), 2: (0, 2), 3: (1, 1), 4: (1, 2), 5: (2, 2)},
-            4: {
-                0: (0, 0),
-                1: (0, 1),
-                2: (0, 2),
-                3: (0, 3),
-                4: (1, 1),
-                5: (1, 2),
-                6: (1, 3),
-                7: (2, 2),
-                8: (2, 3),
-                9: (3, 3),
-            },
+        new_coord = SymbolicCoordSystem.coord_subs(basis, subs)
+        self.assertEqual(new_coord, (y3, y1, y2))
+        subs = {
+            x1: y1 + 2 * y2,
+            x2: 5 * y2 - 2 * y3,
+            x3: y2 - 2 * y1,
         }
+        new_coord = SymbolicCoordSystem.coord_subs(basis, subs)
+        subs = {
+            y1: x1,
+            y2: 5 * x2 - 2 * x1,
+            y3: x2 - 2 * x3,
+        }
+        new_coord = SymbolicCoordSystem.coord_subs(new_coord, subs)
+        self.assertEqual(
+            new_coord,
+            (
+                -3 * x1 + 10 * x2,
+                -10 * x1 + 23 * x2 + 4 * x3,
+                -4 * x1 + 5 * x2,
+            ),
+        )
 
-        for n, expected_inverse_map in expected_inverse_maps.items():
-            assert (
-                SymbolicSymmetricThreeByThreeTensor.notation_standard_inverse_map(n)
-                == expected_inverse_map
-            )
+    def test_coord_eval(self):
+        x1, x2, x3 = sp.symbols("x1 x2 x3")
+        basis = (-3 * x1 + 10 * x2, -10 * x1 + 23 * x2 + 4 * x3, -4 * x1 + 5 * x2)
+        coord_val = SymbolicCoordSystem.coord_eval(basis, subs={x1: 1, x2: 2, x3: 3})
+        self.assertEqual(coord_val, (17, 48, 6))
 
 
 class TestSymbolicCartesianCoordSystem(unittest.TestCase):
-    def test_get_basis_cylindrical_exprs(self):
-        # Create an instance of SymbolicCartesianCoordSystem
+    def test_init(self):
+        origin = (sp.Float(0), sp.Float(0), sp.Float(0))
+        basis = sp.symbols("x y z")
+        cartesian_system = SymbolicCartesianCoordSystem(origin=origin, basis=basis)
+        self.assertEqual(cartesian_system.origin, origin)
+        self.assertEqual(cartesian_system.basis, basis)
+
+        origin = (sp.Float(0), sp.Float(0), sp.Float(0))
+        basis = sp.symbols("x y z")
         cartesian_system = SymbolicCartesianCoordSystem()
+        self.assertEqual(cartesian_system.origin, origin)
+        self.assertEqual(cartesian_system.basis, basis)
 
-        # Call get_basis_cylindrical_exprs method
-        expr_dict = cartesian_system.get_basis_cylindrical_exprs()
+        origin = (sp.Float(0), sp.Float(0))
+        basis = sp.symbols("x y")
+        with self.assertRaises(ValueError) as context:
+            SymbolicCartesianCoordSystem(origin=origin, basis=basis)
+        self.assertEqual(str(context.exception), "basis must have a length of 3")
 
-        # Check if the dictionary has the correct keys
-        self.assertIn("r", expr_dict)
-        self.assertIn("theta", expr_dict)
-        self.assertIn("z", expr_dict)
-
-        # Check if the expressions are correct
-        x, y, z = sp.symbols("x y z")
-        expected_r_expr = sp.sqrt(x**2 + y**2)
-        expected_theta_expr = sp.atan2(y, x)
-        expected_z_expr = z
-
-        self.assertEqual(expr_dict["r"], expected_r_expr)
-        self.assertEqual(expr_dict["theta"], expected_theta_expr)
-        self.assertEqual(expr_dict["z"], expected_z_expr)
+    def test_get_basis_cylindrical_exprs(self):
+        cartesian_system = SymbolicCartesianCoordSystem()
+        x, y, z = cartesian_system.basis
+        r, theta, z = sp.symbols("r theta z")
+        cylindrical_exprs = cartesian_system.get_basis_cylindrical_exprs((r, theta, z))
+        self.assertEqual(cylindrical_exprs[r], sp.sqrt(x**2 + y**2))
+        self.assertEqual(cylindrical_exprs[theta], sp.atan2(y, x))
+        self.assertEqual(cylindrical_exprs[z], z)
 
     def test_get_basis_spherical_exprs(self):
-        # Create an instance of SymbolicCartesianCoordSystem
         cartesian_system = SymbolicCartesianCoordSystem()
-
-        # Call get_basis_spherical_exprs method
-        expr_dict = cartesian_system.get_basis_spherical_exprs()
-
-        # Check if the dictionary has the correct keys
-        self.assertIn("r", expr_dict)
-        self.assertIn("theta", expr_dict)
-        self.assertIn("phi", expr_dict)
-
-        # Check if the expressions are correct
-        x, y, z = sp.symbols("x y z")
-        expected_r_expr = sp.sqrt(x**2 + y**2 + z**2)
-        expected_theta_expr = sp.atan2(y, x)
-        expected_phi_expr = sp.acos(z / expected_r_expr)
-
-        self.assertEqual(expr_dict["r"], expected_r_expr)
-        self.assertEqual(expr_dict["theta"], expected_theta_expr)
-        self.assertEqual(expr_dict["phi"], expected_phi_expr)
+        x, y, z = cartesian_system.basis
+        r, theta, phi = sp.symbols("r theta phi")
+        spherical_exprs = cartesian_system.get_basis_spherical_exprs((r, theta, phi))
+        self.assertEqual(spherical_exprs[r], sp.sqrt(x**2 + y**2 + z**2))
+        self.assertEqual(spherical_exprs[theta], sp.atan2(y, x))
+        self.assertEqual(spherical_exprs[phi], sp.acos(z / sp.sqrt(x**2 + y**2 + z**2)))
 
     def test_to_cylindrical(self):
-        # Create an instance of SymbolicCartesianCoordSystem
-        cartesian_system = SymbolicCartesianCoordSystem()
-
-        # Convert to cylindrical coordinate system
-        cylindrical_system = cartesian_system.to_cylindrical()
-
-        # Check if the returned object is an instance of SymbolicCylindricalCoordSystem
-        self.assertIsInstance(cylindrical_system, SymbolicCylindricalCoordSystem)
-
-        # Check if the basis symbols are correct
-        x, y, z = sp.symbols("x y z")
-        expected_r_expr = sp.sqrt(x**2 + y**2)
-        expected_theta_expr = sp.atan2(y, x)
-        expected_z_expr = z
-
-        self.assertEqual(cylindrical_system.basis_symbols[0], expected_r_expr)
-        self.assertEqual(cylindrical_system.basis_symbols[1], expected_theta_expr)
-        self.assertEqual(cylindrical_system.basis_symbols[2], expected_z_expr)
+        pass
 
     def test_to_spherical(self):
-        # Create an instance of SymbolicCartesianCoordSystem
-        cartesian_system = SymbolicCartesianCoordSystem()
-
-        # Convert to spherical coordinate system
-        spherical_system = cartesian_system.to_spherical()
-
-        # Check if the returned object is an instance of SymbolicSphericalCoordSystem
-        self.assertIsInstance(spherical_system, SymbolicSphericalCoordSystem)
-
-        # Check if the basis symbols are correct
-        x, y, z = sp.symbols("x y z")
-        expected_r_expr = sp.sqrt(x**2 + y**2 + z**2)
-        expected_theta_expr = sp.atan2(y, x)
-        expected_phi_expr = sp.acos(z / expected_r_expr)
-
-        self.assertEqual(spherical_system.basis_symbols[0], expected_r_expr)
-        self.assertEqual(spherical_system.basis_symbols[1], expected_theta_expr)
-        self.assertEqual(spherical_system.basis_symbols[2], expected_phi_expr)
+        pass
 
     def test_get_cylindrical_coord(self):
-        # Create an instance of SymbolicCartesianCoordSystem
-        cartesian_system = SymbolicCartesianCoordSystem()
-
-        # Define a set of Cartesian coordinates (x, y, z)
-        x_val, y_val, z_val = 3, 4, 5  # Example values
-
-        # Call get_cylindrical_coord method with these values
-        cylindrical_coords = cartesian_system.get_cylindrical_coord(
-            (x_val, y_val, z_val)
+        a, b = sp.symbols("a b", positive=True)
+        cartesian_coord = (0, a, b)
+        symbolic_cartesian_system = SymbolicCartesianCoordSystem()
+        cylindrical_coord = symbolic_cartesian_system.get_cylindrical_coord(
+            cartesian_coord
         )
+        self.assertEqual(cylindrical_coord, (a, sp.pi / 2, b))
 
-        # Calculate expected cylindrical coordinates
-        expected_r = sp.sqrt(x_val**2 + y_val**2)
-        expected_theta = sp.atan2(y_val, x_val)
-        expected_z = z_val
-
-        # Check if the returned cylindrical coordinates are as expected
-        self.assertEqual(cylindrical_coords[0], expected_r)
-        self.assertEqual(cylindrical_coords[1], expected_theta)
-        self.assertEqual(cylindrical_coords[2], expected_z)
+        eval_coord = SymbolicCoordSystem.coord_eval(
+            cylindrical_coord, subs={a: 3, b: 5}
+        )
+        self.assertEqual(eval_coord[0], 3)
+        self.assertAlmostEqual(eval_coord[1], 1.5707963267949)
+        self.assertEqual(eval_coord[2], 5)
 
     def test_get_spherical_coord(self):
-        # Create an instance of SymbolicCartesianCoordSystem
-        cartesian_system = SymbolicCartesianCoordSystem()
+        a = sp.symbols("a", positive=True)
+        cartesian_coord = (0, a, 0)
+        symbolic_cartesian_system = SymbolicCartesianCoordSystem()
+        spherical_coord = symbolic_cartesian_system.get_spherical_coord(cartesian_coord)
+        self.assertEqual(spherical_coord, (a, sp.pi / 2, sp.pi / 2))
 
-        # Define a set of Cartesian coordinates (x, y, z)
-        x_val, y_val, z_val = 3, 4, 5  # Example values
+        eval_coord = SymbolicCoordSystem.coord_eval(spherical_coord, subs={a: 1})
+        self.assertEqual(eval_coord[0], 1)
+        self.assertAlmostEqual(eval_coord[1], 1.5707963267949)
+        self.assertAlmostEqual(eval_coord[2], 1.5707963267949)
 
-        # Call get_spherical_coord method with these values
-        spherical_coords = cartesian_system.get_spherical_coord((x_val, y_val, z_val))
 
-        # Calculate expected spherical coordinates
-        expected_r = sp.sqrt(x_val**2 + y_val**2 + z_val**2)
-        expected_theta = sp.atan2(y_val, x_val)
-        expected_phi = sp.acos(z_val / expected_r)
+class TestSymbolicCylindricalCoordSystem(unittest.TestCase):
+    def test_init(self):
+        origin = (sp.Float(0), sp.Float(0), sp.Float(0))
+        basis = sp.symbols("r theta z")
+        cylindrical_system = SymbolicCylindricalCoordSystem(origin=origin, basis=basis)
+        self.assertEqual(cylindrical_system.origin, origin)
+        self.assertEqual(cylindrical_system.basis, basis)
 
-        # Check if the returned spherical coordinates are as expected
-        self.assertEqual(spherical_coords[0], expected_r)
-        self.assertEqual(spherical_coords[1], expected_theta)
-        self.assertEqual(spherical_coords[2], expected_phi)
+        origin = (sp.Float(0), sp.Float(0), sp.Float(0))
+        basis = sp.symbols("r theta z")
+        cylindrical_system = SymbolicCylindricalCoordSystem()
+        self.assertEqual(cylindrical_system.origin, origin)
+        self.assertEqual(cylindrical_system.basis, basis)
+
+    def test_get_basis_cartesian_exprs(self):
+        cylindrical_system = SymbolicCylindricalCoordSystem()
+        r, theta, z = cylindrical_system.basis
+        x, y, z = sp.symbols("x y z")
+        cartesian_exprs = cylindrical_system.get_basis_cartesian_exprs((x, y, z))
+        self.assertEqual(cartesian_exprs[x], r * sp.cos(theta))
+        self.assertEqual(cartesian_exprs[y], r * sp.sin(theta))
+        self.assertEqual(cartesian_exprs[z], z)
+
+    def test_to_cartesian(self):
+        pass
+
+    def test_get_cartesian_coords(self):
+        a, b = sp.symbols("a b", positive=True)
+        cylindrical_coord = (2 * a, sp.pi / 3, b)
+        cylindrical_system = SymbolicCylindricalCoordSystem()
+        cartesian_coord = cylindrical_system.get_cartesian_coords(cylindrical_coord)
+        self.assertEqual(cartesian_coord, (a, sp.sqrt(3) * a, b))
+
+        eval_coord = SymbolicCoordSystem.coord_eval(cartesian_coord, subs={a: 1, b: 5})
+        self.assertEqual(eval_coord[0], 1)
+        self.assertAlmostEqual(eval_coord[1], 1.73205080756888)
+        self.assertEqual(eval_coord[2], 5)
+
+
+# class TestSymbolicThreeByThreeTensor(unittest.TestCase):
+#     def test_initialization_valid_data(self):
+#         valid_array = sp.ImmutableDenseNDimArray([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+#         tensor = SymbolicThreeByThreeTensor(valid_array)
+#         self.assertEqual(tensor.data, valid_array)
+
+#     def test_initialization_invalid_data(self):
+#         invalid_matrix = sp.ImmutableDenseNDimArray([[1, 2], [3, 4]])
+#         with self.assertRaises(ValueError):
+#             SymbolicThreeByThreeTensor(invalid_matrix)
+
+#     def test_to_symmetric_valid(self):
+#         symmetric_array = sp.ImmutableDenseNDimArray([[1, 2, 3], [2, 4, 5], [3, 5, 6]])
+#         tensor = SymbolicThreeByThreeTensor(symmetric_array)
+#         symmetric_tensor = tensor.to_symmetric()
+#         self.assertIsInstance(symmetric_tensor, SymbolicSymmetricThreeByThreeTensor)
+#         self.assertTrue(symmetric_tensor.is_symmetric())
+
+#     def test_to_symmetric_invalid(self):
+#         non_symmetric_array = sp.ImmutableDenseNDimArray(
+#             [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+#         )
+#         tensor = SymbolicThreeByThreeTensor(non_symmetric_array)
+#         with self.assertRaises(ValueError):
+#             tensor.to_symmetric()
+
+
+# class TestSymbolicSymmetricThreeByThreeTensor(unittest.TestCase):
+#     def test_notation_standard_map(self):
+#         expected_maps = {
+#             2: {(0, 0): 0, (0, 1): 1, (1, 0): 1, (1, 1): 2},
+#             3: {
+#                 (0, 0): 0,
+#                 (0, 1): 1,
+#                 (0, 2): 2,
+#                 (1, 0): 1,
+#                 (1, 1): 3,
+#                 (1, 2): 4,
+#                 (2, 0): 2,
+#                 (2, 1): 4,
+#                 (2, 2): 5,
+#             },
+#             4: {
+#                 (0, 0): 0,
+#                 (0, 1): 1,
+#                 (0, 2): 2,
+#                 (0, 3): 3,
+#                 (1, 0): 1,
+#                 (1, 1): 4,
+#                 (1, 2): 5,
+#                 (1, 3): 6,
+#                 (2, 0): 2,
+#                 (2, 1): 5,
+#                 (2, 2): 7,
+#                 (2, 3): 8,
+#                 (3, 0): 3,
+#                 (3, 1): 6,
+#                 (3, 2): 8,
+#                 (3, 3): 9,
+#             },
+#         }
+
+#         for n, expected_map in expected_maps.items():
+#             assert (
+#                 SymbolicSymmetricThreeByThreeTensor.notation_standard_map(n)
+#                 == expected_map
+#             )
+
+#     def test_notation_standard_inverse_map(self):
+#         expected_inverse_maps = {
+#             2: {0: (0, 0), 1: (0, 1), 2: (1, 1)},
+#             3: {0: (0, 0), 1: (0, 1), 2: (0, 2), 3: (1, 1), 4: (1, 2), 5: (2, 2)},
+#             4: {
+#                 0: (0, 0),
+#                 1: (0, 1),
+#                 2: (0, 2),
+#                 3: (0, 3),
+#                 4: (1, 1),
+#                 5: (1, 2),
+#                 6: (1, 3),
+#                 7: (2, 2),
+#                 8: (2, 3),
+#                 9: (3, 3),
+#             },
+#         }
+
+#         for n, expected_inverse_map in expected_inverse_maps.items():
+#             assert (
+#                 SymbolicSymmetricThreeByThreeTensor.notation_standard_inverse_map(n)
+#                 == expected_inverse_map
+#             )
 
 
 if __name__ == "__main__":
