@@ -342,6 +342,39 @@ class TestSymbolicScalarField(unittest.TestCase):
         field = SymbolicScalarField.create(coord_system=coord_system, data=data)
         self.assertEqual(field.data, sp.NDimArray([x1 * x1 - x2 * x2]))
 
+    def test_plot(self):
+        n, m = sp.symbols("n m")
+        field_params = {
+            n: {-0.2, -0.1, 0, 0.1, 0.2},
+            m: {-0.2, -0.1, 0, 0.1, 0.2},
+        }
+        data = sp.Array([1 * n, -2 * m, 0])
+        linear_scalar_field = SymbolicScalarField.create_linear(
+            data=data,
+            field_params=field_params,
+        )
+        try:
+            linear_scalar_field.plot()
+        except Exception as e:
+            self.fail(f"Test failed due to unexpected exception: {e}")
+
+        n, m = sp.symbols("n m")
+        field_params = {
+            n: {0, 0.1, 0.2, 0.3, 0.4, 0.5},
+            m: None,
+        }
+        data = sp.Array([1 * n, -2 * m, 0])
+        linear_scalar_field = SymbolicScalarField.create_linear(
+            data=data,
+            field_params=field_params,
+        )
+        with self.assertRaises(ValueError) as context:
+            linear_scalar_field.plot()
+        self.assertEqual(
+            str(context.exception),
+            "the param m values in not defined",
+        )
+
 
 # class TestSymbolicThreeByThreeTensor(unittest.TestCase):
 #     def test_initialization_valid_data(self):

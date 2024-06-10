@@ -211,6 +211,8 @@ class SymbolicScalarField(SymbolicSpatialField):
 
         # Create sliders for each field parameter
         for i, (param, values) in enumerate(self.field_params.items()):
+            if values is None:
+                raise ValueError(f"the param {param} values in not defined")
             if isinstance(values, set):
                 ax_slider = plt.axes([0.1, 0.1 + 0.05 * i, 0.65, 0.03], facecolor="lightgoldenrodyellow")
                 slider = Slider(ax_slider, str(param), min(values), max(values), valinit=min(values), valstep=list(values))
