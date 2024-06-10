@@ -9,8 +9,13 @@ from mechpy.core.symbolic.coord import (
     SymbolicSphericalCoordSystem,
 )
 
+from mechpy.core.symbolic.field import (
+    SymbolicField,
+    SymbolicSpatialField,
+    SymbolicScalarField,
+)
 
-from mechpy.core import (
+from mechpy.core.symbolic.tensor import (
     SymbolicThreeByThreeTensor,
     SymbolicSymmetricThreeByThreeTensor,
 )
@@ -191,6 +196,151 @@ class TestSymbolicCylindricalCoordSystem(unittest.TestCase):
         self.assertEqual(eval_coord[0], 1)
         self.assertAlmostEqual(eval_coord[1], 1.73205080756888)
         self.assertEqual(eval_coord[2], 5)
+
+
+class TestSymbolicField(unittest.TestCase):
+    def test_init(self):
+        coord_system = SymbolicCartesianCoordSystem()
+        data = sp.Array([1, 2, 3])
+        field = SymbolicField(coord_system, data)
+        self.assertEqual(field.coord_system, coord_system)
+        self.assertEqual(field.data, data)
+        self.assertEqual(field.field_params, {})
+
+        coord_system = SymbolicCartesianCoordSystem()
+        data = sp.Array([1, 2, 3])
+        n, m = sp.symbols("n m")
+        field_params = {
+            n: None,
+            m: None,
+        }
+        field = SymbolicField(coord_system, data, field_params)
+        self.assertEqual(field.coord_system, coord_system)
+        self.assertEqual(field.data, data)
+        self.assertEqual(field.field_params, field_params)
+
+        coord_system = SymbolicCartesianCoordSystem()
+        n, m = sp.symbols("n m")
+        data = sp.Array([1 + n, 2 + m, 3])
+        field_params = {n, m}
+        with self.assertRaises(ValueError) as context:
+            SymbolicField(coord_system, data, field_params)
+        self.assertEqual(
+            str(context.exception),
+            "Field parameters must be a dict.",
+        )
+
+        coord_system = SymbolicCartesianCoordSystem()
+        x1, x2, x3 = coord_system.basis
+        data = sp.Array([1, 2, 3])
+        field_params = {
+            x1: None,
+        }
+        with self.assertRaises(ValueError) as context:
+            SymbolicField(coord_system, data, field_params)
+        self.assertEqual(
+            str(context.exception),
+            "Field parameters must not overlap with coordinate system basis symbols.",
+        )
+
+        coord_system = SymbolicCartesianCoordSystem()
+        x1, x2, x3 = coord_system.basis
+        n, m = sp.symbols("n m")
+        data = sp.Array([1 + n + x1, 2 + m, 3 + x2])
+        field_params = {
+            n: None,
+        }
+        with self.assertRaises(ValueError) as context:
+            SymbolicField(coord_system, data, field_params)
+        self.assertEqual(
+            str(context.exception),
+            f"The field data contains symbols not in the basis or field parameters: {m}",
+        )
+
+    def test_get_invalid_symbols(self):
+        pass
+
+    def test_subs_field_params(self):
+        coord_system = SymbolicCartesianCoordSystem()
+        x1, x2, x3 = coord_system.basis
+        n, m, p = sp.symbols("n m p")
+        data = sp.Array([(1 + 3 * n) * x1, 2 + m, 3])
+        field_params = {
+            n: None,
+            m: None,
+        }
+        field = SymbolicField(coord_system, data, field_params)
+
+        field.subs_field_params({n: 1})
+        self.assertEqual(field.data, sp.Array([4 * x1, 2 + m, 3]))
+        self.assertEqual(field.field_params, {m: None})
+
+        field.subs_field_params({m: 3})
+        self.assertEqual(field.data, sp.Array([4 * x1, 5, 3]))
+        self.assertEqual(field.field_params, {})
+
+        with self.assertRaises(ValueError) as context:
+            field.subs_field_params({p: 5})
+        self.assertEqual(
+            str(context.exception),
+            f"Parameter {p} not found in field parameters",
+        )
+
+        coord_system = SymbolicCartesianCoordSystem()
+        a, b, c = coord_system.basis
+        n, m, p = sp.symbols("n m p")
+        data = sp.Array([(1 + 3 * n) * x1, 2 + m, 3])
+        field_params = {
+            n: None,
+            m: None,
+            a: None,
+        }
+        with self.assertRaises(ValueError) as context:
+            SymbolicField(coord_system, data, field_params)
+        self.assertEqual(
+            str(context.exception),
+            "Field parameters must not overlap with coordinate system basis symbols.",
+        )
+
+    def test_to_cartesian(self):
+        coord_system = SymbolicCylindricalCoordSystem()
+        x1, x2, x3 = coord_system.basis
+        data = sp.Array([x1 + x3 * x3])
+        scalar_field = SymbolicScalarField.create(coord_system, data)
+        new_scalar_field = scalar_field.to_cartesian()
+        new_basis = new_scalar_field.coord_system.basis
+        y1, y2, y3 = new_basis
+        new_data = new_scalar_field.data
+        self.assertEqual(new_data, sp.NDimArray([y3**2 + sp.sqrt(y1**2 + y2**2)]))
+
+    def test_cylindrical(self):
+        pass
+
+    def test_to_spherical(self):
+        pass
+
+    def test_subs(self):
+        pass
+
+
+class TestSymbolicSpatialField(unittest.TestCase):
+    def test_init(self):
+        pass
+
+
+class TestSymbolicScalarField(unittest.TestCase):
+    def test_create(self):
+        field = SymbolicScalarField.create()
+        self.assertIsInstance(field.coord_system, SymbolicCartesianCoordSystem)
+        x1, x2, x3 = field.coord_system.basis
+        self.assertEqual(field.data, sp.NDimArray([sp.Function("f")(x1, x2, x3)]))
+
+        coord_system = SymbolicCartesianCoordSystem()
+        x1, x2, x3 = coord_system.basis
+        self.assertEqual(field.coord_system.basis, (x1, x2, x3))
+        data = sp.NDimArray([x1 * x1 - x2 * x2])
+        field = SymbolicScalarField.create(coord_system=coord_system, data=data)
+        self.assertEqual(field.data, sp.NDimArray([x1 * x1 - x2 * x2]))
 
 
 # class TestSymbolicThreeByThreeTensor(unittest.TestCase):
