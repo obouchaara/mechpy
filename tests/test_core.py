@@ -16,7 +16,9 @@ from mechpy.core.symbolic.field import (
 )
 
 from mechpy.core.symbolic.tensor import (
+    SymbolicTensor,
     SymbolicThreeByThreeTensor,
+    SymbolicSixBySixTensor,
     SymbolicSymmetricThreeByThreeTensor,
 )
 
@@ -376,34 +378,398 @@ class TestSymbolicScalarField(unittest.TestCase):
         )
 
 
-# class TestSymbolicThreeByThreeTensor(unittest.TestCase):
-#     def test_initialization_valid_data(self):
-#         valid_array = sp.ImmutableDenseNDimArray([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
-#         tensor = SymbolicThreeByThreeTensor(valid_array)
-#         self.assertEqual(tensor.data, valid_array)
+class TestSymbolicTensor(unittest.TestCase):
+    def test_init(self):
+        data = sp.Array([1, 2, 3])
+        tensor = SymbolicTensor(data)
+        self.assertEqual(tensor.data, data)
 
-#     def test_initialization_invalid_data(self):
-#         invalid_matrix = sp.ImmutableDenseNDimArray([[1, 2], [3, 4]])
-#         with self.assertRaises(ValueError):
-#             SymbolicThreeByThreeTensor(invalid_matrix)
+        with self.assertRaises(ValueError) as context:
+            SymbolicTensor(data=None)
+        self.assertEqual(
+            str(context.exception),
+            "Input data must be a SymPy NDimArray.",
+        )
 
-#     def test_to_symmetric_valid(self):
-#         symmetric_array = sp.ImmutableDenseNDimArray([[1, 2, 3], [2, 4, 5], [3, 5, 6]])
-#         tensor = SymbolicThreeByThreeTensor(symmetric_array)
-#         symmetric_tensor = tensor.to_symmetric()
-#         self.assertIsInstance(symmetric_tensor, SymbolicSymmetricThreeByThreeTensor)
-#         self.assertTrue(symmetric_tensor.is_symmetric())
+    def test_notation_standard_map(self):
+        index_map = SymbolicTensor.notation_standard_map(1)
+        self.assertEqual(index_map, {(0, 0): 0})
 
-#     def test_to_symmetric_invalid(self):
-#         non_symmetric_array = sp.ImmutableDenseNDimArray(
-#             [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-#         )
-#         tensor = SymbolicThreeByThreeTensor(non_symmetric_array)
-#         with self.assertRaises(ValueError):
-#             tensor.to_symmetric()
+        index_map = SymbolicTensor.notation_standard_map(2)
+        self.assertEqual(index_map, {(0, 0): 0, (0, 1): 1, (1, 0): 1, (1, 1): 2})
+
+        index_map = SymbolicTensor.notation_standard_map(3)
+        self.assertEqual(
+            index_map,
+            {
+                (0, 0): 0,
+                (0, 1): 1,
+                (1, 0): 1,
+                (0, 2): 2,
+                (2, 0): 2,
+                (1, 1): 3,
+                (1, 2): 4,
+                (2, 1): 4,
+                (2, 2): 5,
+            },
+        )
+
+    def test_notation_standard_inverse_map(self):
+        index_map_inverse = SymbolicTensor.notation_standard_inverse_map(1)
+        self.assertEqual(index_map_inverse, {0: (0, 0)})
+
+        index_map_inverse = SymbolicTensor.notation_standard_inverse_map(2)
+        self.assertEqual(index_map_inverse, {0: (0, 0), 1: (0, 1), 2: (1, 1)})
+
+        index_map_inverse = SymbolicTensor.notation_standard_inverse_map(3)
+        self.assertEqual(
+            index_map_inverse,
+            {
+                0: (0, 0),
+                1: (0, 1),
+                2: (0, 2),
+                3: (1, 1),
+                4: (1, 2),
+                5: (2, 2),
+            },
+        )
+
+    def test_rank(self):
+        data = sp.Array([[1, 2], [3, 4]])
+        tensor = SymbolicTensor(data)
+        self.assertTrue(tensor.is_second_rank())
+        self.assertFalse(tensor.is_fourth_rank())
+
+        data = sp.Array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+        tensor = SymbolicTensor(data)
+        self.assertTrue(tensor.is_second_rank())
+        self.assertFalse(tensor.is_fourth_rank())
+
+        data = sp.Array([[[1, 2], [3, 4]], [[5, 6], [7, 8]]])
+        tensor = SymbolicTensor(data)
+        self.assertFalse(tensor.is_second_rank())
+        self.assertFalse(tensor.is_fourth_rank())
+
+        data = sp.Array(
+            [
+                [[[1, 2], [3, 4]], [[5, 6], [7, 8]]],
+                [[[9, 10], [11, 12]], [[13, 14], [15, 16]]],
+            ]
+        )
+        tensor = SymbolicTensor(data)
+        self.assertFalse(tensor.is_second_rank())
+        self.assertTrue(tensor.is_fourth_rank())
+
+    def test_is_square(self):
+        data = sp.Array([[1, 2], [3, 4]])
+        tensor = SymbolicTensor(data)
+        self.assertTrue(tensor.is_square())
+
+        data = sp.Array([[1, 2], [3, 4], [5, 6]])
+        tensor = SymbolicTensor(data)
+        self.assertFalse(tensor.is_square())
+
+    def test_is_symmetric(self):
+        data = sp.Array([[1, 2], [2, 3]])
+        tensor = SymbolicTensor(data)
+        self.assertTrue(tensor.is_symmetric())
+
+        data = sp.Array([[1, 2], [1, 2]])
+        tensor = SymbolicTensor(data)
+        self.assertFalse(tensor.is_symmetric())
+
+    def test_to_matrix(self):
+        pass
+
+    def test_to_3x3(self):
+        pass
+
+    def test_to_sym_3x3(self):
+        pass
+
+    def test_to_sym_6x6(self):
+        pass
+
+    def test_from_list(self):
+        components = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+        tensor = SymbolicTensor.from_list(components, shape=(3, 3))
+        self.assertEqual(tensor.data, sp.NDimArray([[1, 2, 3], [4, 5, 6], [7, 8, 9]]))
+
+        components = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        tensor = SymbolicTensor.from_list(components, shape=(3, 3))
+        self.assertEqual(tensor.data, sp.NDimArray([[1, 2, 3], [4, 5, 6], [7, 8, 9]]))
+
+        with self.assertRaises(ValueError) as context:
+            SymbolicTensor.from_list(components=None, shape=(3, 3))
+        self.assertEqual(str(context.exception), "Components must be a list.")
+
+        components = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        with self.assertRaises(ValueError) as context:
+            SymbolicTensor.from_list(components, shape=None)
+        self.assertEqual(str(context.exception), "Shape must be a tuple.")
+
+    def test_create(self):
+        tensor = SymbolicTensor.create(shape=(1,), name="M")
+        self.assertEqual(tensor.data[0], sp.symbols("M_1"))
+
+        tensor = SymbolicTensor.create(shape=(1, 1), name="M")
+        self.assertEqual(tensor.data[0, 0], sp.symbols("M_11"))
+
+        tensor = SymbolicTensor.create(shape=(1, 1, 1), name="M")
+        self.assertEqual(tensor.data[0, 0, 0], sp.symbols("M_111"))
+
+        tensor = SymbolicTensor.create(shape=(1, 1, 1, 1), name="M")
+        self.assertEqual(tensor.data[0, 0, 0, 0], sp.symbols("M_1111"))
+
+        tensor = SymbolicTensor.create(shape=(3, 3), name="M")
+        self.assertEqual(tensor.data[0, 0], sp.symbols("M_11"))
+        self.assertEqual(tensor.data[1, 2], sp.symbols("M_23"))
+        self.assertEqual(tensor.data[2, 2], sp.symbols("M_33"))
+
+    def test_subs_tensor_params(self):
+        pass
+
+    def test_susb(self):
+        pass
+
+    def test__matmul__(self):
+        tensor_M = SymbolicTensor.create(shape=(2, 2), name="M")
+        tensor_N = SymbolicTensor.create(shape=(2, 2), name="N")
+        tensor_MN = tensor_M @ tensor_N
+        M_11, M_12, M_21, M_22 = sp.symbols("M_11 M_12 M_21 M_22")
+        N_11, N_12, N_21, N_22 = sp.symbols("N_11 N_12 N_21 N_22")
+        self.assertEqual(tensor_MN.data[0, 0], M_11 * N_11 + M_12 * N_21)
+        self.assertEqual(tensor_MN.data[0, 1], M_11 * N_12 + M_12 * N_22)
+        self.assertEqual(tensor_MN.data[1, 0], M_21 * N_11 + M_22 * N_21)
+        self.assertEqual(tensor_MN.data[1, 1], M_21 * N_12 + M_22 * N_22)
+
+    def test__getitem__(self):
+        tensor = SymbolicTensor.create(shape=(2, 2), name="M")
+        self.assertEqual(tensor[0, 0], tensor.data[0, 0])
+        self.assertEqual(tensor[0, 1], tensor.data[0, 1])
+        self.assertEqual(tensor[1, 0], tensor.data[1, 0])
+        self.assertEqual(tensor[1, 1], tensor.data[1, 1])
+
+    def test_eigenvalues(self):
+        pass
+
+    def test_eigenvectors(self):
+        pass
+
+    def test_diagonalize(self):
+        pass
 
 
-# class TestSymbolicSymmetricThreeByThreeTensor(unittest.TestCase):
+class TestSymbolicThreeByThreeTensor(unittest.TestCase):
+    def test_init(self):
+        data = sp.NDimArray([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+        tensor = SymbolicThreeByThreeTensor(data)
+        self.assertEqual(tensor.shape, tensor.data.shape)
+
+        data = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]  # not SymPy Array
+        with self.assertRaises(ValueError) as context:
+            SymbolicThreeByThreeTensor(data)
+        self.assertEqual(str(context.exception), "Data must be a 3x3 SymPy Array.")
+
+        data = sp.NDimArray([[1, 2], [3, 4]])  # not 3x3
+        with self.assertRaises(ValueError) as context:
+            SymbolicThreeByThreeTensor(data)
+        self.assertEqual(str(context.exception), "Data must be a 3x3 SymPy Array.")
+
+        data = [[1, 2], [3, 4]]  # not 3x3 SymPy Array
+        with self.assertRaises(ValueError) as context:
+            SymbolicThreeByThreeTensor(data)
+        self.assertEqual(str(context.exception), "Data must be a 3x3 SymPy Array.")
+
+    def test_form_list(self):
+        components = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+        tensor = SymbolicThreeByThreeTensor.from_list(components)
+        self.assertEqual(tensor.data.shape, (3, 3))
+        self.assertEqual(tensor.data, sp.NDimArray([[1, 2, 3], [4, 5, 6], [7, 8, 9]]))
+
+        components = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        tensor = SymbolicThreeByThreeTensor.from_list(components)
+        self.assertEqual(tensor.data.shape, (3, 3))
+        self.assertEqual(tensor.data, sp.NDimArray([[1, 2, 3], [4, 5, 6], [7, 8, 9]]))
+
+        with self.assertRaises(ValueError) as context:
+            SymbolicThreeByThreeTensor.from_list(components=None)
+        self.assertEqual(str(context.exception), "Components must be a list.")
+
+    def test_create(self):
+        tensor = SymbolicThreeByThreeTensor.create(name="M")
+        self.assertEqual(tensor.data.shape, (3, 3))
+        self.assertEqual(tensor.data[0, 0], sp.symbols("M_11"))
+        self.assertEqual(tensor.data[1, 2], sp.symbols("M_23"))
+        self.assertEqual(tensor.data[2, 2], sp.symbols("M_33"))
+
+    def test_to_symmetric(self):
+        data = sp.NDimArray(
+            [
+                [1, 2, 3],
+                [2, 4, 5],
+                [3, 5, 6],
+            ]
+        )
+        tensor = SymbolicThreeByThreeTensor(data)
+        sym_tensor = tensor.to_symmetric()
+        self.assertEqual(type(sym_tensor), SymbolicSymmetricThreeByThreeTensor)
+        self.assertEqual(sym_tensor.data, sp.NDimArray([1, 2, 3, 4, 5, 6]))
+
+        data = sp.NDimArray(
+            [
+                [1, 6, 5],
+                [6, 2, 4],
+                [5, 4, 3],
+            ]
+        )
+        tensor = SymbolicThreeByThreeTensor(data)
+        sym_tensor = tensor.to_symmetric(notation="Voight notation")
+        self.assertEqual(type(sym_tensor), SymbolicSymmetricThreeByThreeTensor)
+        self.assertEqual(sym_tensor.data, sp.NDimArray([1, 2, 3, 4, 5, 6]))
+
+        data = sp.NDimArray(
+            [
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 9],
+            ]
+        )
+        tensor = SymbolicThreeByThreeTensor(data)
+        with self.assertRaises(ValueError) as context:
+            tensor.to_symmetric()
+        self.assertEqual(str(context.exception), "The tensor is not symmetric.")
+
+        data = sp.NDimArray(
+            [
+                [1, 2, 3],
+                [2, 4, 5],
+                [3, 5, 6],
+            ]
+        )
+        tensor = SymbolicThreeByThreeTensor(data)
+        with self.assertRaises(NotImplementedError) as context:
+            tensor.to_symmetric(notation="NOT_IMPLEMENTED_NOTATION")
+        self.assertEqual(
+            str(context.exception), "Notation NOT_IMPLEMENTED_NOTATION not implemented"
+        )
+
+
+class TestSymbolicSixBySixTensor(unittest.TestCase):
+    def test_init(self):
+        data = sp.NDimArray(
+            [
+                [11, 21, 31, 41, 51, 61],
+                [12, 22, 32, 42, 52, 62],
+                [13, 23, 33, 43, 53, 63],
+                [14, 24, 34, 44, 54, 64],
+                [15, 25, 35, 45, 55, 65],
+                [16, 26, 36, 46, 56, 66],
+            ]
+        )
+        tensor = SymbolicSixBySixTensor(data)
+        self.assertEqual(tensor.shape, tensor.data.shape)
+
+        data = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]  # not 6x6 SymPy Array
+        with self.assertRaises(ValueError) as context:
+            SymbolicSixBySixTensor(data)
+        self.assertEqual(str(context.exception), "Data must be a 6x6 SymPy Array.")
+
+    def test_form_list(self):
+        components = [
+            [11, 21, 31, 41, 51, 61],
+            [12, 22, 32, 42, 52, 62],
+            [13, 23, 33, 43, 53, 63],
+            [14, 24, 34, 44, 54, 64],
+            [15, 25, 35, 45, 55, 65],
+            [16, 26, 36, 46, 56, 66],
+        ]
+        tensor = SymbolicSixBySixTensor.from_list(components)
+        self.assertEqual(tensor.data.shape, (6, 6))
+        self.assertEqual(
+            tensor.data,
+            sp.NDimArray(
+                [
+                    [11, 21, 31, 41, 51, 61],
+                    [12, 22, 32, 42, 52, 62],
+                    [13, 23, 33, 43, 53, 63],
+                    [14, 24, 34, 44, 54, 64],
+                    [15, 25, 35, 45, 55, 65],
+                    [16, 26, 36, 46, 56, 66],
+                ]
+            ),
+        )
+
+        components = [
+            11,
+            21,
+            31,
+            41,
+            51,
+            61,
+            12,
+            22,
+            32,
+            42,
+            52,
+            62,
+            13,
+            23,
+            33,
+            43,
+            53,
+            63,
+            14,
+            24,
+            34,
+            44,
+            54,
+            64,
+            15,
+            25,
+            35,
+            45,
+            55,
+            65,
+            16,
+            26,
+            36,
+            46,
+            56,
+            66,
+        ]
+        tensor = SymbolicSixBySixTensor.from_list(components)
+        self.assertEqual(tensor.data.shape, (6, 6))
+        self.assertEqual(
+            tensor.data,
+            sp.NDimArray(
+                [
+                    [11, 21, 31, 41, 51, 61],
+                    [12, 22, 32, 42, 52, 62],
+                    [13, 23, 33, 43, 53, 63],
+                    [14, 24, 34, 44, 54, 64],
+                    [15, 25, 35, 45, 55, 65],
+                    [16, 26, 36, 46, 56, 66],
+                ]
+            ),
+        )
+
+    def test_create(self):
+        tensor = SymbolicSixBySixTensor.create(name="M")
+        self.assertEqual(tensor.data.shape, (6, 6))
+        self.assertEqual(tensor.data[0, 0], sp.symbols("M_11"))
+        self.assertEqual(tensor.data[3, 4], sp.symbols("M_45"))
+        self.assertEqual(tensor.data[5, 5], sp.symbols("M_66"))
+
+
+class TestSymbolicSymmetricThreeByThreeTensor(unittest.TestCase):
+    def test_init(self):
+        pass
+
+    def test_is_symmetric(self):
+        pass
+
+
 #     def test_notation_standard_map(self):
 #         expected_maps = {
 #             2: {(0, 0): 0, (0, 1): 1, (1, 0): 1, (1, 1): 2},
