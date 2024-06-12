@@ -22,6 +22,10 @@ from mechpy.core.symbolic.tensor import (
     SymbolicSymmetricThreeByThreeTensor,
 )
 
+from mechpy.core.symbolic.stress import (
+    SymbolicStressTensor,
+)
+
 
 class TestSymbolicCoordSystem(unittest.TestCase):
     def test_init(self):
@@ -502,7 +506,6 @@ class TestSymbolicTensor(unittest.TestCase):
         new_tensor = tensor.to_3x3()
         self.assertIsInstance(new_tensor, SymbolicThreeByThreeTensor)
         self.assertEqual(new_tensor.data, data)
-        
 
     def test_to_sym_3x3(self):
         data = sp.NDimArray([[1, 2, 3], [2, 4, 5], [3, 5, 6]])
@@ -512,20 +515,20 @@ class TestSymbolicTensor(unittest.TestCase):
         self.assertEqual(new_tensor.data, sp.NDimArray([1, 2, 3, 4, 5, 6]))
 
     def test_to_6x6(self):
-        data = sp.NDimArray([
-            [11, 21, 31, 41, 51, 61],
-            [12, 22, 32, 42, 52, 62],
-            [13, 23, 33, 43, 53, 63],
-            [14, 24, 34, 44, 54, 64],
-            [15, 25, 35, 45, 55, 65],
-            [16, 26, 36, 46, 56, 66],
-        ])
+        data = sp.NDimArray(
+            [
+                [11, 21, 31, 41, 51, 61],
+                [12, 22, 32, 42, 52, 62],
+                [13, 23, 33, 43, 53, 63],
+                [14, 24, 34, 44, 54, 64],
+                [15, 25, 35, 45, 55, 65],
+                [16, 26, 36, 46, 56, 66],
+            ]
+        )
         tensor = SymbolicTensor(data)
         new_tensor = tensor.to_6x6()
         self.assertIsInstance(new_tensor, SymbolicSixBySixTensor)
         self.assertEqual(new_tensor.data, data)
-        
-        
 
     def test_from_list(self):
         components = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
@@ -981,6 +984,66 @@ class TestSymbolicSymmetricThreeByThreeTensor(unittest.TestCase):
         pass
 
     def test_diagonalize(self):
+        pass
+
+
+class TestSymbolicStressTensor(unittest.TestCase):
+    def test_init(self):
+        s_1, s_2, s_3, s_4, s_5, s_6 = sp.symbols(
+            "\\sigma_1 \\sigma_2 \\sigma_3 \\sigma_4 \\sigma_5 \\sigma_6"
+        )
+        data = sp.NDimArray([s_1, s_2, s_3, s_4, s_5, s_6])
+        stress_tensor = SymbolicStressTensor(data)
+        self.assertEqual(stress_tensor.data, data)
+        self.assertEqual(stress_tensor.name, None)
+        self.assertEqual(stress_tensor.notation, "standard")
+        self.assertEqual(stress_tensor.tensor_params, {})
+
+    def test_create(self):
+        s_1, s_2, s_3, s_4, s_5, s_6 = sp.symbols(
+            "\\sigma_1 \\sigma_2 \\sigma_3 \\sigma_4 \\sigma_5 \\sigma_6"
+        )
+        data = sp.NDimArray([s_1, s_2, s_3, s_4, s_5, s_6])
+
+        stress_tensor = SymbolicStressTensor.create()
+        self.assertIsInstance(stress_tensor, SymbolicStressTensor)
+        stress_tensor = SymbolicStressTensor(data)
+
+    def test_to_general(self):
+        pass
+
+    def test_normal_components(self):
+        s_1, s_2, s_3, s_4, s_5, s_6 = sp.symbols(
+            "\\sigma_1 \\sigma_2 \\sigma_3 \\sigma_4 \\sigma_5 \\sigma_6"
+        )
+        data = sp.NDimArray([s_1, s_2, s_3, s_4, s_5, s_6])
+        stress_tensor = SymbolicStressTensor(data)
+        self.assertEqual(
+            stress_tensor.normal_components(),
+            sp.NDimArray([s_1, s_2, s_3]),
+        )
+
+    def test_shear_components(self):
+        s_1, s_2, s_3, s_4, s_5, s_6 = sp.symbols(
+            "\\sigma_1 \\sigma_2 \\sigma_3 \\sigma_4 \\sigma_5 \\sigma_6"
+        )
+        data = sp.NDimArray([s_1, s_2, s_3, s_4, s_5, s_6])
+        stress_tensor = SymbolicStressTensor(data)
+        self.assertEqual(
+            stress_tensor.shear_components(),
+            sp.NDimArray([s_4, s_5, s_6]),
+        )
+
+    def test_principal_components(self):
+        pass
+
+    def test_pressure(self):
+        pass
+
+    def test_tresca(self):
+        pass
+
+    def test_von_mises(self):
         pass
 
 

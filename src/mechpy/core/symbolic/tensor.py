@@ -102,7 +102,9 @@ class SymbolicTensor:
             )
         raise ValueError("The tensor is not a 3x3 Array.")
 
-    def to_sym_3x3(self, notation="standard"):
+    def to_sym_3x3(self, notation=None):
+        if notation is None:
+            notation = "standard"
         if self.data.shape == (3, 3) and self.is_symmetric():
             return self.to_3x3().to_symmetric(notation)
         raise ValueError("The tensor is not a symmetric 3x3 Array.")
@@ -137,19 +139,28 @@ class SymbolicTensor:
         return cls(data, name=name)
 
     def subs_tensor_params(self, param_values):
-        pass
+        if not isinstance(param_values, dict):
+            raise TypeError("param_values must be a dictionary")
 
-    def subs(self, subs_dict, keys=False):
-        raise DeprecationWarning
-        # try:
-        #     if keys:
-        #         for k, v in subs_dict.items():
-        #             component = self.data[k]
-        #             self.data = self.data.subs({component: v})
-        #     else:
-        #         self.data = self.data.subs(subs_dict)
-        # except Exception as e:
-        #     raise RuntimeError(f"An error occurred during substitution: {e}")
+        # Perform the substitution for provided parameters
+        for param, value in param_values.items():
+            if not param in self.tensor_params:
+                raise ValueError(f"Parameter {param} not found in tensor parameters")
+
+            self.data = self.data.subs(param, value)
+            self.tensor_params.pop(param)
+
+    def subs_tensor_components(self, components_values):
+        data = sp.MutableDenseNDimArray(self.data)
+        for key, value in components_values.items():
+            data[key] = value
+        self.data = sp.NDimArray(data)
+
+    def subs(self, subs_dict):
+        try:
+            self.data = self.data.subs(subs_dict)
+        except Exception as e:
+            raise RuntimeError(f"An error occurred during substitution: {e}")
 
     def __matmul__(self, other):
         if not isinstance(other, SymbolicTensor):
@@ -195,7 +206,9 @@ class SymbolicThreeByThreeTensor(SymbolicTensor):
     def create(cls, name):
         return super().create(cls.shape, name)
 
-    def to_symmetric(self, notation="standard"):
+    def to_symmetric(self, notation=None):
+        if notation is None:
+            notation = "standard"
         if not self.is_symmetric():
             raise ValueError("The tensor is not symmetric.")
         NOTATIONS = SymbolicSymmetricThreeByThreeTensor.NOTATIONS
@@ -296,11 +309,13 @@ class SymbolicSymmetricThreeByThreeTensor(SymbolicTensor):
         self,
         data,
         name=None,
-        notation="standard",
+        notation=None,
         tensor_params=None,
     ):
         if not isinstance(data, sp.NDimArray) or data.shape != self.shape:
             raise ValueError("Data must be a 6x1 SymPy Array.")
+        if notation is None:
+            notation = "standard"
         if notation not in self.NOTATIONS.keys():
             raise NotImplementedError(f"Notation {notation} not implemented.")
 
@@ -318,10 +333,12 @@ class SymbolicSymmetricThreeByThreeTensor(SymbolicTensor):
         cls,
         components,
         name=None,
-        notation="standard",
+        notation=None,
     ):
         if not isinstance(components, list):
             raise ValueError("Input must be a list")
+        if notation is None:
+            notation = "standard"
         if notation not in cls.NOTATIONS.keys():
             raise NotImplementedError(f"Notation {notation} not implemented")
 
@@ -338,8 +355,10 @@ class SymbolicSymmetricThreeByThreeTensor(SymbolicTensor):
     def create(
         cls,
         name,
-        notation="standard",
+        notation=None,
     ):
+        if notation is None:
+            notation = "standard"
         if notation == "voigt":
             mapping = cls.INVERSE_VOIGT_MAPPING
             components = [sp.symbols(f"{name}_{i+1}{j+1}") for i, j in mapping.values()]

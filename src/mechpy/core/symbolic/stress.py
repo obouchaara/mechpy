@@ -4,15 +4,22 @@ from .tensor import SymbolicSymmetricThreeByThreeTensor as SS3X3T
 
 
 class SymbolicStressTensor(SS3X3T):
-    STRESS_VOIGT_MAPPING = {0: 1, 1: 1, 2: 1, 3: 1, 4: 1, 5: 1}
+    STRESS_VOIGT_MAPPING = {
+        0: 1,
+        1: 1,
+        2: 1,
+        3: 1,
+        4: 1,
+        5: 1,
+    }
 
-    def __init__(self, data, name=None, notation=1):
+    def __init__(self, data, name=None, notation=None):
         super().__init__(data, name=name, notation=notation)
 
     @classmethod
-    def create(cls, name="\sigma", notation=1):
+    def create(cls, name="\\sigma", notation=None):
         stress_tensor = super().create(name, notation)
-        if notation == 2:
+        if notation == "voigt":
             data = stress_tensor.data
             mapping = cls.STRESS_VOIGT_MAPPING
             new_components = [data[key] * value for key, value in mapping.items()]
@@ -20,13 +27,14 @@ class SymbolicStressTensor(SS3X3T):
         return stress_tensor
 
     def to_general(self):
-        if self.notation == 1:
+        if self.notation == "standard":
             if self.name:
                 return SymbolicStressTensor.create(
-                    name=self.name, notation=2
+                    name=self.name,
+                    notation="voigt",
                 ).to_general()
             raise ValueError("Should have a name")
-        elif self.notation == 2:
+        elif self.notation == "voigt":
             data = self.data
             mapping = self.STRESS_VOIGT_MAPPING
             new_components = [data[key] / value for key, value in mapping.items()]
@@ -38,7 +46,7 @@ class SymbolicStressTensor(SS3X3T):
 
     def shear_components(self):
         return self.data[3:]
-    
+
     def principal_components(self):
         return self.eigenvalues().keys()
 
