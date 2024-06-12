@@ -276,8 +276,8 @@ class SymbolicSymmetricThreeByThreeTensor(SymbolicTensor):
             "map": STANDARD_MAPPING,
             "inverse_map": INVERSE_STANDARD_MAPPING,
         },
-        "voight": {
-            "name": "Voight notation",
+        "voigt": {
+            "name": "Voigt notation",
             "map": VOIGT_MAPPING,
             "inverse_map": INVERSE_VOIGT_MAPPING,
         },
@@ -340,7 +340,7 @@ class SymbolicSymmetricThreeByThreeTensor(SymbolicTensor):
         name,
         notation="standard",
     ):
-        if notation == "voight":
+        if notation == "voigt":
             mapping = cls.INVERSE_VOIGT_MAPPING
             components = [sp.symbols(f"{name}_{i+1}{j+1}") for i, j in mapping.values()]
             return cls.from_list(components, name=name, notation=notation)
