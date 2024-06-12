@@ -26,6 +26,10 @@ from mechpy.core.symbolic.stress import (
     SymbolicStressTensor,
 )
 
+from mechpy.core.symbolic.strain import (
+    SymbolicStrainTensor,
+)
+
 
 class TestSymbolicCoordSystem(unittest.TestCase):
     def test_init(self):
@@ -1007,7 +1011,7 @@ class TestSymbolicStressTensor(unittest.TestCase):
 
         stress_tensor = SymbolicStressTensor.create()
         self.assertIsInstance(stress_tensor, SymbolicStressTensor)
-        stress_tensor = SymbolicStressTensor(data)
+        self.assertEqual(stress_tensor.data, data)
 
     def test_to_general(self):
         pass
@@ -1044,6 +1048,44 @@ class TestSymbolicStressTensor(unittest.TestCase):
         pass
 
     def test_von_mises(self):
+        pass
+
+
+class TestSymbolicStrainTensor(unittest.TestCase):
+    def test_init(self):
+        s_1, s_2, s_3, s_4, s_5, s_6 = sp.symbols(
+            "\\epsilon_1 \\epsilon_2 \\epsilon_3 \\epsilon_4 \\epsilon_5 \\epsilon_6"
+        )
+        data = sp.NDimArray([s_1, s_2, s_3, s_4, s_5, s_6])
+        strain_tensor = SymbolicStrainTensor(data)
+        self.assertEqual(strain_tensor.data, data)
+        self.assertEqual(strain_tensor.name, None)
+        self.assertEqual(strain_tensor.notation, "standard")
+        self.assertEqual(strain_tensor.tensor_params, {})
+
+    def test_create(self):
+        s_1, s_2, s_3, s_4, s_5, s_6 = sp.symbols(
+            "\\epsilon_1 \\epsilon_2 \\epsilon_3 \\epsilon_4 \\epsilon_5 \\epsilon_6"
+        )
+        data = sp.NDimArray([s_1, s_2, s_3, s_4, s_5, s_6])
+
+        strain_tensor = SymbolicStrainTensor.create()
+        self.assertIsInstance(strain_tensor, SymbolicStrainTensor)
+        self.assertEqual(strain_tensor.data, data)
+
+    def test_to_general(self):
+        pass
+
+    def test_normal_components(self):
+        pass
+
+    def test_shear_components(self):
+        pass
+
+    def test_principal_components(self):
+        pass
+
+    def test_volumetric_strain(self):
         pass
 
 
