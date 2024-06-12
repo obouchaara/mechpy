@@ -90,15 +90,19 @@ class SymbolicTensor:
 
     def to_matrix(self):
         if not self.is_square():
-            raise ValueError("The Tensor should be a second rank square")
-        return sp.Matrix(self.data.tolist())
+            raise ValueError("The Tensor should be a second rank square.")
+        return sp.MutableDenseMatrix(self.data.tolist())
 
     def to_3x3(self):
         if self.data.shape == (3, 3):
-            return SymbolicThreeByThreeTensor(self.data)
+            return SymbolicThreeByThreeTensor(
+                data=self.data,
+                name=self.name,
+                tensor_params=self.tensor_params,
+            )
         raise ValueError("The tensor is not a 3x3 Array.")
 
-    def to_sym_3x3(self, notation=1):
+    def to_sym_3x3(self, notation="standard"):
         if self.data.shape == (3, 3) and self.is_symmetric():
             return self.to_3x3().to_symmetric(notation)
         raise ValueError("The tensor is not a symmetric 3x3 Array.")
@@ -191,16 +195,17 @@ class SymbolicThreeByThreeTensor(SymbolicTensor):
     def create(cls, name):
         return super().create(cls.shape, name)
 
-    def to_symmetric(self, notation="Standard notation"):
-        if self.is_symmetric():
-            NOTATIONS = SymbolicSymmetricThreeByThreeTensor.NOTATIONS
-            if notation in NOTATIONS.keys():
-                mapping = NOTATIONS[notation]["inverse_map"]
-                components = [self.data[mapping[i]] for i in range(6)]
-                data = sp.NDimArray(components)
-                return SymbolicSymmetricThreeByThreeTensor(data, notation=notation)
+    def to_symmetric(self, notation="standard"):
+        if not self.is_symmetric():
+            raise ValueError("The tensor is not symmetric.")
+        NOTATIONS = SymbolicSymmetricThreeByThreeTensor.NOTATIONS
+        if notation not in NOTATIONS.keys():
             raise NotImplementedError(f"Notation {notation} not implemented")
-        raise ValueError("The tensor is not symmetric.")
+
+        mapping = NOTATIONS[notation]["inverse_map"]
+        components = [self.data[mapping[i]] for i in range(6)]
+        data = sp.NDimArray(components)
+        return SymbolicSymmetricThreeByThreeTensor(data, notation=notation)
 
 
 class SymbolicSixBySixTensor(SymbolicTensor):
@@ -266,11 +271,13 @@ class SymbolicSymmetricThreeByThreeTensor(SymbolicTensor):
     }
 
     NOTATIONS = {
-        "Standard notation": {
+        "standard": {
+            "name": "Standard notation",
             "map": STANDARD_MAPPING,
             "inverse_map": INVERSE_STANDARD_MAPPING,
         },
-        "Voight notation": {
+        "voight": {
+            "name": "Voight notation",
             "map": VOIGT_MAPPING,
             "inverse_map": INVERSE_VOIGT_MAPPING,
         },
@@ -280,7 +287,6 @@ class SymbolicSymmetricThreeByThreeTensor(SymbolicTensor):
             "inverse_map": INVERSE_STANDARD_MAPPING,
         },
         2: {
-            "name": "Voight notation",
             "map": VOIGT_MAPPING,
             "inverse_map": INVERSE_VOIGT_MAPPING,
         },
@@ -290,13 +296,13 @@ class SymbolicSymmetricThreeByThreeTensor(SymbolicTensor):
         self,
         data,
         name=None,
-        notation="Standard notation",
+        notation="standard",
         tensor_params=None,
     ):
         if not isinstance(data, sp.NDimArray) or data.shape != self.shape:
             raise ValueError("Data must be a 6x1 SymPy Array.")
-        if not notation in self.NOTATIONS.keys():
-            raise NotImplementedError(f"Notation {notation} not implemented")
+        if notation not in self.NOTATIONS.keys():
+            raise NotImplementedError(f"Notation {notation} not implemented.")
 
         super().__init__(data, name, tensor_params)
         self.notation = notation
@@ -308,30 +314,37 @@ class SymbolicSymmetricThreeByThreeTensor(SymbolicTensor):
         return True
 
     @classmethod
-    def from_list(cls, components, name=None, notation=1):
-        if isinstance(components, list):
-            if len(components) == 6:
-                if notation in cls.NOTATIONS.keys():
-                    data = sp.NDimArray(components)
-                    return cls(data, name=name, notation=notation)
-                raise NotImplementedError(f"Notation {notation} not implemented")
-            elif len(components) == 9:
-                return SymbolicThreeByThreeTensor.from_list(components).to_symmetric(
-                    notation
-                )
+    def from_list(
+        cls,
+        components,
+        name=None,
+        notation="standard",
+    ):
+        if not isinstance(components, list):
+            raise ValueError("Input must be a list")
+        if notation not in cls.NOTATIONS.keys():
+            raise NotImplementedError(f"Notation {notation} not implemented")
+
+        if len(components) == 6:
+            data = sp.NDimArray(components)
+            return cls(data, name=name, notation=notation)
+        elif len(components) == 9:
+            tensor = SymbolicThreeByThreeTensor.from_list(components)
+            return tensor.to_symmetric(notation)
+        else:
             raise ValueError("Imput must be a list of 6 or 9 elements")
-        raise ValueError("Input must be a list")
 
     @classmethod
-    def create(cls, name, notation=1):
-        if notation == 1:
-            return super().create(cls.shape, name)
-        elif notation == 2:
+    def create(
+        cls,
+        name,
+        notation="standard",
+    ):
+        if notation == "voight":
             mapping = cls.INVERSE_VOIGT_MAPPING
             components = [sp.symbols(f"{name}_{i+1}{j+1}") for i, j in mapping.values()]
             return cls.from_list(components, name=name, notation=notation)
-        else:
-            raise NotImplementedError(f"Notation {notation} not implemented")
+        return super().create(cls.shape, name)
 
     def to_general(self):
         mapping = self.NOTATIONS[self.notation]["map"]
@@ -343,7 +356,7 @@ class SymbolicSymmetricThreeByThreeTensor(SymbolicTensor):
         if isinstance(key, int):
             return self.data[key]
         elif isinstance(key, tuple) and len(key) == 2:
-            return self.data[self.VOIGT_MAPPING[key]]
+            return self.data[self.NOTATIONS[self.notation]["map"][key]]
         else:
             raise ValueError("Key must be int or tuple of 2 elements")
 
