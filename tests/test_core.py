@@ -30,6 +30,10 @@ from mechpy.core.symbolic.strain import (
     SymbolicStrainTensor,
 )
 
+from mechpy.core.symbolic.displacement import (
+    SymbolicDisplacement,
+)
+
 
 class TestSymbolicCoordSystem(unittest.TestCase):
     def test_init(self):
@@ -1087,6 +1091,32 @@ class TestSymbolicStrainTensor(unittest.TestCase):
 
     def test_volumetric_strain(self):
         pass
+
+
+class TestSymbolicDisplacement(unittest.TestCase):
+    def test_init(self):
+        coord_system = SymbolicCartesianCoordSystem()
+        data = sp.NDimArray([1, 2, 3])
+        displacement_field = SymbolicDisplacement(coord_system=coord_system, data=data)
+        self.assertEqual(displacement_field.data, data)
+
+    def test_strain_tensor(self):
+        coord_system = SymbolicCartesianCoordSystem()
+        x1, x2, x3 = coord_system.basis
+        data = sp.NDimArray([x1, x2, x3])
+        displacement_field = SymbolicDisplacement(coord_system=coord_system, data=data)
+        strain_tensor = displacement_field.strain_tensor()
+        self.assertEqual(strain_tensor.data, sp.NDimArray([1, 1, 1, 0, 0, 0]))
+
+        data = sp.NDimArray([x2, x3, x1])
+        displacement_field = SymbolicDisplacement(coord_system=coord_system, data=data)
+        strain_tensor = displacement_field.strain_tensor()
+        self.assertEqual(strain_tensor.data, sp.NDimArray([0, 0, 0, 1, 1, 1]))
+
+        data = sp.NDimArray([x3, x2, x1])
+        displacement_field = SymbolicDisplacement(coord_system=coord_system, data=data)
+        strain_tensor = displacement_field.strain_tensor()
+        self.assertEqual(strain_tensor.data, sp.NDimArray([0, 1, 0, 0, 0, 2]))
 
 
 if __name__ == "__main__":

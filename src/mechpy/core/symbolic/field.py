@@ -13,7 +13,7 @@ from .coord import (
 
 
 class SymbolicField:
-    def __init__(self, coord_system, data, field_params=None):
+    def __init__(self, coord_system, data, field_params=None, symbols_validation=True):
         """
         Initialize a SymbolicField instance.
 
@@ -47,23 +47,30 @@ class SymbolicField:
                 "Field parameters must not overlap with coordinate system basis symbols."
             )
 
-        invalid_symbols = self.get_invalid_symbols()
-        if len(invalid_symbols):
-            raise ValueError(
-                "The field data contains symbols not in the basis or field parameters: "
-                + ", ".join(str(s) for s in invalid_symbols)
-            )
+        if symbols_validation:
+            invalid_symbols = self.get_invalid_symbols()
+            if len(invalid_symbols):
+                raise ValueError(
+                    "The field data contains symbols not in the basis or field parameters: "
+                    + ", ".join(str(s) for s in invalid_symbols)
+                )
 
     def __repr__(self):
         return f"{self.__class__.__name__}(\n{self.coord_system.basis},\n{self.data},\n{self.field_params})"
 
     def get_invalid_symbols(self):
+        def get_ignored_symbols(data):
+            symbols_set = set()
+            # to implement
+            return symbols_set
+    
         basis = set(self.coord_system.basis)
         field_param = set(self.field_params)
         valid_symbols = basis.union(field_param)
         free_symbols = self.data.free_symbols
         free_symbols = {s for s in free_symbols if not isinstance(s, sp.Number)}
-        invalid_symbols = free_symbols - valid_symbols
+        ignored_symbols = get_ignored_symbols(self.data)
+        invalid_symbols = free_symbols - valid_symbols - ignored_symbols
         return invalid_symbols
 
     def subs_field_params(self, param_values):
@@ -135,8 +142,8 @@ class SymbolicField:
 
 
 class SymbolicSpatialField(SymbolicField):
-    def __init__(self, coord_system, data, field_params=None):
-        super().__init__(coord_system, data, field_params)
+    def __init__(self, coord_system, data, field_params=None, symbols_validation=True):
+        super().__init__(coord_system, data, field_params, symbols_validation)
 
     def lambdify(self):
         """
@@ -276,7 +283,7 @@ class SymbolicVectorField(SymbolicSpatialField):
     shape = (3,)
 
     @classmethod
-    def create(cls, coord_system=None, data=None, field_params=None):
+    def create(cls, coord_system=None, data=None, field_params=None, symbols_validation=True):
         if data is None:
             if coord_system is None:
                 coord_system = SymbolicCartesianCoordSystem()
@@ -290,16 +297,18 @@ class SymbolicVectorField(SymbolicSpatialField):
             if coord_system is None:
                 coord_system = SymbolicCartesianCoordSystem()
             try:
-                components = sp.NDimArray(data, shape=(3, 3))
-                is_symbolic = lambda _: isinstance(_, (sp.Number, sp.Symbol, sp.Expr)) # to validation module
+                components = sp.NDimArray(data, shape=(3,))
+                is_symbolic = lambda _: isinstance(
+                    _, (sp.Number, sp.Symbol, sp.Expr)
+                )  # to validation module
                 if not all(is_symbolic(_) for _ in components):
                     raise ValueError("data type error")
             except:
                 raise ValueError("Conversion error")
 
-            data = sp.NDimArray(data)
+            data = sp.NDimArray(data, shape=(3,))
 
-        return cls(data, coord_system, field_params)
+        return cls(coord_system, data, field_params, symbols_validation)
 
     @classmethod
     def create_linear(cls, coord_system=None, data=None, field_params=None):
