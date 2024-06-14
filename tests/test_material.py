@@ -91,7 +91,7 @@ class TestSymbolicIsotropicMaterial(unittest.TestCase):
         C_11 = lamda + 2 * mu
         C_12 = lamda
         C_44 = mu
-        expected_data = sp.factor(
+        expected_data = sp.sympify(
             sp.NDimArray(
                 [
                     [C_11, C_12, C_12, 0, 0, 0],
@@ -148,7 +148,7 @@ class TestSymbolicIsotropicMaterial(unittest.TestCase):
             )
         )
         self.assertEqual(tensor.data, expected_data)
-        
+
         lamda, mu = sp.symbols("lamda mu")
         material = SymbolicIsotropicMaterial(lamda=lamda, mu=mu)
         tensor = material.compliance_tensor()
@@ -170,6 +170,95 @@ class TestSymbolicIsotropicMaterial(unittest.TestCase):
             )
         )
         self.assertEqual(tensor.data, expected_data)
+
+
+class TestSymbolicTransverseIsotropicMaterial(unittest.TestCase):
+    def test_init(self):
+        cls = SymbolicTransverseIsotropicMaterial
+        material_props = {_: sp.symbols(_) for _ in cls.props_keys}
+        material = cls(**material_props)
+        for key in material_props.keys():
+            self.assertEqual(
+                material.__getattribute__(key),
+                material_props[key],
+            )
+
+    def test_stiffness_tensor(self):
+        cls = SymbolicTransverseIsotropicMaterial
+        material_props = {_: sp.symbols(_) for _ in cls.props_keys}
+        material = cls(**material_props)
+        tensor = material.stiffness_tensor()
+        self.assertIsInstance(tensor, SymbolicStiffnessTensor)
+
+        E_L = material_props["E_L"]
+        E_T = material_props["E_T"]
+        nu = material_props["nu"]
+        G_L = material_props["G_L"]
+        G_T = material_props["G_T"]
+
+        C_11 = E_L / (1 - nu**2)
+        C_12 = E_L * nu / (1 - nu)
+        C_33 = E_T
+        C_44 = G_L
+        C_66 = G_T
+
+        expected_data = sp.simplify(
+            sp.NDimArray(
+                [
+                    [C_11, C_12, C_12, 0, 0, 0],
+                    [C_12, C_11, C_12, 0, 0, 0],
+                    [C_12, C_12, C_33, 0, 0, 0],
+                    [0, 0, 0, C_44, 0, 0],
+                    [0, 0, 0, 0, C_44, 0],
+                    [0, 0, 0, 0, 0, C_66],
+                ]
+            )
+        )
+        self.assertEqual(tensor.data, expected_data)
+
+
+class TestSymbolicOrthotropicMaterial(unittest.TestCase):
+    def test_init(self):
+        cls = SymbolicOrthotropicMaterial
+        material_props = {_: sp.symbols(_) for _ in cls.props_keys}
+        material = cls(**material_props)
+        for key in material_props.keys():
+            self.assertEqual(
+                material.__getattribute__(key),
+                material_props[key],
+            )
+
+    def test_stiffness_tensor(self):
+        cls = SymbolicOrthotropicMaterial
+        material_props = {_: sp.symbols(_) for _ in cls.props_keys}
+        material = cls(**material_props)
+        tensor = material.stiffness_tensor()
+        self.assertIsInstance(tensor, SymbolicStiffnessTensor)
+
+        C11 = material_props["E1"]
+        C22 = material_props["E2"]
+        C33 = material_props["E3"]
+        C44 = material_props["G23"]
+        C55 = material_props["G31"]
+        C66 = material_props["G12"]
+        C12 = material_props["nu12"] * C22
+        C13 = material_props["nu31"] * C11
+        C23 = material_props["nu23"] * C33
+
+        expected_data = sp.sympify(
+            sp.NDimArray(
+                [
+                    [C11, C12, C13, 0, 0, 0],
+                    [C12, C22, C23, 0, 0, 0],
+                    [C13, C23, C33, 0, 0, 0],
+                    [0, 0, 0, C44, 0, 0],
+                    [0, 0, 0, 0, C55, 0],
+                    [0, 0, 0, 0, 0, C66],
+                ]
+            )
+        )
+        self.assertEqual(tensor.data, expected_data)
+
 
 if __name__ == "__main__":
     unittest.main()
