@@ -14,20 +14,18 @@ class SymbolicStiffnessTensor(SymbolicSixBySixTensor):
 
 
 class SymbolicMaterial:
-    def __init__(self, mechanical_props=None, thermic_props=None):
-        self.mechanical_props = mechanical_props or {}
-        self.thermic_props = thermic_props or {}
+    def __init__(self, **material_props):
+        for k, v in material_props.items():
+            setattr(self, k, v)
 
     def __repr__(self):
-        return f"{self.__class__.__name__}(\nmechanical_props={self.mechanical_props},\nthermic_props={self.thermic_props}\n)"
+        props = ", ".join(f"{k}={v!r}" for k, v in self.__dict__.items())
+        return f"{self.__class__.__name__}({props})"
 
 
 class SymbolicElasticMaterial(SymbolicMaterial):
-    def __init__(self, mechanical_props=None):
-        super().__init__(mechanical_props)
-
-    def __repr__(self):
-        return f"{self.__class__.__name__}(\n{self.mechanical_props}\n)"
+    def __init__(self, **material_props):
+        super().__init__(**material_props)
 
     def stiffness_tensor(self):
         raise NotImplementedError("Subclasses must implement this method.")
@@ -39,70 +37,40 @@ class SymbolicElasticMaterial(SymbolicMaterial):
 
 
 class SymbolicIsotropicMaterial(SymbolicElasticMaterial):
-    def __init__(self, youngs_modulus=None, poisson_ratio=None, **kwargs):
-        if youngs_modulus and poisson_ratio:
-            self.youngs_modulus = youngs_modulus
-            self.poisson_ratio = poisson_ratio
-        elif "lamda" in kwargs and "mu" in kwargs:
-            lamda = kwargs["lamda"]
-            mu = kwargs["mu"]
-            self.lamda = lamda
-            self.mu = mu
-        else:
-            E, nu = sp.symbols("E nu")
-            self.youngs_modulus = E
-            self.poisson_ratio = nu
-
-        if hasattr(self, "youngs_modulus") and hasattr(self, "poisson_ratio"):
-            mechanical_props = {
-                "youngs_modulus": self.youngs_modulus,
-                "poisson_ratio": self.poisson_ratio,
-            }
-        elif hasattr(self, "lamda") and hasattr(self, "mu"):
-            lamda, mu = self.lamda, self.mu
-            E_expr, nu_expr = self.get_youngs_params(lamda, mu)
-            mechanical_props = {
-                "youngs_modulus": E_expr,
-                "poisson_ratio": nu_expr,
-            }
-        else:
+    def __init__(self, **material_props):
+        keys = material_props.keys()
+        if not ({"E", "nu"} <= set(keys) or {"lamda", "mu"} <= set(keys)):
             raise ValueError(
-                "Isotropic Material should be defined by (E, nu) or (lamda, mu)"
+                "Material properties must include either both 'E' and 'nu' or both 'lamda' and 'mu'"
             )
+        super().__init__(**material_props)
 
-        super().__init__(mechanical_props=mechanical_props)
-
-    def get_lame_params(self, E, nu):
+    @staticmethod
+    def lame_params(E, nu):
         lamda = (E * nu) / ((1 + nu) * (1 - 2 * nu))
         mu = E / (2 * (1 + nu))
-        return (lamda, mu)
+        return lamda, mu
 
-    def get_youngs_params(self, lamda, mu):
+    @staticmethod
+    def youngs_params(lamda, mu):
         E = mu * (3 * lamda + 2 * mu) / (lamda + mu)
         mu = lamda / (2 * (lamda + mu))
-        return (E, mu)
+        return E, mu
 
     def stiffness_tensor(self, lames_param=True) -> SymbolicStiffnessTensor:
-        if lames_param:
-            if hasattr(self, "lamda") and hasattr(self, "mu"):
-                lamda, mu = self.lamda, self.mu
-            else:
-                lamda, mu = sp.symbols("lamda mu")
+        if lames_param and hasattr(self, "lamda") and hasattr(self, "mu"):
+            lamda, mu = self.lamda, self.mu
+        elif hasattr(self, "E") and hasattr(self, "nu"):
+            lamda, mu = SymbolicIsotropicMaterial.lame_params(self.E, self.nu)
         else:
-            if hasattr(self, "youngs_modulus") and hasattr(self, "poisson_ratio"):
-                E = self.youngs_modulus
-                nu = self.poisson_ratio
-                lamda, mu = self.get_lame_params(E, nu)
-            else:
-                raise ValueError(
-                    "If lames_param is False the material should be defined by (E, nu)"
-                )
+            raise AttributeError(
+                "Material properties must include either both 'E' and 'nu' or both 'lamda' and 'mu'"
+            )
 
         C_11 = lamda + 2 * mu
         C_12 = lamda
         C_44 = mu
-
-        C = sp.ImmutableDenseNDimArray(
+        C = sp.NDimArray(
             [
                 [C_11, C_12, C_12, 0, 0, 0],
                 [C_12, C_11, C_12, 0, 0, 0],
@@ -112,17 +80,23 @@ class SymbolicIsotropicMaterial(SymbolicElasticMaterial):
                 [0, 0, 0, 0, 0, C_44],
             ]
         )
-
-        return SymbolicStiffnessTensor(sp.simplify(C))
+        return SymbolicStiffnessTensor(sp.simplify(sp.factor(C)))
 
     def compliance_tensor(self) -> SymbolicComplianceTensor:
-        E = self.mechanical_props["youngs_modulus"]
-        nu = self.mechanical_props["poisson_ratio"]
+        if hasattr(self, "E") and hasattr(self, "nu"):
+            E, nu = self.E, self.nu
+        elif hasattr(self, "lamda") and hasattr(self, "mu"):
+            E, nu = SymbolicIsotropicMaterial.youngs_params(self.lamda, self.mu)
+        else:
+            raise AttributeError(
+                "Material properties must include either both 'E' and 'nu' or both 'lamda' and 'mu'"
+            )
+
         S_11 = 1 / E
         S_12 = -(nu / E)
         S_44 = (2 * (1 + nu)) / E
 
-        S = sp.ImmutableDenseNDimArray(
+        S = sp.NDimArray(
             [
                 [S_11, S_12, S_12, 0, 0, 0],
                 [S_12, S_11, S_12, 0, 0, 0],
@@ -133,7 +107,7 @@ class SymbolicIsotropicMaterial(SymbolicElasticMaterial):
             ]
         )
 
-        return SymbolicComplianceTensor(sp.simplify(S))
+        return SymbolicComplianceTensor(sp.simplify(sp.factor(S)))
 
 
 class SymbolicTransverseIsotropicMaterial(SymbolicElasticMaterial):
@@ -145,45 +119,36 @@ class SymbolicTransverseIsotropicMaterial(SymbolicElasticMaterial):
         "shear_modulus_transverse": "G_T",
     }
 
-    def __init__(self, **kwargs):
-        mechanical_props = {}
+    def __init__(self, **material_props):
+        # check the props
 
-        for prop, symbol_name in self.props_dict.items():
-            if prop in kwargs:
-                value = kwargs[prop]
-            else:
-                value = sp.symbols(symbol_name)
+        super().__init__(**material_props)
 
-            setattr(self, prop, value)
-            mechanical_props[prop] = value
+    # def stiffness_tensor(self) -> SymbolicStiffnessTensor:
+    #     E_L = self.youngs_modulus_parallel
+    #     E_T = self.youngs_modulus_transverse
+    #     nu = self.poisson_ratio
+    #     G_L = self.shear_modulus_parallel
+    #     G_T = self.shear_modulus_transverse
 
-        super().__init__(mechanical_props=mechanical_props)
+    #     C_11 = E_L / (1 - nu**2)
+    #     C_12 = E_L * nu / (1 - nu)
+    #     C_33 = E_T
+    #     C_44 = G_L
+    #     C_66 = G_T
 
-    def stiffness_tensor(self) -> SymbolicStiffnessTensor:
-        E_L = self.youngs_modulus_parallel
-        E_T = self.youngs_modulus_transverse
-        nu = self.poisson_ratio
-        G_L = self.shear_modulus_parallel
-        G_T = self.shear_modulus_transverse
+    #     C = sp.ImmutableDenseNDimArray(
+    #         [
+    #             [C_11, C_12, C_12, 0, 0, 0],
+    #             [C_12, C_11, C_12, 0, 0, 0],
+    #             [C_12, C_12, C_33, 0, 0, 0],
+    #             [0, 0, 0, C_44, 0, 0],
+    #             [0, 0, 0, 0, C_44, 0],
+    #             [0, 0, 0, 0, 0, C_66],
+    #         ]
+    #     )
 
-        C_11 = E_L / (1 - nu**2)
-        C_12 = E_L * nu / (1 - nu)
-        C_33 = E_T
-        C_44 = G_L
-        C_66 = G_T
-
-        C = sp.ImmutableDenseNDimArray(
-            [
-                [C_11, C_12, C_12, 0, 0, 0],
-                [C_12, C_11, C_12, 0, 0, 0],
-                [C_12, C_12, C_33, 0, 0, 0],
-                [0, 0, 0, C_44, 0, 0],
-                [0, 0, 0, 0, C_44, 0],
-                [0, 0, 0, 0, 0, C_66],
-            ]
-        )
-
-        return SymbolicStiffnessTensor(sp.simplify(C))
+    #     return SymbolicStiffnessTensor(sp.factor(sp.simplify(C)))
 
 
 class SymbolicOrthotropicMaterial(SymbolicElasticMaterial):
@@ -199,36 +164,27 @@ class SymbolicOrthotropicMaterial(SymbolicElasticMaterial):
         "nu31",
     ]
 
-    def __init__(self, **kwargs):
-        mechanical_props = {}
+    def __init__(self, **material_props):
+        # check the props
 
-        for prop in self.props_keys:
-            if prop in kwargs:
-                value = kwargs[prop]
-            else:
-                value = sp.symbols(prop)
+        super().__init__(**material_props)
 
-            setattr(self, prop, value)
-            mechanical_props[prop] = value
+    # def stiffness_tensor(self) -> SymbolicStiffnessTensor:
+    #     C11, C22, C33 = self.E1, self.E2, self.E3
+    #     C44, C55, C66 = self.G23, self.G31, self.G12
+    #     C12 = self.nu12 * C22
+    #     C13 = self.nu31 * C11
+    #     C23 = self.nu23 * C33
 
-        super().__init__(mechanical_props=mechanical_props)
+    #     C = sp.ImmutableDenseNDimArray(
+    #         [
+    #             [C11, C12, C13, 0, 0, 0],
+    #             [C12, C22, C23, 0, 0, 0],
+    #             [C13, C23, C33, 0, 0, 0],
+    #             [0, 0, 0, C44, 0, 0],
+    #             [0, 0, 0, 0, C55, 0],
+    #             [0, 0, 0, 0, 0, C66],
+    #         ]
+    #     )
 
-    def stiffness_tensor(self) -> SymbolicStiffnessTensor:
-        C11, C22, C33 = self.E1, self.E2, self.E3
-        C44, C55, C66 = self.G23, self.G31, self.G12
-        C12 = self.nu12 * C22
-        C13 = self.nu31 * C11
-        C23 = self.nu23 * C33
-
-        C = sp.ImmutableDenseNDimArray(
-            [
-                [C11, C12, C13, 0, 0, 0],
-                [C12, C22, C23, 0, 0, 0],
-                [C13, C23, C33, 0, 0, 0],
-                [0, 0, 0, C44, 0, 0],
-                [0, 0, 0, 0, C55, 0],
-                [0, 0, 0, 0, 0, C66],
-            ]
-        )
-
-        return SymbolicStiffnessTensor(sp.simplify(C))
+    #     return SymbolicStiffnessTensor(sp.factor(sp.simplify(C)))

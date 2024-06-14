@@ -1106,17 +1106,42 @@ class TestSymbolicDisplacement(unittest.TestCase):
         data = sp.NDimArray([x1, x2, x3])
         displacement_field = SymbolicDisplacement(coord_system=coord_system, data=data)
         strain_tensor = displacement_field.strain_tensor()
+        self.assertIsInstance(strain_tensor, SymbolicStrainTensor)
         self.assertEqual(strain_tensor.data, sp.NDimArray([1, 1, 1, 0, 0, 0]))
 
         data = sp.NDimArray([x2, x3, x1])
         displacement_field = SymbolicDisplacement(coord_system=coord_system, data=data)
         strain_tensor = displacement_field.strain_tensor()
+        self.assertIsInstance(strain_tensor, SymbolicStrainTensor)
         self.assertEqual(strain_tensor.data, sp.NDimArray([0, 0, 0, 1, 1, 1]))
 
         data = sp.NDimArray([x3, x2, x1])
         displacement_field = SymbolicDisplacement(coord_system=coord_system, data=data)
         strain_tensor = displacement_field.strain_tensor()
+        self.assertIsInstance(strain_tensor, SymbolicStrainTensor)
         self.assertEqual(strain_tensor.data, sp.NDimArray([0, 1, 0, 0, 0, 2]))
+
+        data = sp.NDimArray([x1, x1, x1])
+        displacement_field = SymbolicDisplacement(coord_system=coord_system, data=data)
+        strain_tensor = displacement_field.strain_tensor()
+        self.assertIsInstance(strain_tensor, SymbolicStrainTensor)
+        self.assertEqual(strain_tensor.data, sp.NDimArray([1, 0, 0, 1, 0, 1]))
+        self.assertEqual(
+            strain_tensor.to_general().data,
+            sp.NDimArray(
+                [
+                    [1, 0, 0],
+                    [0, 1 / 2, 0],
+                    [0, 0, 1 / 2],
+                ]
+            ),
+        )
+
+        data = sp.NDimArray([0, 0, 0])
+        displacement_field = SymbolicDisplacement(coord_system=coord_system, data=data)
+        strain_tensor = displacement_field.strain_tensor()
+        self.assertIsInstance(strain_tensor, SymbolicStrainTensor)
+        self.assertEqual(strain_tensor.data, sp.NDimArray([0, 0, 0, 0, 0, 0]))
 
 
 if __name__ == "__main__":
