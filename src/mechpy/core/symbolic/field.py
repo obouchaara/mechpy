@@ -13,20 +13,23 @@ from .coord import (
 
 
 class SymbolicField:
+    """
+    Represents a symbolic field in a given coordinate system.
+
+    :param coord_system: The coordinate system for the field.
+    :type coord_system: SymbolicCoordSystem
+    :param data: The field data.
+    :type data: sp.NDimArray
+    :param field_params: Additional field parameters. Defaults to {}.
+    :type field_params: dict, optional
+    :param symbols_validation: If True, validate symbols in the field data. Defaults to True.
+    :type symbols_validation: bool
+
+    :raises ValueError: If coord_system is not a SymbolicCoordSystem, data is not a NDimArray,
+                        or if field parameters overlap with coordinate system basis symbols.
+    """
+
     def __init__(self, coord_system, data, field_params=None, symbols_validation=True):
-        """
-        Initialize a SymbolicField instance.
-
-        :param coord_system: The coordinate system for the field.
-        :type coord_system: SymbolicCoordSystem
-        :param data: The field data.
-        :type data: sp.MutableDenseNDimArray
-        :param field_params: Additional field parameters. Defaults to {}.
-        :type field_params: dict, optional
-
-        :raises ValueError: If coord_system is not a SymbolicCoordSystem, data is not a MutableDenseNDimArray,
-                          or if field parameters overlap with coordinate system basis symbols.
-        """
         if not isinstance(coord_system, SymbolicCoordSystem):
             raise ValueError("Coord system must be a SymbolicCoordSystem.")
 
@@ -58,12 +61,19 @@ class SymbolicField:
     def __repr__(self):
         return f"{self.__class__.__name__}(\n{self.coord_system.basis},\n{self.data},\n{self.field_params})"
 
-    def get_invalid_symbols(self):
+    def get_invalid_symbols(self) -> set:
+        """
+        Get symbols in the field data that are not in the basis or field parameters.
+
+        :return: A set of invalid symbols.
+        :rtype: set
+        """
+
         def get_ignored_symbols(data):
             symbols_set = set()
             # to implement
             return symbols_set
-    
+
         basis = set(self.coord_system.basis)
         field_param = set(self.field_params)
         valid_symbols = basis.union(field_param)
@@ -76,16 +86,18 @@ class SymbolicField:
     def subs_field_params(self, param_values):
         """
         Substitute the provided field parameters with specific values, and
-        remove them from self.field_params. Raise an error if a parameter in
-        param_values is not in self.field_params.
+        remove them from self.field_params.
 
         :param param_values: A dictionary mapping parameters to their values.
+        :type param_values: dict
+        :raises TypeError: If param_values is not a dictionary.
+        :raises ValueError: If a parameter in param_values is not in self.field_params.
+
         :return: None. The method updates self.data and self.field_params in place.
         """
         if not isinstance(param_values, dict):
             raise TypeError("param_values must be a dictionary")
 
-        # Perform the substitution for provided parameters
         for param, value in param_values.items():
             if not param in self.field_params:
                 raise ValueError(f"Parameter {param} not found in field parameters")
@@ -97,14 +109,14 @@ class SymbolicField:
         """
         Converts the scalar field from its current coordinate system
         (cylindrical or spherical) to the Cartesian coordinate system.
+
+        :raises ValueError: If the current coordinate system is not cylindrical or spherical.
+
+        :return: A new SymbolicField in the Cartesian coordinate system.
+        :rtype: SymbolicField
         """
-        if not isinstance(
-            self.coord_system,
-            (
-                SymbolicCylindricalCoordSystem,
-                SymbolicSphericalCoordSystem,
-            ),
-        ):
+        coord_classes = (SymbolicCylindricalCoordSystem, SymbolicSphericalCoordSystem)
+        if not isinstance(self.coord_system, coord_classes):
             raise ValueError(
                 "Conversion to Cartesian is only implemented for cylindrical and spherical coordinate systems."
             )
@@ -116,6 +128,15 @@ class SymbolicField:
         )
 
     def to_cylindrical(self):
+        """
+        Converts the scalar field from its current coordinate system
+        (Cartesian) to the cylindrical coordinate system.
+
+        :raises NotImplementedError: If the current coordinate system is not Cartesian.
+
+        :return: A new SymbolicField in the cylindrical coordinate system.
+        :rtype: SymbolicField
+        """
         if not isinstance(self.coord_system, SymbolicCartesianCoordSystem):
             raise NotImplementedError(
                 "Conversion from non-Cartesian systems is not implemented"
@@ -128,6 +149,15 @@ class SymbolicField:
         )
 
     def to_spherical(self):
+        """
+        Converts the scalar field from its current coordinate system
+        (Cartesian) to the spherical coordinate system.
+
+        :raises NotImplementedError: If the current coordinate system is not Cartesian.
+
+        :return: A new SymbolicField in the spherical coordinate system.
+        :rtype: SymbolicField
+        """
         if not isinstance(self.coord_system, SymbolicCartesianCoordSystem):
             raise NotImplementedError(
                 "Conversion from non-Cartesian systems is not implemented"
@@ -138,6 +168,11 @@ class SymbolicField:
         return self.__class__(spherical_coord_system, spherical_data, self.field_params)
 
     def subs(self, subs_dict, keys=False):
+        """
+        Deprecated method for substituting values. Raises a warning.
+
+        :raises DeprecationWarning: This method is deprecated.
+        """
         raise DeprecationWarning
 
 
@@ -283,7 +318,13 @@ class SymbolicVectorField(SymbolicSpatialField):
     shape = (3,)
 
     @classmethod
-    def create(cls, coord_system=None, data=None, field_params=None, symbols_validation=True):
+    def create(
+        cls,
+        coord_system=None,
+        data=None,
+        field_params=None,
+        symbols_validation=True,
+    ):
         if data is None:
             if coord_system is None:
                 coord_system = SymbolicCartesianCoordSystem()

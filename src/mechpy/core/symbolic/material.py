@@ -4,39 +4,81 @@ from .tensor import SymbolicSixBySixTensor
 
 
 class SymbolicComplianceTensor(SymbolicSixBySixTensor):
+    """
+    Represents the compliance tensor used in elasticity calculations.
+
+    :param data: The tensor data.
+    :param name: The name of the tensor.
+    """
     def __init__(self, data, name=None):
         super().__init__(data, name)
 
 
 class SymbolicStiffnessTensor(SymbolicSixBySixTensor):
+    """
+    Represents the stiffness tensor used in elasticity calculations.
+
+    :param data: The tensor data.
+    :param name: The name of the tensor.
+    """
     def __init__(self, data, name=None):
         super().__init__(data, name)
 
 
 class SymbolicMaterial:
+    """
+    Represents a general material with symbolic properties.
+
+    :param material_props: Arbitrary keyword arguments representing material properties.
+    """
     def __init__(self, **material_props):
         for k, v in material_props.items():
             setattr(self, k, v)
 
     def __repr__(self):
+        """
+        Returns a string representation of the material and its properties.
+
+        :return: String representation of the material.
+        """
         props = ", ".join(f"{k}={v!r}" for k, v in self.__dict__.items())
         return f"{self.__class__.__name__}({props})"
 
 
 class SymbolicElasticMaterial(SymbolicMaterial):
+    """
+    Represents an elastic material with methods to compute stiffness and compliance tensors.
+
+    :param material_props: Arbitrary keyword arguments representing material properties.
+    """
     def __init__(self, **material_props):
         super().__init__(**material_props)
 
     def stiffness_tensor(self):
+        """
+        Computes the stiffness tensor for the material.
+
+        :raises NotImplementedError: This method should be implemented by subclasses.
+        """
         raise NotImplementedError("Subclasses must implement this method.")
 
     def compliance_tensor(self) -> SymbolicComplianceTensor:
+        """
+        Computes the compliance tensor for the material.
+
+        :return: The computed compliance tensor.
+        """
         components = self.stiffness_tensor().to_matrix().inv()
         data = sp.ImmutableDenseNDimArray(components)
         return SymbolicComplianceTensor(sp.simplify(data))
 
 
 class SymbolicIsotropicMaterial(SymbolicElasticMaterial):
+    """
+    Represents an isotropic elastic material with properties such as Young's modulus and Poisson's ratio.
+
+    :param material_props: Arbitrary keyword arguments representing material properties.
+    """
     def __init__(self, **material_props):
         keys = material_props.keys()
         if not ({"E", "nu"} <= set(keys) or {"lamda", "mu"} <= set(keys)):
@@ -53,17 +95,37 @@ class SymbolicIsotropicMaterial(SymbolicElasticMaterial):
 
     @staticmethod
     def lame_params(E, nu):
+        """
+        Converts Young's modulus and Poisson's ratio to Lamé parameters.
+
+        :param E: Young's modulus.
+        :param nu: Poisson's ratio.
+        :return: Tuple of Lamé parameters (lambda, mu).
+        """
         lamda = (E * nu) / ((1 + nu) * (1 - 2 * nu))
         mu = E / (2 * (1 + nu))
         return lamda, mu
 
     @staticmethod
     def youngs_params(lamda, mu):
+        """
+        Converts Lamé parameters to Young's modulus and Poisson's ratio.
+
+        :param lamda: First Lamé parameter.
+        :param mu: Second Lamé parameter (shear modulus).
+        :return: Tuple of Young's modulus and Poisson's ratio (E, nu).
+        """
         E = mu * (3 * lamda + 2 * mu) / (lamda + mu)
         mu = lamda / (2 * (lamda + mu))
         return E, mu
 
     def stiffness_tensor(self, lames_param=True) -> SymbolicStiffnessTensor:
+        """
+        Computes the stiffness tensor for the isotropic material.
+
+        :param lames_param: If True, use Lamé parameters; otherwise, use Young's modulus and Poisson's ratio.
+        :return: The computed stiffness tensor.
+        """
         if lames_param and hasattr(self, "lamda") and hasattr(self, "mu"):
             lamda, mu = self.lamda, self.mu
         elif hasattr(self, "E") and hasattr(self, "nu"):
@@ -89,6 +151,11 @@ class SymbolicIsotropicMaterial(SymbolicElasticMaterial):
         return SymbolicStiffnessTensor(sp.simplify(C))
 
     def compliance_tensor(self) -> SymbolicComplianceTensor:
+        """
+        Computes the compliance tensor for the isotropic material.
+
+        :return: The computed compliance tensor.
+        """
         if hasattr(self, "E") and hasattr(self, "nu"):
             E, nu = self.E, self.nu
         elif hasattr(self, "lamda") and hasattr(self, "mu"):
@@ -117,6 +184,11 @@ class SymbolicIsotropicMaterial(SymbolicElasticMaterial):
 
 
 class SymbolicTransverseIsotropicMaterial(SymbolicElasticMaterial):
+    """
+    Represents a transverse isotropic material with specific elastic properties.
+
+    :param material_props: Arbitrary keyword arguments representing material properties.
+    """
     props_keys = {"E_L", "E_T", "nu", "G_L", "G_T"}
 
     def __init__(self, **material_props):
@@ -131,6 +203,11 @@ class SymbolicTransverseIsotropicMaterial(SymbolicElasticMaterial):
         super().__init__(**material_props)
 
     def stiffness_tensor(self) -> SymbolicStiffnessTensor:
+        """
+        Computes the stiffness tensor for the transverse isotropic material.
+
+        :return: The computed stiffness tensor.
+        """
         E_L = self.E_L
         E_T = self.E_T
         nu = self.nu
@@ -158,6 +235,11 @@ class SymbolicTransverseIsotropicMaterial(SymbolicElasticMaterial):
 
 
 class SymbolicOrthotropicMaterial(SymbolicElasticMaterial):
+    """
+    Represents an orthotropic material with specific elastic properties.
+
+    :param material_props: Arbitrary keyword arguments representing material properties.
+    """
     props_keys = {"E1", "E2", "E3", "G12", "G23", "G31", "nu12", "nu23", "nu31"}
 
     def __init__(self, **material_props):
@@ -176,6 +258,11 @@ class SymbolicOrthotropicMaterial(SymbolicElasticMaterial):
         super().__init__(**material_props)
 
     def stiffness_tensor(self) -> SymbolicStiffnessTensor:
+        """
+        Computes the stiffness tensor for the orthotropic material.
+
+        :return: The computed stiffness tensor.
+        """
         C11, C22, C33 = self.E1, self.E2, self.E3
         C44, C55, C66 = self.G23, self.G31, self.G12
         C12 = self.nu12 * C22
