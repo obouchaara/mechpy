@@ -16,7 +16,7 @@
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="_static/documentation_options.js?v=d45e8c67"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -82,14 +82,15 @@
  | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
- | <a href="#G"><strong>G</strong></a>
  | <a href="#I"><strong>I</strong></a>
+ | <a href="#L"><strong>L</strong></a>
  | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
  | <a href="#V"><strong>V</strong></a>
+ | <a href="#Y"><strong>Y</strong></a>
  
 </div>
 <h2 id="C">C</h2>
@@ -176,18 +177,6 @@
   </ul></td>
 </tr></table>
 
-<h2 id="G">G</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="reference/symbolic/material.html#mechpy.core.symbolic.material.SymbolicIsotropicMaterial.get_lame_params">get_lame_params() (mechpy.core.symbolic.material.SymbolicIsotropicMaterial method)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="reference/symbolic/material.html#mechpy.core.symbolic.material.SymbolicIsotropicMaterial.get_youngs_params">get_youngs_params() (mechpy.core.symbolic.material.SymbolicIsotropicMaterial method)</a>
-</li>
-  </ul></td>
-</tr></table>
-
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -231,6 +220,14 @@
         <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor.is_symmetric">(mechpy.core.symbolic.tensor.SymbolicTensor method)</a>
 </li>
       </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/symbolic/material.html#mechpy.core.symbolic.material.SymbolicIsotropicMaterial.lame_params">lame_params() (mechpy.core.symbolic.material.SymbolicIsotropicMaterial static method)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -325,10 +322,12 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="reference/symbolic/material.html#mechpy.core.symbolic.material.SymbolicTransverseIsotropicMaterial.props_dict">props_dict (mechpy.core.symbolic.material.SymbolicTransverseIsotropicMaterial attribute)</a>
-</li>
       <li><a href="reference/symbolic/material.html#mechpy.core.symbolic.material.SymbolicOrthotropicMaterial.props_keys">props_keys (mechpy.core.symbolic.material.SymbolicOrthotropicMaterial attribute)</a>
+
+      <ul>
+        <li><a href="reference/symbolic/material.html#mechpy.core.symbolic.material.SymbolicTransverseIsotropicMaterial.props_keys">(mechpy.core.symbolic.material.SymbolicTransverseIsotropicMaterial attribute)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -371,11 +370,15 @@
       </ul></li>
       <li><a href="reference/symbolic/strain.html#mechpy.core.symbolic.strain.SymbolicStrainTensor.STRAIN_VOIGT_MAPPING">STRAIN_VOIGT_MAPPING (mechpy.core.symbolic.strain.SymbolicStrainTensor attribute)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/symbolic/stress.html#mechpy.core.symbolic.stress.SymbolicStressTensor.STRESS_VOIGT_MAPPING">STRESS_VOIGT_MAPPING (mechpy.core.symbolic.stress.SymbolicStressTensor attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor.subs">subs() (mechpy.core.symbolic.tensor.SymbolicTensor method)</a>
+</li>
+      <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor.subs_tensor_components">subs_tensor_components() (mechpy.core.symbolic.tensor.SymbolicTensor method)</a>
+</li>
+      <li><a href="reference/symbolic/tensor.html#mechpy.core.symbolic.tensor.SymbolicTensor.subs_tensor_params">subs_tensor_params() (mechpy.core.symbolic.tensor.SymbolicTensor method)</a>
 </li>
       <li><a href="reference/symbolic/material.html#mechpy.core.symbolic.material.SymbolicComplianceTensor">SymbolicComplianceTensor (class in mechpy.core.symbolic.material)</a>
 </li>
@@ -472,6 +475,14 @@
       <li><a href="reference/symbolic/strain.html#mechpy.core.symbolic.strain.SymbolicStrainTensor.volumetric_strain">volumetric_strain() (mechpy.core.symbolic.strain.SymbolicStrainTensor method)</a>
 </li>
       <li><a href="reference/symbolic/stress.html#mechpy.core.symbolic.stress.SymbolicStressTensor.von_mises">von_mises() (mechpy.core.symbolic.stress.SymbolicStressTensor method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Y">Y</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/symbolic/material.html#mechpy.core.symbolic.material.SymbolicIsotropicMaterial.youngs_params">youngs_params() (mechpy.core.symbolic.material.SymbolicIsotropicMaterial static method)</a>
 </li>
   </ul></td>
 </tr></table>

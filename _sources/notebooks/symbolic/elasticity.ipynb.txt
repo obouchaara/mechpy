@@ -4,7 +4,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# Symblic Elasticity Notebook"
+    "# Symbolic Elasticity Notebook"
    ]
   },
   {
@@ -44,9 +44,7 @@
     {
      "data": {
       "text/plain": [
-       "SymbolicIsotropicMaterial(\n",
-       "{'youngs_modulus': E, 'poisson_ratio': nu}\n",
-       ")"
+       "SymbolicIsotropicMaterial(E=E, nu=nu)"
       ]
      },
      "metadata": {},
@@ -66,9 +64,10 @@
     }
    ],
    "source": [
-    "symbolic_isotropic_material = SymbolicIsotropicMaterial()\n",
-    "display(symbolic_isotropic_material)\n",
-    "compliance_tensor = symbolic_isotropic_material.compliance_tensor()\n",
+    "material_props = {\"E\": sp.symbols(\"E\"), \"nu\": sp.symbols(\"nu\")}\n",
+    "material = SymbolicIsotropicMaterial(**material_props)\n",
+    "display(material)\n",
+    "compliance_tensor = material.compliance_tensor()\n",
     "display(compliance_tensor.data)"
    ]
   },
@@ -87,6 +86,18 @@
     {
      "data": {
       "text/latex": [
+       "$\\displaystyle \\left[\\begin{matrix}\\sigma_{11} & \\sigma_{22} & \\sigma_{33} & \\sigma_{23} & \\sigma_{13} & \\sigma_{12}\\end{matrix}\\right]$"
+      ],
+      "text/plain": [
+       "[\\sigma_11, \\sigma_22, \\sigma_33, \\sigma_23, \\sigma_13, \\sigma_12]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
        "$\\displaystyle \\left[\\begin{matrix}\\sigma_{11} & 0 & 0 & 0 & 0 & 0\\end{matrix}\\right]$"
       ],
       "text/plain": [
@@ -98,15 +109,16 @@
     }
    ],
    "source": [
-    "stress_tensor = SymbolicStressTensor.create(notation=2)\n",
-    "subs_dict = {\n",
+    "stress_tensor = SymbolicStressTensor.create(notation=\"voigt\")\n",
+    "display(stress_tensor.data)\n",
+    "components_values = {\n",
     "    1: 0,\n",
     "    2: 0,\n",
     "    3: 0,\n",
     "    4: 0,\n",
     "    5: 0,\n",
     "}\n",
-    "stress_tensor.subs(subs_dict, keys=True)\n",
+    "stress_tensor.subs_tensor_components(components_values)\n",
     "display(stress_tensor.data)"
    ]
   },
@@ -133,12 +145,85 @@
      },
      "metadata": {},
      "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle \\epsilon_{11} = \\frac{\\sigma_{11}}{E}$"
+      ],
+      "text/plain": [
+       "Eq(\\epsilon_11, \\sigma_11/E)"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle \\epsilon_{22} = - \\frac{\\sigma_{11} \\nu}{E}$"
+      ],
+      "text/plain": [
+       "Eq(\\epsilon_22, -\\sigma_11*nu/E)"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle \\epsilon_{33} = - \\frac{\\sigma_{11} \\nu}{E}$"
+      ],
+      "text/plain": [
+       "Eq(\\epsilon_33, -\\sigma_11*nu/E)"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle 2 \\epsilon_{23} = 0$"
+      ],
+      "text/plain": [
+       "Eq(2*\\epsilon_23, 0)"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle 2 \\epsilon_{13} = 0$"
+      ],
+      "text/plain": [
+       "Eq(2*\\epsilon_13, 0)"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle 2 \\epsilon_{12} = 0$"
+      ],
+      "text/plain": [
+       "Eq(2*\\epsilon_12, 0)"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
     }
    ],
    "source": [
-    "strain_tensor = SymbolicStrainTensor.create(notation=2)\n",
+    "strain_tensor = SymbolicStrainTensor.create(notation=\"voigt\")\n",
     "strain_tensor_expr = SymbolicLinearElasticity.hookes_law(compliance_tensor, stress_tensor)\n",
-    "display(sp.Eq(strain_tensor.data, strain_tensor_expr.data))"
+    "display(sp.Equality(strain_tensor.data, strain_tensor_expr.data))\n",
+    "display(*[sp.Equality(strain_tensor[_], strain_tensor_expr[_]) for _ in range(6)])"
    ]
   },
   {
@@ -163,9 +248,7 @@
     {
      "data": {
       "text/plain": [
-       "SymbolicIsotropicMaterial(\n",
-       "{'youngs_modulus': E, 'poisson_ratio': nu}\n",
-       ")"
+       "SymbolicIsotropicMaterial(E=E, nu=nu)"
       ]
      },
      "metadata": {},
@@ -185,9 +268,10 @@
     }
    ],
    "source": [
-    "symbolic_isotropic_material = SymbolicIsotropicMaterial()\n",
-    "display(symbolic_isotropic_material)\n",
-    "stiffness_tensor = symbolic_isotropic_material.stiffness_tensor(lames_param=False)\n",
+    "material_props = {\"E\": sp.symbols(\"E\"), \"nu\": sp.symbols(\"nu\")}\n",
+    "material = SymbolicIsotropicMaterial(**material_props)\n",
+    "display(material)\n",
+    "stiffness_tensor = material.stiffness_tensor()\n",
     "display(stiffness_tensor.data)"
    ]
   },
@@ -206,6 +290,18 @@
     {
      "data": {
       "text/latex": [
+       "$\\displaystyle \\left[\\begin{matrix}\\epsilon_{11} & \\epsilon_{22} & \\epsilon_{33} & 2 \\epsilon_{23} & 2 \\epsilon_{13} & 2 \\epsilon_{12}\\end{matrix}\\right]$"
+      ],
+      "text/plain": [
+       "[\\epsilon_11, \\epsilon_22, \\epsilon_33, 2*\\epsilon_23, 2*\\epsilon_13, 2*\\epsilon_12]"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
        "$\\displaystyle \\left[\\begin{matrix}\\epsilon_{11} & 0 & 0 & 0 & 0 & 0\\end{matrix}\\right]$"
       ],
       "text/plain": [
@@ -217,15 +313,16 @@
     }
    ],
    "source": [
-    "strain_tensor = SymbolicStrainTensor.create(notation=2)\n",
-    "subs_dict = {\n",
+    "strain_tensor = SymbolicStrainTensor.create(notation=\"voigt\")\n",
+    "display(strain_tensor.data)\n",
+    "components_values = {\n",
     "    1: 0,\n",
     "    2: 0,\n",
     "    3: 0,\n",
     "    4: 0,\n",
     "    5: 0,\n",
     "}\n",
-    "strain_tensor.subs(subs_dict, keys=True)\n",
+    "strain_tensor.subs_tensor_components(components_values)\n",
     "display(strain_tensor.data)"
    ]
   },
@@ -252,12 +349,85 @@
      },
      "metadata": {},
      "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle \\sigma_{11} = \\frac{E \\epsilon_{11} \\left(\\nu - 1\\right)}{\\left(\\nu + 1\\right) \\left(2 \\nu - 1\\right)}$"
+      ],
+      "text/plain": [
+       "Eq(\\sigma_11, E*\\epsilon_11*(nu - 1)/((nu + 1)*(2*nu - 1)))"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle \\sigma_{22} = - \\frac{E \\epsilon_{11} \\nu}{\\left(\\nu + 1\\right) \\left(2 \\nu - 1\\right)}$"
+      ],
+      "text/plain": [
+       "Eq(\\sigma_22, -E*\\epsilon_11*nu/((nu + 1)*(2*nu - 1)))"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle \\sigma_{33} = - \\frac{E \\epsilon_{11} \\nu}{\\left(\\nu + 1\\right) \\left(2 \\nu - 1\\right)}$"
+      ],
+      "text/plain": [
+       "Eq(\\sigma_33, -E*\\epsilon_11*nu/((nu + 1)*(2*nu - 1)))"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle \\sigma_{23} = 0$"
+      ],
+      "text/plain": [
+       "Eq(\\sigma_23, 0)"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle \\sigma_{13} = 0$"
+      ],
+      "text/plain": [
+       "Eq(\\sigma_13, 0)"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/latex": [
+       "$\\displaystyle \\sigma_{12} = 0$"
+      ],
+      "text/plain": [
+       "Eq(\\sigma_12, 0)"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
     }
    ],
    "source": [
-    "stress_tensor = SymbolicStressTensor.create(notation=2)\n",
+    "stress_tensor = SymbolicStressTensor.create(notation=\"voigt\")\n",
     "stress_tensor_expr = SymbolicLinearElasticity.hookes_law_inverse(stiffness_tensor, strain_tensor)\n",
-    "display(sp.Eq(stress_tensor.data, stress_tensor_expr.data))"
+    "display(sp.Equality(stress_tensor.data, stress_tensor_expr.data))\n",
+    "display(*[sp.Equality(stress_tensor[_], stress_tensor_expr[_]) for _ in range(6)])"
    ]
   },
   {

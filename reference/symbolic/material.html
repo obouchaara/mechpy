@@ -17,7 +17,7 @@
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
-        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../_static/js/theme.js"></script>
@@ -64,14 +64,14 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.material.SymbolicIsotropicMaterial"><code class="docutils literal notranslate"><span class="pre">SymbolicIsotropicMaterial</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.material.SymbolicIsotropicMaterial.get_lame_params"><code class="docutils literal notranslate"><span class="pre">SymbolicIsotropicMaterial.get_lame_params()</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.material.SymbolicIsotropicMaterial.get_youngs_params"><code class="docutils literal notranslate"><span class="pre">SymbolicIsotropicMaterial.get_youngs_params()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.material.SymbolicIsotropicMaterial.lame_params"><code class="docutils literal notranslate"><span class="pre">SymbolicIsotropicMaterial.lame_params()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.material.SymbolicIsotropicMaterial.youngs_params"><code class="docutils literal notranslate"><span class="pre">SymbolicIsotropicMaterial.youngs_params()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.material.SymbolicIsotropicMaterial.stiffness_tensor"><code class="docutils literal notranslate"><span class="pre">SymbolicIsotropicMaterial.stiffness_tensor()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.material.SymbolicIsotropicMaterial.compliance_tensor"><code class="docutils literal notranslate"><span class="pre">SymbolicIsotropicMaterial.compliance_tensor()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.material.SymbolicTransverseIsotropicMaterial"><code class="docutils literal notranslate"><span class="pre">SymbolicTransverseIsotropicMaterial</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.material.SymbolicTransverseIsotropicMaterial.props_dict"><code class="docutils literal notranslate"><span class="pre">SymbolicTransverseIsotropicMaterial.props_dict</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.material.SymbolicTransverseIsotropicMaterial.props_keys"><code class="docutils literal notranslate"><span class="pre">SymbolicTransverseIsotropicMaterial.props_keys</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.material.SymbolicTransverseIsotropicMaterial.stiffness_tensor"><code class="docutils literal notranslate"><span class="pre">SymbolicTransverseIsotropicMaterial.stiffness_tensor()</span></code></a></li>
 </ul>
 </li>
@@ -118,91 +118,202 @@
 <dt class="sig sig-object py" id="mechpy.core.symbolic.material.SymbolicComplianceTensor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.material.</span></span><span class="sig-name descname"><span class="pre">SymbolicComplianceTensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicComplianceTensor" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="tensor.html#mechpy.core.symbolic.tensor.SymbolicSixBySixTensor" title="mechpy.core.symbolic.tensor.SymbolicSixBySixTensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolicSixBySixTensor</span></code></a></p>
+<p>Represents the compliance tensor used in elasticity calculations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – The tensor data.</p></li>
+<li><p><strong>name</strong> – The name of the tensor.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.material.SymbolicStiffnessTensor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.material.</span></span><span class="sig-name descname"><span class="pre">SymbolicStiffnessTensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicStiffnessTensor" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="tensor.html#mechpy.core.symbolic.tensor.SymbolicSixBySixTensor" title="mechpy.core.symbolic.tensor.SymbolicSixBySixTensor"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolicSixBySixTensor</span></code></a></p>
+<p>Represents the stiffness tensor used in elasticity calculations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> – The tensor data.</p></li>
+<li><p><strong>name</strong> – The name of the tensor.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.material.SymbolicMaterial">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.material.</span></span><span class="sig-name descname"><span class="pre">SymbolicMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mechanical_props</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thermic_props</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicMaterial" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.material.</span></span><span class="sig-name descname"><span class="pre">SymbolicMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">material_props</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicMaterial" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a general material with symbolic properties.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>material_props</strong> – Arbitrary keyword arguments representing material properties.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.material.SymbolicElasticMaterial">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.material.</span></span><span class="sig-name descname"><span class="pre">SymbolicElasticMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mechanical_props</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicElasticMaterial" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.material.</span></span><span class="sig-name descname"><span class="pre">SymbolicElasticMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">material_props</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicElasticMaterial" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#mechpy.core.symbolic.material.SymbolicMaterial" title="mechpy.core.symbolic.material.SymbolicMaterial"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolicMaterial</span></code></a></p>
+<p>Represents an elastic material with methods to compute stiffness and compliance tensors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>material_props</strong> – Arbitrary keyword arguments representing material properties.</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.material.SymbolicElasticMaterial.stiffness_tensor">
 <span class="sig-name descname"><span class="pre">stiffness_tensor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicElasticMaterial.stiffness_tensor" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Computes the stiffness tensor for the material.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – This method should be implemented by subclasses.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.material.SymbolicElasticMaterial.compliance_tensor">
 <span class="sig-name descname"><span class="pre">compliance_tensor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#mechpy.core.symbolic.material.SymbolicComplianceTensor" title="mechpy.core.symbolic.material.SymbolicComplianceTensor"><span class="pre">SymbolicComplianceTensor</span></a></span></span><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicElasticMaterial.compliance_tensor" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Computes the compliance tensor for the material.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The computed compliance tensor.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.material.SymbolicIsotropicMaterial">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.material.</span></span><span class="sig-name descname"><span class="pre">SymbolicIsotropicMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">youngs_modulus</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poisson_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicIsotropicMaterial" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.material.</span></span><span class="sig-name descname"><span class="pre">SymbolicIsotropicMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">material_props</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicIsotropicMaterial" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#mechpy.core.symbolic.material.SymbolicElasticMaterial" title="mechpy.core.symbolic.material.SymbolicElasticMaterial"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolicElasticMaterial</span></code></a></p>
+<p>Represents an isotropic elastic material with properties such as Young’s modulus and Poisson’s ratio.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>material_props</strong> – Arbitrary keyword arguments representing material properties.</p>
+</dd>
+</dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="mechpy.core.symbolic.material.SymbolicIsotropicMaterial.get_lame_params">
-<span class="sig-name descname"><span class="pre">get_lame_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nu</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicIsotropicMaterial.get_lame_params" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="mechpy.core.symbolic.material.SymbolicIsotropicMaterial.lame_params">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lame_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nu</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicIsotropicMaterial.lame_params" title="Link to this definition"></a></dt>
+<dd><p>Converts Young’s modulus and Poisson’s ratio to Lamé parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>E</strong> – Young’s modulus.</p></li>
+<li><p><strong>nu</strong> – Poisson’s ratio.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple of Lamé parameters (lambda, mu).</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="mechpy.core.symbolic.material.SymbolicIsotropicMaterial.get_youngs_params">
-<span class="sig-name descname"><span class="pre">get_youngs_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lamda</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicIsotropicMaterial.get_youngs_params" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="mechpy.core.symbolic.material.SymbolicIsotropicMaterial.youngs_params">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">youngs_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lamda</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicIsotropicMaterial.youngs_params" title="Link to this definition"></a></dt>
+<dd><p>Converts Lamé parameters to Young’s modulus and Poisson’s ratio.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lamda</strong> – First Lamé parameter.</p></li>
+<li><p><strong>mu</strong> – Second Lamé parameter (shear modulus).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple of Young’s modulus and Poisson’s ratio (E, nu).</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.material.SymbolicIsotropicMaterial.stiffness_tensor">
 <span class="sig-name descname"><span class="pre">stiffness_tensor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lames_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#mechpy.core.symbolic.material.SymbolicStiffnessTensor" title="mechpy.core.symbolic.material.SymbolicStiffnessTensor"><span class="pre">SymbolicStiffnessTensor</span></a></span></span><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicIsotropicMaterial.stiffness_tensor" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Computes the stiffness tensor for the isotropic material.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>lames_param</strong> – If True, use Lamé parameters; otherwise, use Young’s modulus and Poisson’s ratio.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The computed stiffness tensor.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.material.SymbolicIsotropicMaterial.compliance_tensor">
 <span class="sig-name descname"><span class="pre">compliance_tensor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#mechpy.core.symbolic.material.SymbolicComplianceTensor" title="mechpy.core.symbolic.material.SymbolicComplianceTensor"><span class="pre">SymbolicComplianceTensor</span></a></span></span><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicIsotropicMaterial.compliance_tensor" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Computes the compliance tensor for the isotropic material.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The computed compliance tensor.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.material.SymbolicTransverseIsotropicMaterial">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.material.</span></span><span class="sig-name descname"><span class="pre">SymbolicTransverseIsotropicMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicTransverseIsotropicMaterial" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.material.</span></span><span class="sig-name descname"><span class="pre">SymbolicTransverseIsotropicMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">material_props</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicTransverseIsotropicMaterial" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#mechpy.core.symbolic.material.SymbolicElasticMaterial" title="mechpy.core.symbolic.material.SymbolicElasticMaterial"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolicElasticMaterial</span></code></a></p>
+<p>Represents a transverse isotropic material with specific elastic properties.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>material_props</strong> – Arbitrary keyword arguments representing material properties.</p>
+</dd>
+</dl>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="mechpy.core.symbolic.material.SymbolicTransverseIsotropicMaterial.props_dict">
-<span class="sig-name descname"><span class="pre">props_dict</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'poisson_ratio':</span> <span class="pre">'nu',</span> <span class="pre">'shear_modulus_parallel':</span> <span class="pre">'G_L',</span> <span class="pre">'shear_modulus_transverse':</span> <span class="pre">'G_T',</span> <span class="pre">'youngs_modulus_parallel':</span> <span class="pre">'E_L',</span> <span class="pre">'youngs_modulus_transverse':</span> <span class="pre">'E_T'}</span></em><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicTransverseIsotropicMaterial.props_dict" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="mechpy.core.symbolic.material.SymbolicTransverseIsotropicMaterial.props_keys">
+<span class="sig-name descname"><span class="pre">props_keys</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'E_L',</span> <span class="pre">'E_T',</span> <span class="pre">'G_L',</span> <span class="pre">'G_T',</span> <span class="pre">'nu'}</span></em><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicTransverseIsotropicMaterial.props_keys" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.material.SymbolicTransverseIsotropicMaterial.stiffness_tensor">
 <span class="sig-name descname"><span class="pre">stiffness_tensor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#mechpy.core.symbolic.material.SymbolicStiffnessTensor" title="mechpy.core.symbolic.material.SymbolicStiffnessTensor"><span class="pre">SymbolicStiffnessTensor</span></a></span></span><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicTransverseIsotropicMaterial.stiffness_tensor" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Computes the stiffness tensor for the transverse isotropic material.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The computed stiffness tensor.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.material.SymbolicOrthotropicMaterial">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.material.</span></span><span class="sig-name descname"><span class="pre">SymbolicOrthotropicMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicOrthotropicMaterial" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.material.</span></span><span class="sig-name descname"><span class="pre">SymbolicOrthotropicMaterial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">material_props</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicOrthotropicMaterial" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#mechpy.core.symbolic.material.SymbolicElasticMaterial" title="mechpy.core.symbolic.material.SymbolicElasticMaterial"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolicElasticMaterial</span></code></a></p>
+<p>Represents an orthotropic material with specific elastic properties.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>material_props</strong> – Arbitrary keyword arguments representing material properties.</p>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.material.SymbolicOrthotropicMaterial.props_keys">
-<span class="sig-name descname"><span class="pre">props_keys</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['E1',</span> <span class="pre">'E2',</span> <span class="pre">'E3',</span> <span class="pre">'G12',</span> <span class="pre">'G23',</span> <span class="pre">'G31',</span> <span class="pre">'nu12',</span> <span class="pre">'nu23',</span> <span class="pre">'nu31']</span></em><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicOrthotropicMaterial.props_keys" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">props_keys</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'E1',</span> <span class="pre">'E2',</span> <span class="pre">'E3',</span> <span class="pre">'G12',</span> <span class="pre">'G23',</span> <span class="pre">'G31',</span> <span class="pre">'nu12',</span> <span class="pre">'nu23',</span> <span class="pre">'nu31'}</span></em><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicOrthotropicMaterial.props_keys" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="mechpy.core.symbolic.material.SymbolicOrthotropicMaterial.stiffness_tensor">
 <span class="sig-name descname"><span class="pre">stiffness_tensor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#mechpy.core.symbolic.material.SymbolicStiffnessTensor" title="mechpy.core.symbolic.material.SymbolicStiffnessTensor"><span class="pre">SymbolicStiffnessTensor</span></a></span></span><a class="headerlink" href="#mechpy.core.symbolic.material.SymbolicOrthotropicMaterial.stiffness_tensor" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Computes the stiffness tensor for the orthotropic material.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The computed stiffness tensor.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

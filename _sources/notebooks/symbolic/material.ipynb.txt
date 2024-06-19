@@ -45,21 +45,7 @@
     {
      "data": {
       "text/plain": [
-       "SymbolicIsotropicMaterial(\n",
-       "{'youngs_modulus': E, 'poisson_ratio': nu}\n",
-       ")"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    },
-    {
-     "data": {
-      "text/plain": [
-       "{'youngs_modulus': E,\n",
-       " 'poisson_ratio': nu,\n",
-       " 'mechanical_props': {'youngs_modulus': E, 'poisson_ratio': nu},\n",
-       " 'thermic_props': {}}"
+       "SymbolicIsotropicMaterial(E=E, nu=nu)"
       ]
      },
      "metadata": {},
@@ -67,9 +53,9 @@
     }
    ],
    "source": [
-    "symbolic_isotropic_material = SymbolicIsotropicMaterial()\n",
-    "display(symbolic_isotropic_material)\n",
-    "display(symbolic_isotropic_material.__dict__)"
+    "E, nu = sp.symbols(\"E nu\")\n",
+    "symbolic_isotropic_material = SymbolicIsotropicMaterial(E=E, nu=nu)\n",
+    "display(symbolic_isotropic_material)"
    ]
   },
   {
@@ -110,22 +96,7 @@
     {
      "data": {
       "text/plain": [
-       "SymbolicIsotropicMaterial(\n",
-       "{'youngs_modulus': mu*(3*lamda + 2*mu)/(lamda + mu), 'poisson_ratio': lamda/(2*lamda + 2*mu)}\n",
-       ")"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    },
-    {
-     "data": {
-      "text/plain": [
-       "{'lamda': lamda,\n",
-       " 'mu': mu,\n",
-       " 'mechanical_props': {'youngs_modulus': mu*(3*lamda + 2*mu)/(lamda + mu),\n",
-       "  'poisson_ratio': lamda/(2*lamda + 2*mu)},\n",
-       " 'thermic_props': {}}"
+       "SymbolicIsotropicMaterial(lamda=lamda, mu=mu)"
       ]
      },
      "metadata": {},
@@ -135,8 +106,7 @@
    "source": [
     "lamda, mu = sp.symbols(\"lamda mu\")\n",
     "symbolic_isotropic_material = SymbolicIsotropicMaterial(lamda=lamda, mu=mu)\n",
-    "display(symbolic_isotropic_material)\n",
-    "display(symbolic_isotropic_material.__dict__)"
+    "display(symbolic_isotropic_material)"
    ]
   },
   {
@@ -191,9 +161,16 @@
     {
      "data": {
       "text/plain": [
-       "SymbolicTransverseIsotropicMaterial(\n",
-       "{'youngs_modulus_parallel': E_L, 'youngs_modulus_transverse': E_T, 'poisson_ratio': nu, 'shear_modulus_parallel': G_L, 'shear_modulus_transverse': G_T}\n",
-       ")"
+       "{'E_L': E_L, 'E_T': E_T, 'nu': nu, 'G_L': G_L, 'G_T': G_T}"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "SymbolicTransverseIsotropicMaterial(E_L=E_L, E_T=E_T, nu=nu, G_L=G_L, G_T=G_T)"
       ]
      },
      "metadata": {},
@@ -201,7 +178,15 @@
     }
    ],
    "source": [
-    "symbolic_transverse_isotropic_material = SymbolicTransverseIsotropicMaterial()\n",
+    "material_props = {\n",
+    "    \"E_L\": sp.symbols(\"E_L\"),\n",
+    "    \"E_T\": sp.symbols(\"E_T\"),\n",
+    "    \"nu\": sp.symbols(\"nu\"),\n",
+    "    \"G_L\": sp.symbols(\"G_L\"),\n",
+    "    \"G_T\": sp.symbols(\"G_T\"),\n",
+    "}\n",
+    "display(material_props)\n",
+    "symbolic_transverse_isotropic_material = SymbolicTransverseIsotropicMaterial(**material_props)\n",
     "display(symbolic_transverse_isotropic_material)"
    ]
   },
@@ -243,9 +228,24 @@
     {
      "data": {
       "text/plain": [
-       "SymbolicOrthotropicMaterial(\n",
-       "{'E1': E1, 'E2': E2, 'E3': E3, 'G12': G12, 'G23': G23, 'G31': G31, 'nu12': nu12, 'nu23': nu23, 'nu31': nu31}\n",
-       ")"
+       "{'E2': E2,\n",
+       " 'nu23': nu23,\n",
+       " 'G31': G31,\n",
+       " 'G12': G12,\n",
+       " 'nu12': nu12,\n",
+       " 'E3': E3,\n",
+       " 'G23': G23,\n",
+       " 'nu31': nu31,\n",
+       " 'E1': E1}"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "data": {
+      "text/plain": [
+       "SymbolicOrthotropicMaterial(E1=E1, E2=E2, E3=E3, G12=G12, G23=G23, G31=G31, nu12=nu12, nu23=nu23, nu31=nu31)"
       ]
      },
      "metadata": {},
@@ -253,7 +253,9 @@
     }
    ],
    "source": [
-    "symbolic_orthotropic_material = SymbolicOrthotropicMaterial()\n",
+    "material_props = {_:sp.symbols(_) for _ in SymbolicOrthotropicMaterial.props_keys}\n",
+    "display(material_props)\n",
+    "symbolic_orthotropic_material = SymbolicOrthotropicMaterial(**material_props)\n",
     "display(symbolic_orthotropic_material)"
    ]
   },
@@ -308,23 +310,8 @@
    "outputs": [
     {
      "data": {
-      "text/latex": [
-       "$\\displaystyle {..}\\atop{E}$"
-      ],
       "text/plain": [
-       "{..}\\atop{E}"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    },
-    {
-     "data": {
-      "text/latex": [
-       "$\\displaystyle \\nu^{°}$"
-      ],
-      "text/plain": [
-       "nu^°"
+       "{'E': {..}\\atop{E}, 'nu': nu^°}"
       ]
      },
      "metadata": {},
@@ -333,9 +320,7 @@
     {
      "data": {
       "text/plain": [
-       "SymbolicIsotropicMaterial(\n",
-       "{'youngs_modulus': {..}\\atop{E}, 'poisson_ratio': nu^°}\n",
-       ")"
+       "SymbolicIsotropicMaterial(E={..}\\atop{E}, nu=nu^°)"
       ]
      },
      "metadata": {},
@@ -343,11 +328,12 @@
     }
    ],
    "source": [
-    "E = sp.symbols(\"{..}\\\\atop{E}\")\n",
-    "nu = sp.symbols(\"nu^°\")\n",
-    "display(E)\n",
-    "display(nu)\n",
-    "symbolic_isotropic_material = SymbolicIsotropicMaterial(E, nu)\n",
+    "material_props = {\n",
+    "    \"E\" : sp.symbols(\"{..}\\\\atop{E}\"),\n",
+    "    \"nu\": sp.symbols(\"nu^°\")\n",
+    "}\n",
+    "display(material_props)\n",
+    "symbolic_isotropic_material = SymbolicIsotropicMaterial(**material_props)\n",
     "display(symbolic_isotropic_material)"
    ]
   },
@@ -372,53 +358,6 @@
    "source": [
     "compliance_tensor = symbolic_isotropic_material.compliance_tensor()\n",
     "display(compliance_tensor.data)"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "---"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 12,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "SymbolicTransverseIsotropicMaterial(\n",
-       "{'youngs_modulus_parallel': E_3, 'youngs_modulus_transverse': E_1, 'poisson_ratio': nu, 'shear_modulus_parallel': G_3, 'shear_modulus_transverse': G_1}\n",
-       ")"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    },
-    {
-     "data": {
-      "text/latex": [
-       "$\\displaystyle \\left[\\begin{matrix}- \\frac{E_{3}}{\\nu^{2} - 1} & - \\frac{E_{3} \\nu}{\\nu - 1} & - \\frac{E_{3} \\nu}{\\nu - 1} & 0 & 0 & 0\\\\- \\frac{E_{3} \\nu}{\\nu - 1} & - \\frac{E_{3}}{\\nu^{2} - 1} & - \\frac{E_{3} \\nu}{\\nu - 1} & 0 & 0 & 0\\\\- \\frac{E_{3} \\nu}{\\nu - 1} & - \\frac{E_{3} \\nu}{\\nu - 1} & E_{1} & 0 & 0 & 0\\\\0 & 0 & 0 & G_{3} & 0 & 0\\\\0 & 0 & 0 & 0 & G_{3} & 0\\\\0 & 0 & 0 & 0 & 0 & G_{1}\\end{matrix}\\right]$"
-      ],
-      "text/plain": [
-       "[[-E_3/(nu**2 - 1), -E_3*nu/(nu - 1), -E_3*nu/(nu - 1), 0, 0, 0], [-E_3*nu/(nu - 1), -E_3/(nu**2 - 1), -E_3*nu/(nu - 1), 0, 0, 0], [-E_3*nu/(nu - 1), -E_3*nu/(nu - 1), E_1, 0, 0, 0], [0, 0, 0, G_3, 0, 0], [0, 0, 0, 0, G_3, 0], [0, 0, 0, 0, 0, G_1]]"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    }
-   ],
-   "source": [
-    "symbolic_transverse_isotropic_material = SymbolicTransverseIsotropicMaterial(\n",
-    "    youngs_modulus_parallel=sp.symbols(\"E_3\"),\n",
-    "    youngs_modulus_transverse=sp.symbols(\"E_1\"),\n",
-    "    shear_modulus_parallel=sp.symbols(\"G_3\"),\n",
-    "    shear_modulus_transverse=sp.symbols(\"G_1\"),\n",
-    ")\n",
-    "display(symbolic_transverse_isotropic_material)\n",
-    "display(symbolic_transverse_isotropic_material.stiffness_tensor().data)"
    ]
   }
  ],

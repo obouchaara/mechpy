@@ -18,7 +18,7 @@
         <script src="../../_static/jquery.js?v=5d32c60e"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
-        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
         <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
@@ -75,7 +75,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="material.html">Symbolic Material Notebook</a></li>
-<li class="toctree-l2"><a class="reference internal" href="elasticity.html">Symblic Elasticity Notebook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="elasticity.html">Symbolic Elasticity Notebook</a></li>
 </ul>
 </li>
 </ul>
@@ -142,18 +142,9 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">ImmutableDenseNDimArray</span><span class="p">([[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">],</span> <span class="p">[</span><span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">]])</span>
 <span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicTensor</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-mechpy.core.symbolic.tensor.SymbolicTensor
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
@@ -172,18 +163,9 @@ $\displaystyle \left[\begin{matrix}a &amp; b\\c &amp; d\end{matrix}\right]$</div
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicTensor</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">],</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-mechpy.core.symbolic.tensor.SymbolicTensor
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
@@ -197,18 +179,9 @@ $\displaystyle \left[\begin{matrix}a &amp; b\\c &amp; d\end{matrix}\right]$</div
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicTensor</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">i</span><span class="p">],</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-mechpy.core.symbolic.tensor.SymbolicTensor
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
@@ -225,18 +198,9 @@ $\displaystyle \left[\begin{matrix}a &amp; b &amp; c\\d &amp; e &amp; f\\g &amp;
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicThreeByThreeTensor</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">i</span><span class="p">])</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
@@ -252,8 +216,8 @@ $\displaystyle \left[\begin{matrix}a &amp; b &amp; c\\d &amp; e &amp; f\\g &amp;
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">list_notation_1</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">]</span>
-<span class="n">list_notation_2</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">list_notation_standard</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">]</span>
+<span class="n">list_notation_voigt</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -264,7 +228,7 @@ $\displaystyle \left[\begin{matrix}a &amp; b &amp; c\\d &amp; e &amp; f\\g &amp;
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicSymmetricThreeByThreeTensor</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">list_notation_1</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicSymmetricThreeByThreeTensor</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">list_notation_standard</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">notation</span><span class="p">)</span>
@@ -291,7 +255,7 @@ $\displaystyle \left[\begin{matrix}a &amp; b &amp; c &amp; d &amp; e &amp; f\end
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-1
+&#39;standard&#39;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -299,18 +263,9 @@ $\displaystyle \left[\begin{matrix}a &amp; b &amp; c &amp; d &amp; e &amp; f\end
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">to_general</span><span class="p">()</span>
-<span class="n">display</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
@@ -324,143 +279,11 @@ $\displaystyle \left[\begin{matrix}a &amp; b &amp; c\\b &amp; d &amp; e\\c &amp;
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicSymmetricThreeByThreeTensor</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">list_notation_1</span><span class="p">,</span> <span class="n">notation</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicSymmetricThreeByThreeTensor</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">list_notation_voigt</span><span class="p">,</span> <span class="n">notation</span><span class="o">=</span><span class="s2">&quot;voigt&quot;</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">notation</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="math notranslate nohighlight">
-$\displaystyle \left[\begin{matrix}a &amp; d &amp; f &amp; e &amp; c &amp; b\end{matrix}\right]$</div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-2
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">to_general</span><span class="p">()</span>
-<span class="n">display</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="math notranslate nohighlight">
-$\displaystyle \left[\begin{matrix}a &amp; b &amp; c\\b &amp; d &amp; e\\c &amp; e &amp; f\end{matrix}\right]$</div></div>
-</div>
-</section>
-<section id="List-2">
-<h5>List 2<a class="headerlink" href="#List-2" title="Link to this heading"></a></h5>
-<p>Default notation</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicSymmetricThreeByThreeTensor</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">list_notation_2</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">notation</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor
-</pre></div></div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="math notranslate nohighlight">
-$\displaystyle \left[\begin{matrix}a &amp; f &amp; e &amp; b &amp; d &amp; c\end{matrix}\right]$</div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-1
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">to_general</span><span class="p">()</span>
-<span class="n">display</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor
-</pre></div></div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="math notranslate nohighlight">
-$\displaystyle \left[\begin{matrix}a &amp; f &amp; e\\f &amp; b &amp; d\\e &amp; d &amp; c\end{matrix}\right]$</div></div>
-</div>
-<p>Notation 2</p>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicSymmetricThreeByThreeTensor</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">list_notation_2</span><span class="p">,</span> <span class="n">notation</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">notation</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor
-</pre></div></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
@@ -474,16 +297,36 @@ $\displaystyle \left[\begin{matrix}a &amp; b &amp; c &amp; d &amp; e &amp; f\end
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-2
+&#39;voigt&#39;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">to_general</span><span class="p">()</span>
-<span class="n">display</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$\displaystyle \left[\begin{matrix}a &amp; f &amp; e\\f &amp; b &amp; d\\e &amp; d &amp; c\end{matrix}\right]$</div></div>
+</div>
+</section>
+<section id="List-2">
+<h5>List 2<a class="headerlink" href="#List-2" title="Link to this heading"></a></h5>
+<p>Default notation</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicSymmetricThreeByThreeTensor</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">list_notation_voigt</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">notation</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -491,9 +334,67 @@ $\displaystyle \left[\begin{matrix}a &amp; b &amp; c &amp; d &amp; e &amp; f\end
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$\displaystyle \left[\begin{matrix}a &amp; f &amp; e &amp; b &amp; d &amp; c\end{matrix}\right]$</div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
 <div class="highlight"><pre>
-mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor
+&#39;standard&#39;
 </pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">to_general</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$\displaystyle \left[\begin{matrix}a &amp; f &amp; e\\f &amp; b &amp; d\\e &amp; d &amp; c\end{matrix}\right]$</div></div>
+</div>
+<p>Notation 2</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicSymmetricThreeByThreeTensor</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">list_notation_voigt</span><span class="p">,</span> <span class="n">notation</span><span class="o">=</span><span class="s2">&quot;voigt&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">notation</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$\displaystyle \left[\begin{matrix}a &amp; b &amp; c &amp; d &amp; e &amp; f\end{matrix}\right]$</div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;voigt&#39;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">to_general</span><span class="p">()</span>
+<span class="n">display</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
@@ -512,19 +413,10 @@ $\displaystyle \left[\begin{matrix}a &amp; f &amp; e\\f &amp; b &amp; d\\e &amp;
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicSymmetricThreeByThreeTensor</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">])</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">notation</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor
-</pre></div></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
@@ -538,7 +430,7 @@ $\displaystyle \left[\begin{matrix}a &amp; b &amp; c &amp; d &amp; e &amp; f\end
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-1
+&#39;standard&#39;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -546,18 +438,9 @@ $\displaystyle \left[\begin{matrix}a &amp; b &amp; c &amp; d &amp; e &amp; f\end
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">to_general</span><span class="p">()</span>
-<span class="n">display</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
@@ -571,20 +454,11 @@ $\displaystyle \left[\begin{matrix}a &amp; b &amp; c\\b &amp; d &amp; e\\c &amp;
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicSymmetricThreeByThreeTensor</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">],</span> <span class="n">notation</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicSymmetricThreeByThreeTensor</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">],</span> <span class="n">notation</span><span class="o">=</span><span class="s2">&quot;voigt&quot;</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">notation</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor
-</pre></div></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
@@ -598,7 +472,7 @@ $\displaystyle \left[\begin{matrix}a &amp; b &amp; c &amp; d &amp; e &amp; f\end
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-2
+&#39;voigt&#39;
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -606,18 +480,9 @@ $\displaystyle \left[\begin{matrix}a &amp; b &amp; c &amp; d &amp; e &amp; f\end
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">to_general</span><span class="p">()</span>
-<span class="n">display</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
@@ -635,20 +500,10 @@ $\displaystyle \left[\begin{matrix}a &amp; f &amp; e\\f &amp; b &amp; d\\e &amp;
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">37</span><span class="p">))</span>
-<span class="c1"># display(data_list)</span>
 <span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicSixBySixTensor</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">data_list</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-mechpy.core.symbolic.tensor.SymbolicSixBySixTensor
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
@@ -663,20 +518,10 @@ $\displaystyle \left[\begin{matrix}1 &amp; 2 &amp; 3 &amp; 4 &amp; 5 &amp; 6\\7 
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data_list</span> <span class="o">=</span> <span class="p">[[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">6</span> <span class="o">+</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">)]</span>
-<span class="c1"># display(data_list)</span>
 <span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicSixBySixTensor</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">data_list</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-mechpy.core.symbolic.tensor.SymbolicSixBySixTensor
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
@@ -695,18 +540,9 @@ $\displaystyle \left[\begin{matrix}1 &amp; 2 &amp; 3 &amp; 4 &amp; 5 &amp; 6\\7 
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicTensor</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-mechpy.core.symbolic.tensor.SymbolicTensor
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
@@ -720,18 +556,9 @@ $\displaystyle \left[\begin{matrix}x_{11} &amp; x_{12}\\x_{21} &amp; x_{22}\end{
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicThreeByThreeTensor</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;X&quot;</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
@@ -746,19 +573,10 @@ $\displaystyle \left[\begin{matrix}X_{11} &amp; X_{12} &amp; X_{13}\\X_{21} &amp
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicSixBySixTensor</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-mechpy.core.symbolic.tensor.SymbolicSixBySixTensor
-</pre></div></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
@@ -780,21 +598,12 @@ $\displaystyle \left[\begin{matrix}a_{11} &amp; a_{12} &amp; a_{13} &amp; a_{14}
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicSymmetricThreeByThreeTensor</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">notation</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">to_general</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 <br/></pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor
-</pre></div></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
@@ -816,7 +625,7 @@ $\displaystyle \left[\begin{matrix}x_{1} &amp; x_{2} &amp; x_{3} &amp; x_{4} &am
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-1
+&#39;standard&#39;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -830,22 +639,13 @@ $\displaystyle \left[\begin{matrix}x_{1} &amp; x_{2} &amp; x_{3}\\x_{2} &amp; x_
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicSymmetricThreeByThreeTensor</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">notation</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicSymmetricThreeByThreeTensor</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">notation</span><span class="o">=</span><span class="s2">&quot;voigt&quot;</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">notation</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">to_general</span><span class="p">()</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-mechpy.core.symbolic.tensor.SymbolicSymmetricThreeByThreeTensor
-</pre></div></div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
@@ -867,7 +667,7 @@ $\displaystyle \left[\begin{matrix}x_{11} &amp; x_{22} &amp; x_{33} &amp; x_{23}
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-2
+&#39;voigt&#39;
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -884,18 +684,9 @@ $\displaystyle \left[\begin{matrix}x_{11} &amp; x_{12} &amp; x_{13}\\x_{12} &amp
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicTensor</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="p">],</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 <span class="n">B</span> <span class="o">=</span> <span class="n">SymbolicTensor</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="p">],</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 <span class="n">C</span> <span class="o">=</span> <span class="n">A</span> <span class="o">@</span> <span class="n">B</span>
-<span class="n">display</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-mechpy.core.symbolic.tensor.SymbolicTensor
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
@@ -915,9 +706,9 @@ $\displaystyle \left[\begin{matrix}a &amp; a c\\b &amp; b d\end{matrix}\right]$<
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicTensor</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">],</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
 <span class="n">B</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">to_3x3</span><span class="p">()</span>
-<span class="n">display</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">B</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -945,10 +736,10 @@ mechpy.core.symbolic.tensor.SymbolicThreeByThreeTensor
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicTensor</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">],</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">is_symmetric</span><span class="p">())</span>
 <span class="n">B</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">to_sym_3x3</span><span class="p">()</span>
-<span class="n">display</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">B</span><span class="p">))</span>
 <span class="n">display</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -992,11 +783,11 @@ $\displaystyle \left[\begin{matrix}a &amp; b &amp; c &amp; d &amp; e &amp; f\end
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicThreeByThreeTensor</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">])</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">is_symmetric</span><span class="p">())</span>
 <span class="n">B</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">to_symmetric</span><span class="p">()</span>
-<span class="n">display</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">B</span><span class="p">))</span>
 <span class="n">display</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1047,7 +838,7 @@ $\displaystyle \left[\begin{matrix}a &amp; b &amp; c &amp; d &amp; e &amp; f\end
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicSymmetricThreeByThreeTensor</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">f</span><span class="p">])</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">A</span><span class="p">))</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1072,7 +863,7 @@ $\displaystyle \left[\begin{matrix}a &amp; b &amp; c &amp; d &amp; e &amp; f\end
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">to_general</span><span class="p">()</span>
-<span class="n">display</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">B</span><span class="p">))</span>
 <span class="n">display</span><span class="p">(</span><span class="n">B</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1104,18 +895,9 @@ $\displaystyle \left[\begin{matrix}a &amp; b &amp; c\\b &amp; d &amp; e\\c &amp;
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">SymbolicTensor</span><span class="o">.</span><span class="n">from_list</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">],</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-<span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="vm">__class__</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-mechpy.core.symbolic.tensor.SymbolicTensor
-</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
