@@ -164,17 +164,22 @@ class SymbolicTensor:
 
     def __matmul__(self, other):
         if not isinstance(other, SymbolicTensor):
-            raise ValueError("The other operand must be an instance of SymbolicTensor")
+            raise ValueError("The other operand must be an instance of SymbolicTensor.")
 
-        if not (self.is_second_rank() and other.is_second_rank()):
-            raise ValueError("Requires second rank tensors")
+        if self.data.shape == (6, 6) and other.data.shape == (6,):
+            result = self.to_matrix() @ sp.Matrix(other.data.tolist())
+            result_data = sp.NDimArray(result, shape=(6,))
 
-        if self.data.shape[1] != other.data.shape[0]:
-            raise ValueError(
-                "Shapes are not aligned for matrix multiplication: "
-                f"{self.data.shape} and {other.data.shape}"
-            )
-        result_data = sp.NDimArray(self.to_matrix() @ other.to_matrix())
+        elif self.is_second_rank() and other.is_second_rank():
+            if self.data.shape[1] != other.data.shape[0]:
+                raise ValueError(
+                    "Shapes are not aligned for matrix multiplication: "
+                    f"{self.data.shape} and {other.data.shape}"
+                )
+            result = self.to_matrix() @ other.to_matrix()
+            result_data = sp.NDimArray(result)
+        else:
+            raise NotImplementedError()
         return SymbolicTensor(result_data)
 
     def __getitem__(self, key):
