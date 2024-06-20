@@ -1,5 +1,5 @@
 Symbolic Coord System
-==================
+=====================
 
 .. automodule:: mechpy.core.symbolic.coord
     :members:

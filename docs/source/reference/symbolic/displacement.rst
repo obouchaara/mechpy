@@ -1,5 +1,5 @@
 Symbolic Displacement Field
-==================
+===========================
 
 .. automodule:: mechpy.core.symbolic.displacement
     :members:

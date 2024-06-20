@@ -1,5 +1,5 @@
 Symbolic Field
-==================
+==============
 
 .. automodule:: mechpy.core.symbolic.field
     :members:
