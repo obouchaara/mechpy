@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Symbolic Field &mdash; MechPy 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Symbolic Displacement Field" href="displacement.html" />
+    <link rel="prev" title="Symbolic Coord System" href="coord.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            MechPy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../usage/quickstart.html">Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../numeric.html">Numeric</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../symbolic.html">Symbolic</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="tensor.html">Symbolic Tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="material.html">Symbolic Material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="strain.html">Symbolic Strain Tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stress.html">Symbolic Stress Tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="coord.html">Symbolic Coord System</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Symbolic Field</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicField"><code class="docutils literal notranslate"><span class="pre">SymbolicField</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicField.get_invalid_symbols"><code class="docutils literal notranslate"><span class="pre">SymbolicField.get_invalid_symbols()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicField.subs_field_params"><code class="docutils literal notranslate"><span class="pre">SymbolicField.subs_field_params()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicField.to_cartesian"><code class="docutils literal notranslate"><span class="pre">SymbolicField.to_cartesian()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicField.to_cylindrical"><code class="docutils literal notranslate"><span class="pre">SymbolicField.to_cylindrical()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicField.to_spherical"><code class="docutils literal notranslate"><span class="pre">SymbolicField.to_spherical()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicField.subs"><code class="docutils literal notranslate"><span class="pre">SymbolicField.subs()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicSpatialField"><code class="docutils literal notranslate"><span class="pre">SymbolicSpatialField</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicSpatialField.lambdify"><code class="docutils literal notranslate"><span class="pre">SymbolicSpatialField.lambdify()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicScalarField"><code class="docutils literal notranslate"><span class="pre">SymbolicScalarField</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicScalarField.shape"><code class="docutils literal notranslate"><span class="pre">SymbolicScalarField.shape</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicScalarField.create"><code class="docutils literal notranslate"><span class="pre">SymbolicScalarField.create()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicScalarField.create_linear"><code class="docutils literal notranslate"><span class="pre">SymbolicScalarField.create_linear()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicScalarField.plot"><code class="docutils literal notranslate"><span class="pre">SymbolicScalarField.plot()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicVectorField"><code class="docutils literal notranslate"><span class="pre">SymbolicVectorField</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicVectorField.shape"><code class="docutils literal notranslate"><span class="pre">SymbolicVectorField.shape</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicVectorField.create"><code class="docutils literal notranslate"><span class="pre">SymbolicVectorField.create()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicVectorField.create_linear"><code class="docutils literal notranslate"><span class="pre">SymbolicVectorField.create_linear()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicVectorField.plot"><code class="docutils literal notranslate"><span class="pre">SymbolicVectorField.plot()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicTensorField"><code class="docutils literal notranslate"><span class="pre">SymbolicTensorField</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicTensorField.shape"><code class="docutils literal notranslate"><span class="pre">SymbolicTensorField.shape</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicTensorField.create_linear"><code class="docutils literal notranslate"><span class="pre">SymbolicTensorField.create_linear()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="displacement.html">Symbolic Displacement Field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="elasticity.html">Symbolic Elasticity</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks.html">Notebooks</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MechPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../symbolic.html">Symbolic</a></li>
+      <li class="breadcrumb-item active">Symbolic Field</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/reference/symbolic/field.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-mechpy.core.symbolic.field">
+<span id="symbolic-field"></span><h1>Symbolic Field<a class="headerlink" href="#module-mechpy.core.symbolic.field" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.field.SymbolicField">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.field.</span></span><span class="sig-name descname"><span class="pre">SymbolicField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coord_system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbols_validation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.field.SymbolicField" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a symbolic field in a given coordinate system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coord_system</strong> (<a class="reference internal" href="coord.html#mechpy.core.symbolic.coord.SymbolicCoordSystem" title="mechpy.core.symbolic.coord.SymbolicCoordSystem"><em>SymbolicCoordSystem</em></a>) – The coordinate system for the field.</p></li>
+<li><p><strong>data</strong> (<em>sp.NDimArray</em>) – The field data.</p></li>
+<li><p><strong>field_params</strong> (<em>dict</em><em>, </em><em>optional</em>) – Additional field parameters. Defaults to {}.</p></li>
+<li><p><strong>symbols_validation</strong> (<em>bool</em>) – If True, validate symbols in the field data. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If coord_system is not a SymbolicCoordSystem, data is not a NDimArray,
+or if field parameters overlap with coordinate system basis symbols.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.field.SymbolicField.get_invalid_symbols">
+<span class="sig-name descname"><span class="pre">get_invalid_symbols</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">set</span></span></span><a class="headerlink" href="#mechpy.core.symbolic.field.SymbolicField.get_invalid_symbols" title="Link to this definition"></a></dt>
+<dd><p>Get symbols in the field data that are not in the basis or field parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A set of invalid symbols.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>set</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.field.SymbolicField.subs_field_params">
+<span class="sig-name descname"><span class="pre">subs_field_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param_values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.field.SymbolicField.subs_field_params" title="Link to this definition"></a></dt>
+<dd><p>Substitute the provided field parameters with specific values, and
+remove them from self.field_params.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>param_values</strong> (<em>dict</em>) – A dictionary mapping parameters to their values.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>TypeError</strong> – If param_values is not a dictionary.</p></li>
+<li><p><strong>ValueError</strong> – If a parameter in param_values is not in self.field_params.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None. The method updates self.data and self.field_params in place.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.field.SymbolicField.to_cartesian">
+<span class="sig-name descname"><span class="pre">to_cartesian</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.field.SymbolicField.to_cartesian" title="Link to this definition"></a></dt>
+<dd><p>Converts the scalar field from its current coordinate system
+(cylindrical or spherical) to the Cartesian coordinate system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> – If the current coordinate system is not cylindrical or spherical.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A new SymbolicField in the Cartesian coordinate system.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicField" title="mechpy.core.symbolic.field.SymbolicField">SymbolicField</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.field.SymbolicField.to_cylindrical">
+<span class="sig-name descname"><span class="pre">to_cylindrical</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.field.SymbolicField.to_cylindrical" title="Link to this definition"></a></dt>
+<dd><p>Converts the scalar field from its current coordinate system
+(Cartesian) to the cylindrical coordinate system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If the current coordinate system is not Cartesian.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A new SymbolicField in the cylindrical coordinate system.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicField" title="mechpy.core.symbolic.field.SymbolicField">SymbolicField</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.field.SymbolicField.to_spherical">
+<span class="sig-name descname"><span class="pre">to_spherical</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.field.SymbolicField.to_spherical" title="Link to this definition"></a></dt>
+<dd><p>Converts the scalar field from its current coordinate system
+(Cartesian) to the spherical coordinate system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If the current coordinate system is not Cartesian.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A new SymbolicField in the spherical coordinate system.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicField" title="mechpy.core.symbolic.field.SymbolicField">SymbolicField</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.field.SymbolicField.subs">
+<span class="sig-name descname"><span class="pre">subs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">subs_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.field.SymbolicField.subs" title="Link to this definition"></a></dt>
+<dd><p>Deprecated method for substituting values. Raises a warning.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>DeprecationWarning</strong> – This method is deprecated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.field.SymbolicSpatialField">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.field.</span></span><span class="sig-name descname"><span class="pre">SymbolicSpatialField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coord_system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbols_validation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.field.SymbolicSpatialField" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicField" title="mechpy.core.symbolic.field.SymbolicField"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolicField</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.field.SymbolicSpatialField.lambdify">
+<span class="sig-name descname"><span class="pre">lambdify</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.field.SymbolicSpatialField.lambdify" title="Link to this definition"></a></dt>
+<dd><p>Converts the symbolic field data into a lambda function for numerical evaluation.
+If the field is not in Cartesian coordinates, it first converts it to Cartesian.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.field.SymbolicScalarField">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.field.</span></span><span class="sig-name descname"><span class="pre">SymbolicScalarField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coord_system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbols_validation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.field.SymbolicScalarField" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicSpatialField" title="mechpy.core.symbolic.field.SymbolicSpatialField"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolicSpatialField</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.field.SymbolicScalarField.shape">
+<span class="sig-name descname"><span class="pre">shape</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(1,)</span></em><a class="headerlink" href="#mechpy.core.symbolic.field.SymbolicScalarField.shape" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.field.SymbolicScalarField.create">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coord_system</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.field.SymbolicScalarField.create" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.field.SymbolicScalarField.create_linear">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_linear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coord_system</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.field.SymbolicScalarField.create_linear" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.field.SymbolicScalarField.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(-10,</span> <span class="pre">10)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(-10,</span> <span class="pre">10)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(-10,</span> <span class="pre">10)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.field.SymbolicScalarField.plot" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.field.SymbolicVectorField">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.field.</span></span><span class="sig-name descname"><span class="pre">SymbolicVectorField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coord_system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbols_validation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.field.SymbolicVectorField" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicSpatialField" title="mechpy.core.symbolic.field.SymbolicSpatialField"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolicSpatialField</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.field.SymbolicVectorField.shape">
+<span class="sig-name descname"><span class="pre">shape</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(3,)</span></em><a class="headerlink" href="#mechpy.core.symbolic.field.SymbolicVectorField.shape" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.field.SymbolicVectorField.create">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coord_system</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbols_validation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.field.SymbolicVectorField.create" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.field.SymbolicVectorField.create_linear">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_linear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coord_system</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.field.SymbolicVectorField.create_linear" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.field.SymbolicVectorField.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.field.SymbolicVectorField.plot" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.field.SymbolicTensorField">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.field.</span></span><span class="sig-name descname"><span class="pre">SymbolicTensorField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coord_system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbols_validation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.field.SymbolicTensorField" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mechpy.core.symbolic.field.SymbolicSpatialField" title="mechpy.core.symbolic.field.SymbolicSpatialField"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolicSpatialField</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.field.SymbolicTensorField.shape">
+<span class="sig-name descname"><span class="pre">shape</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(3,</span> <span class="pre">3)</span></em><a class="headerlink" href="#mechpy.core.symbolic.field.SymbolicTensorField.shape" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.field.SymbolicTensorField.create_linear">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_linear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coord_system</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.field.SymbolicTensorField.create_linear" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="coord.html" class="btn btn-neutral float-left" title="Symbolic Coord System" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="displacement.html" class="btn btn-neutral float-right" title="Symbolic Displacement Field" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Omar BOUCHAARA.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

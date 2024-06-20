@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Symbolic Coord System &mdash; MechPy 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Symbolic Field" href="field.html" />
+    <link rel="prev" title="Symbolic Stress Tensor" href="stress.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            MechPy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../usage/quickstart.html">Quickstart Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../numeric.html">Numeric</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../symbolic.html">Symbolic</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="tensor.html">Symbolic Tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="material.html">Symbolic Material</a></li>
+<li class="toctree-l2"><a class="reference internal" href="strain.html">Symbolic Strain Tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stress.html">Symbolic Stress Tensor</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Symbolic Coord System</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.coord.SymbolicCoordSystem"><code class="docutils literal notranslate"><span class="pre">SymbolicCoordSystem</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.coord.SymbolicCoordSystem.auto_detect"><code class="docutils literal notranslate"><span class="pre">SymbolicCoordSystem.auto_detect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.coord.SymbolicCoordSystem.coord_subs"><code class="docutils literal notranslate"><span class="pre">SymbolicCoordSystem.coord_subs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.coord.SymbolicCoordSystem.coord_eval"><code class="docutils literal notranslate"><span class="pre">SymbolicCoordSystem.coord_eval()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.coord.SymbolicCartesianCoordSystem"><code class="docutils literal notranslate"><span class="pre">SymbolicCartesianCoordSystem</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.coord.SymbolicCartesianCoordSystem.get_basis_cylindrical_exprs"><code class="docutils literal notranslate"><span class="pre">SymbolicCartesianCoordSystem.get_basis_cylindrical_exprs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.coord.SymbolicCartesianCoordSystem.get_basis_spherical_exprs"><code class="docutils literal notranslate"><span class="pre">SymbolicCartesianCoordSystem.get_basis_spherical_exprs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.coord.SymbolicCartesianCoordSystem.to_cylindrical"><code class="docutils literal notranslate"><span class="pre">SymbolicCartesianCoordSystem.to_cylindrical()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.coord.SymbolicCartesianCoordSystem.to_spherical"><code class="docutils literal notranslate"><span class="pre">SymbolicCartesianCoordSystem.to_spherical()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.coord.SymbolicCartesianCoordSystem.get_cylindrical_coord"><code class="docutils literal notranslate"><span class="pre">SymbolicCartesianCoordSystem.get_cylindrical_coord()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.coord.SymbolicCartesianCoordSystem.get_spherical_coord"><code class="docutils literal notranslate"><span class="pre">SymbolicCartesianCoordSystem.get_spherical_coord()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.coord.SymbolicCylindricalCoordSystem"><code class="docutils literal notranslate"><span class="pre">SymbolicCylindricalCoordSystem</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.coord.SymbolicCylindricalCoordSystem.get_basis_cartesian_exprs"><code class="docutils literal notranslate"><span class="pre">SymbolicCylindricalCoordSystem.get_basis_cartesian_exprs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.coord.SymbolicCylindricalCoordSystem.to_cartesian"><code class="docutils literal notranslate"><span class="pre">SymbolicCylindricalCoordSystem.to_cartesian()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.coord.SymbolicCylindricalCoordSystem.get_cartesian_coords"><code class="docutils literal notranslate"><span class="pre">SymbolicCylindricalCoordSystem.get_cartesian_coords()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#mechpy.core.symbolic.coord.SymbolicSphericalCoordSystem"><code class="docutils literal notranslate"><span class="pre">SymbolicSphericalCoordSystem</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.coord.SymbolicSphericalCoordSystem.get_basis_cartesian_exprs"><code class="docutils literal notranslate"><span class="pre">SymbolicSphericalCoordSystem.get_basis_cartesian_exprs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.coord.SymbolicSphericalCoordSystem.to_cartesian"><code class="docutils literal notranslate"><span class="pre">SymbolicSphericalCoordSystem.to_cartesian()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mechpy.core.symbolic.coord.SymbolicSphericalCoordSystem.get_cartesian_coords"><code class="docutils literal notranslate"><span class="pre">SymbolicSphericalCoordSystem.get_cartesian_coords()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="field.html">Symbolic Field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="displacement.html">Symbolic Displacement Field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="elasticity.html">Symbolic Elasticity</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks.html">Notebooks</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MechPy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../symbolic.html">Symbolic</a></li>
+      <li class="breadcrumb-item active">Symbolic Coord System</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/reference/symbolic/coord.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-mechpy.core.symbolic.coord">
+<span id="symbolic-coord-system"></span><h1>Symbolic Coord System<a class="headerlink" href="#module-mechpy.core.symbolic.coord" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.coord.SymbolicCoordSystem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.coord.</span></span><span class="sig-name descname"><span class="pre">SymbolicCoordSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Number</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Symbol</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Expr</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.coord.SymbolicCoordSystem" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.coord.SymbolicCoordSystem.auto_detect">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">auto_detect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.coord.SymbolicCoordSystem.auto_detect" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.coord.SymbolicCoordSystem.coord_subs">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coord_subs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Symbol</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Expr</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.coord.SymbolicCoordSystem.coord_subs" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.coord.SymbolicCoordSystem.coord_eval">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">coord_eval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Symbol</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Expr</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.coord.SymbolicCoordSystem.coord_eval" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.coord.SymbolicCartesianCoordSystem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.coord.</span></span><span class="sig-name descname"><span class="pre">SymbolicCartesianCoordSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Number</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Symbol</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Expr</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.coord.SymbolicCartesianCoordSystem" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mechpy.core.symbolic.coord.SymbolicCoordSystem" title="mechpy.core.symbolic.coord.SymbolicCoordSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolicCoordSystem</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.coord.SymbolicCartesianCoordSystem.get_basis_cylindrical_exprs">
+<span class="sig-name descname"><span class="pre">get_basis_cylindrical_exprs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cylindrical_basis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#mechpy.core.symbolic.coord.SymbolicCartesianCoordSystem.get_basis_cylindrical_exprs" title="Link to this definition"></a></dt>
+<dd><p>Get the expressions for cylindrical basis in terms of Cartesian basis.
+:return: A dictionary with cylindrical basis expressions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.coord.SymbolicCartesianCoordSystem.get_basis_spherical_exprs">
+<span class="sig-name descname"><span class="pre">get_basis_spherical_exprs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spherical_basis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#mechpy.core.symbolic.coord.SymbolicCartesianCoordSystem.get_basis_spherical_exprs" title="Link to this definition"></a></dt>
+<dd><p>Get the expressions for spherical basis in terms of Cartesian basis.
+:return: A dictionary with spherical basis expressions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.coord.SymbolicCartesianCoordSystem.to_cylindrical">
+<span class="sig-name descname"><span class="pre">to_cylindrical</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.coord.SymbolicCartesianCoordSystem.to_cylindrical" title="Link to this definition"></a></dt>
+<dd><p>Convert to cylindrical coordinate system.
+:return: An instance of SymbolicCylindricalCoordSystem.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.coord.SymbolicCartesianCoordSystem.to_spherical">
+<span class="sig-name descname"><span class="pre">to_spherical</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.coord.SymbolicCartesianCoordSystem.to_spherical" title="Link to this definition"></a></dt>
+<dd><p>Convert to spherical coordinate system.
+:return: An instance of SymbolicSphericalCoordSystem.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.coord.SymbolicCartesianCoordSystem.get_cylindrical_coord">
+<span class="sig-name descname"><span class="pre">get_cylindrical_coord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#mechpy.core.symbolic.coord.SymbolicCartesianCoordSystem.get_cylindrical_coord" title="Link to this definition"></a></dt>
+<dd><p>Convert Cartesian coordinates to cylindrical coordinates.
+:param values: A tuple of Cartesian coordinates (x, y, z).
+:return: An tuple of cylindrical coordinates (r, theta, z).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.coord.SymbolicCartesianCoordSystem.get_spherical_coord">
+<span class="sig-name descname"><span class="pre">get_spherical_coord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#mechpy.core.symbolic.coord.SymbolicCartesianCoordSystem.get_spherical_coord" title="Link to this definition"></a></dt>
+<dd><p>Convert Cartesian coordinates to spherical coordinates.
+:param values: A tuple of Cartesian coordinates (x, y, z).
+:return: An tuple of spherical coordinates (r, theta, phi).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.coord.SymbolicCylindricalCoordSystem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.coord.</span></span><span class="sig-name descname"><span class="pre">SymbolicCylindricalCoordSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Symbol</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Expr</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.coord.SymbolicCylindricalCoordSystem" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mechpy.core.symbolic.coord.SymbolicCoordSystem" title="mechpy.core.symbolic.coord.SymbolicCoordSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolicCoordSystem</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.coord.SymbolicCylindricalCoordSystem.get_basis_cartesian_exprs">
+<span class="sig-name descname"><span class="pre">get_basis_cartesian_exprs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cartesian_basis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#mechpy.core.symbolic.coord.SymbolicCylindricalCoordSystem.get_basis_cartesian_exprs" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.coord.SymbolicCylindricalCoordSystem.to_cartesian">
+<span class="sig-name descname"><span class="pre">to_cartesian</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.coord.SymbolicCylindricalCoordSystem.to_cartesian" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.coord.SymbolicCylindricalCoordSystem.get_cartesian_coords">
+<span class="sig-name descname"><span class="pre">get_cartesian_coords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.coord.SymbolicCylindricalCoordSystem.get_cartesian_coords" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.coord.SymbolicSphericalCoordSystem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mechpy.core.symbolic.coord.</span></span><span class="sig-name descname"><span class="pre">SymbolicSphericalCoordSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Symbol</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Expr</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.coord.SymbolicSphericalCoordSystem" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#mechpy.core.symbolic.coord.SymbolicCoordSystem" title="mechpy.core.symbolic.coord.SymbolicCoordSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">SymbolicCoordSystem</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.coord.SymbolicSphericalCoordSystem.get_basis_cartesian_exprs">
+<span class="sig-name descname"><span class="pre">get_basis_cartesian_exprs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cartesian_basis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#mechpy.core.symbolic.coord.SymbolicSphericalCoordSystem.get_basis_cartesian_exprs" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.coord.SymbolicSphericalCoordSystem.to_cartesian">
+<span class="sig-name descname"><span class="pre">to_cartesian</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.coord.SymbolicSphericalCoordSystem.to_cartesian" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mechpy.core.symbolic.coord.SymbolicSphericalCoordSystem.get_cartesian_coords">
+<span class="sig-name descname"><span class="pre">get_cartesian_coords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mechpy.core.symbolic.coord.SymbolicSphericalCoordSystem.get_cartesian_coords" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="stress.html" class="btn btn-neutral float-left" title="Symbolic Stress Tensor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="field.html" class="btn btn-neutral float-right" title="Symbolic Field" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Omar BOUCHAARA.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
