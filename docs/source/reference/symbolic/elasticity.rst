@@ -1,5 +1,5 @@
 Symbolic Elasticity
-==================
+===================
 
 .. automodule:: mechpy.core.symbolic.elasticity
     :members:
