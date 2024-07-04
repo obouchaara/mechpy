@@ -70,7 +70,7 @@ class SymbolicField:
         """
 
         def get_ignored_symbols(data):
-            symbols_set = set()
+            symbols_set = {sp.Symbol("t")}
             # to implement
             return symbols_set
 

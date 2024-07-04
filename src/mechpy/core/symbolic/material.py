@@ -119,6 +119,13 @@ class SymbolicIsotropicMaterial(SymbolicElasticMaterial):
         mu = lamda / (2 * (lamda + mu))
         return E, mu
 
+    def get_lame_params(self):
+        if hasattr(self, "lamda") and hasattr(self, "mu"):
+            return self.lamda, self.mu
+        if hasattr(self, "E") and hasattr(self, "nu"):
+            return self.lame_params(self.E, self.nu)
+        raise NotImplementedError()
+
     def stiffness_tensor(self, lames_param=True) -> SymbolicStiffnessTensor:
         """
         Computes the stiffness tensor for the isotropic material.
