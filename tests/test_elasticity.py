@@ -22,7 +22,7 @@ class TestSymbolicElasticity(unittest.TestCase):
         }
         stress_tensor.subs_tensor_components(components_values)
         elasticity = SymbolicElasticity(material=material, stress_tensor=stress_tensor)
-        strain_tensor = elasticity.get_strain_tensor()
+        strain_tensor = elasticity.compute_strain()
         sigma_11 = stress_tensor[0, 0]
         E = material.E
         nu = material.nu
@@ -46,7 +46,7 @@ class TestSymbolicElasticity(unittest.TestCase):
         }
         strain_tensor.subs_tensor_components(components_values)
         elasticity = SymbolicElasticity(material=material, strain_tensor=strain_tensor)
-        stress_tensor = elasticity.get_stress_tensor()
+        stress_tensor = elasticity.compute_stress()
         epsilon_11 = strain_tensor[0, 0]
         E = material.E
         nu = material.nu

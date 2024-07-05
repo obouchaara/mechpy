@@ -8,6 +8,7 @@ from .material import (
 from .displacement import SymbolicDisplacement
 from .strain import SymbolicStrainTensor
 from .stress import SymbolicStressTensor
+from .solicitation import SymbolicVolumeForce
 from .navier import SymbolicNavier
 
 
@@ -54,16 +55,36 @@ class SymbolicElasticity:
         displacement: SymbolicDisplacement = None,
         strain_tensor: SymbolicStrainTensor = None,
         stress_tensor: SymbolicStressTensor = None,
-        # solicitation: SymbolicSolicitation = None # to implement
+        volume_force: SymbolicVolumeForce = None,
+        # boundary_conditions: list[SymbolicBoundaryCondition] = None
     ):
 
         self.material = material
         self.displacement = displacement
         self.strain_tensor = strain_tensor
         self.stress_tensor = stress_tensor
-        # self.solicitation = solicitation # to implement
+        self.volume_force = volume_force
+        # self.boundary_conditions = boundary_conditions or []
 
-    def get_strain_tensor(self):
+    def set_material(self, material: SymbolicElasticMaterial):
+        self.material = material
+
+    def set_displacement(self, displacement: SymbolicDisplacement):
+        self.displacement = displacement
+
+    def set_strain_tensor(self, strain_tensor: SymbolicStrainTensor):
+        self.strain_tensor = strain_tensor
+
+    def set_stress_tensor(self, stress_tensor: SymbolicStressTensor):
+        self.stress_tensor = stress_tensor
+
+    # def set_volume_force(self, volume_force: SymbolicVolumeForce):
+    #     self.volume_force = volume_force
+
+    # def add_boundary_condition(self, boundary_condition: SymbolicBoundaryCondition):
+    #     self.boundary_conditions.append(boundary_condition)
+
+    def compute_strain(self):
         if self.material is None:
             raise ValueError(
                 "Material is not set. Please set a valid SymbolicElasticMaterial."
@@ -85,7 +106,7 @@ class SymbolicElasticity:
             self.stress_tensor,
         )
 
-    def get_stress_tensor(self):
+    def compute_stress(self):
         if self.material is None:
             raise ValueError(
                 "Material is not set. Please set a valid SymbolicElasticMaterial."
