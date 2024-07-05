@@ -180,7 +180,7 @@ class SymbolicSphericalCoordSystem(SymbolicCoordSystem):
         basis: Tuple[Union[sp.Symbol, sp.Expr]] = None,
     ):
         origin = origin or (sp.Number(0), sp.Number(0), sp.Number(0))
-        basis = basis or sp.symbols("r theta z")
+        basis = basis or sp.symbols("r theta phi")
         if len(basis) != 3:
             raise ValueError("basis must be a tuple of 3.")
         super().__init__(origin=origin, basis=basis)
@@ -207,3 +207,63 @@ class SymbolicSphericalCoordSystem(SymbolicCoordSystem):
         value_dict = dict(zip(self.basis, values))
         cartesian_coords = [expr.subs(value_dict) for expr in cartesian_system.basis]
         return tuple(cartesian_coords)
+
+
+class SymbolicDynamicCoordSystem(SymbolicCoordSystem):
+    def __init__(
+        self,
+        origin: Tuple[sp.Number],
+        basis: Tuple[Union[sp.Symbol, sp.Expr]],
+        time_symbol: sp.Symbol = None,
+    ):
+        super().__init__(origin, basis)
+        self.time_symbol = time_symbol or sp.Symbol("t")
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}(origin={self.origin}, space_time_basis={self.space_time_basis})"
+
+    @property
+    def space_time_basis(self):
+        return self.basis + (self.time_symbol,)
+
+
+class SymbolicDynamicCartesianCoordSystem(
+    SymbolicDynamicCoordSystem,
+    SymbolicCartesianCoordSystem,
+):
+    def __init__(
+        self,
+        origin: Tuple[sp.Number] = None,
+        basis: Tuple[Union[sp.Symbol, sp.Expr]] = None,
+        time_symbol: sp.Symbol = None,
+    ):
+        SymbolicCartesianCoordSystem.__init__(self, origin, basis)
+        SymbolicDynamicCoordSystem.__init__(self, self.origin, self.basis, time_symbol)
+
+
+class SymbolicDynamicCylindricalCoordSystem(
+    SymbolicDynamicCoordSystem,
+    SymbolicCylindricalCoordSystem,
+):
+    def __init__(
+        self,
+        origin: Tuple[sp.Number] = None,
+        basis: Tuple[Union[sp.Symbol, sp.Expr]] = None,
+        time_symbol: sp.Symbol = None,
+    ):
+        SymbolicCylindricalCoordSystem.__init__(self, origin, basis)
+        SymbolicDynamicCoordSystem.__init__(self, self.origin, self.basis, time_symbol)
+
+
+class SymbolicDynamicSphericalCoordSystem(
+    SymbolicDynamicCoordSystem,
+    SymbolicSphericalCoordSystem,
+):
+    def __init__(
+        self,
+        origin: Tuple[sp.Number] = None,
+        basis: Tuple[Union[sp.Symbol, sp.Expr]] = None,
+        time_symbol: sp.Symbol = None,
+    ):
+        SymbolicSphericalCoordSystem.__init__(self, origin, basis)
+        SymbolicDynamicCoordSystem.__init__(self, self.origin, self.basis, time_symbol)

@@ -5,6 +5,7 @@ from .coord import (
     SymbolicCartesianCoordSystem,
     SymbolicCylindricalCoordSystem,
     SymbolicSphericalCoordSystem,
+    SymbolicDynamicCoordSystem,
 )
 from .displacement import SymbolicDisplacement
 from .material import SymbolicIsotropicMaterial
@@ -21,6 +22,14 @@ class SymbolicNavier:
         volume_force: SymbolicVolumeForce = None,
     ):
 
+        ## check compatibility of all coord system
+        # to implement
+
+        if isinstance(coord_system, SymbolicDynamicCoordSystem) and not hasattr(
+            material, "rho"
+        ):
+            raise ValueError("the material should include rho for dynamic.")
+
         self.coord_system = coord_system
         self.material = material
         self.displacement = displacement
@@ -30,31 +39,37 @@ class SymbolicNavier:
         )
 
     def general_equation(self):
-        if not hasattr(self.material, "rho"):
-            raise ValueError("the material should include rho for general equation")
-
-        lamda, mu = self.material.get_lame_params()
-        rho = self.material.rho
-        field = self.displacement
-        t = sp.Symbol("t")
-
-        grad_div_field = grad(div(field))
-        laplace_field = laplacian(field)
-
-        lhs = rho * sp.diff(field.data, t, t)
-        rhs = (lamda + mu) * grad_div_field.data + mu * laplace_field.data
-        f = self.volume_force.data
-
-        return lhs - rhs - f
+        if not isinstance(self.coord_system, SymbolicDynamicCoordSystem):
+            raise ValueError("the coord system should be dynamic for general equation.")
 
     def static_equation(self):
         lamda, mu = self.material.get_lame_params()
-        field = self.displacement
 
+        field = self.displacement
         grad_div_field = grad(div(field))
         laplace_field = laplacian(field)
 
         rhs = (lamda + mu) * grad_div_field.data + mu * laplace_field.data
         f = self.volume_force.data
+
+        return rhs + f
+
+    def equation(self):
+        lamda, mu = self.material.get_lame_params()
+        
+        field = self.displacement
+        grad_div_field = grad(div(field))
+        laplace_field = laplacian(field)
+        
+        f = self.volume_force.data
+        rhs = (lamda + mu) * grad_div_field.data + mu * laplace_field.data
+        
+        if isinstance(self.coord_system, SymbolicDynamicCoordSystem):
+            t = self.coord_system.time_symbol
+            rho = self.material.rho
+
+            lhs = rho * sp.diff(field.data, t, t)
+
+            return lhs - rhs - f
 
         return rhs + f
