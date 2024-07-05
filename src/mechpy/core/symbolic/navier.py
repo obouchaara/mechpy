@@ -13,12 +13,14 @@ from .operators import grad, div, laplacian
 class SymbolicNavier:
     def __init__(
         self,
-        displacement: SymbolicDisplacement,
         material: SymbolicIsotropicMaterial,
+        displacement: SymbolicDisplacement,
+        # solicitation: SymbolicSolicitation = None # to implement
     ):
 
-        self.displacement = displacement
         self.material = material
+        self.displacement = displacement
+        # self.solicitation = solicitation # to implement
 
     def general_equation(self):
         if not hasattr(self.material, "rho"):

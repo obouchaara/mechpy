@@ -5,14 +5,13 @@ import sympy as sp
 from mechpy.core.symbolic.material import SymbolicIsotropicMaterial
 from mechpy.core.symbolic.stress import SymbolicStressTensor
 from mechpy.core.symbolic.strain import SymbolicStrainTensor
-from mechpy.core.symbolic.elasticity import SymbolicLinearElasticity
+from mechpy.core.symbolic.elasticity import SymbolicElasticity
 
 
-class TestSymbolicLinearElasticity(unittest.TestCase):
+class TestSymbolicElasticity(unittest.TestCase):
     def test_hookes_law(self):
         material_props = {"E": sp.symbols("E"), "nu": sp.symbols("nu")}
         material = SymbolicIsotropicMaterial(**material_props)
-        compliance_tensor = material.compliance_tensor()
         stress_tensor = SymbolicStressTensor.create(notation="voigt")
         components_values = {
             1: 0,
@@ -22,10 +21,8 @@ class TestSymbolicLinearElasticity(unittest.TestCase):
             5: 0,
         }
         stress_tensor.subs_tensor_components(components_values)
-        strain_tensor = SymbolicLinearElasticity.hookes_law(
-            compliance_tensor,
-            stress_tensor,
-        )
+        elasticity = SymbolicElasticity(material=material, stress_tensor=stress_tensor)
+        strain_tensor = elasticity.get_strain_tensor()
         sigma_11 = stress_tensor[0, 0]
         E = material.E
         nu = material.nu
@@ -39,7 +36,6 @@ class TestSymbolicLinearElasticity(unittest.TestCase):
     def test_hookes_law_inverse(self):
         material_props = {"E": sp.symbols("E"), "nu": sp.symbols("nu")}
         material = SymbolicIsotropicMaterial(**material_props)
-        stiffness_tensor = material.stiffness_tensor()
         strain_tensor = SymbolicStrainTensor.create(notation="voigt")
         components_values = {
             1: 0,
@@ -49,10 +45,8 @@ class TestSymbolicLinearElasticity(unittest.TestCase):
             5: 0,
         }
         strain_tensor.subs_tensor_components(components_values)
-        stress_tensor = SymbolicLinearElasticity.hookes_law_inverse(
-            stiffness_tensor,
-            strain_tensor,
-        )
+        elasticity = SymbolicElasticity(material=material, strain_tensor=strain_tensor)
+        stress_tensor = elasticity.get_stress_tensor()
         epsilon_11 = strain_tensor[0, 0]
         E = material.E
         nu = material.nu
