@@ -121,27 +121,29 @@ class SymbolicElasticity:
         if self.strain_tensor is not None:
             raise ValueError("Strain tensor is already set/computed.")
         
-        if self.material is None:
-            raise ValueError(
-                "Material is not set. Please set a valid SymbolicElasticMaterial."
-            )
-        if not isinstance(self.material, SymbolicElasticMaterial):
-            raise TypeError(
-                f"Expected SymbolicElasticMaterial, but got {type(self.material).__name__}"
-            )
-        if self.stress_tensor is None:
-            raise ValueError(
-                "Stress tensor is not set/computed."
-            )
-        if not isinstance(self.stress_tensor, SymbolicStressTensor):
-            raise TypeError(
-                f"Expected SymbolicStressTensor, but got {type(self.stress_tensor).__name__}"
-            )
+        if self.displacement is not None:
+            if not isinstance(self.displacement, SymbolicDisplacement):
+                raise TypeError(
+                    f"Expected SymbolicDisplacement, but got {type(self.displacement).__name__}"
+                )
+            strain_tensor = self.displacement.strain_tensor()
             
-        strain_tensor = hookes_law(
-            self.material.compliance_tensor(),
-            self.stress_tensor,
-        )
+        elif self.material is not None and self.stress_tensor is not None:
+            if not isinstance(self.material, SymbolicElasticMaterial):
+                raise TypeError(
+                    f"Expected SymbolicElasticMaterial, but got {type(self.material).__name__}"
+                )
+            if not isinstance(self.stress_tensor, SymbolicStressTensor):
+                raise TypeError(
+                    f"Expected SymbolicStressTensor, but got {type(self.stress_tensor).__name__}"
+                )
+            
+            strain_tensor = hookes_law(
+                self.material.compliance_tensor(),
+                self.stress_tensor,
+            )
+        else:
+            raise NotImplementedError("Unable to compute the strain tensor. Ensure either a valid displacement or both material and stress tensor are provided.")
         
         self.set_strain_tensor(strain_tensor)
         
