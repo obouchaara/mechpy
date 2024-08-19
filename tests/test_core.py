@@ -157,7 +157,7 @@ class TestSymbolicCartesianCoordSystem(unittest.TestCase):
             cylindrical_coord, subs={a: 3, b: 5}
         )
         self.assertEqual(eval_coord[0], 3.)
-        self.assertAlmostEqual(eval_coord[1], 1.5707963267949, places=7)
+        self.assertAlmostEqual(eval_coord[1], 1.5707963267949, delta=1e-9)
         self.assertEqual(eval_coord[2], 5.)
 
     def test_get_spherical_coord(self):
@@ -169,8 +169,8 @@ class TestSymbolicCartesianCoordSystem(unittest.TestCase):
 
         eval_coord = SymbolicCoordSystem.coord_eval(spherical_coord, subs={a: 1})
         self.assertEqual(eval_coord[0], 1.)
-        self.assertAlmostEqual(eval_coord[1], 1.5707963267949, places=7)
-        self.assertAlmostEqual(eval_coord[2], 1.5707963267949, places=7)
+        self.assertAlmostEqual(eval_coord[1], 1.5707963267949, delta=1e-9)
+        self.assertAlmostEqual(eval_coord[2], 1.5707963267949, delta=1e-9)
 
 
 class TestSymbolicCylindricalCoordSystem(unittest.TestCase):
@@ -208,7 +208,7 @@ class TestSymbolicCylindricalCoordSystem(unittest.TestCase):
 
         eval_coord = SymbolicCoordSystem.coord_eval(cartesian_coord, subs={a: 1, b: 5})
         self.assertEqual(eval_coord[0], 1.)
-        self.assertAlmostEqual(eval_coord[1], 1.73205080756888, places=7)
+        self.assertAlmostEqual(eval_coord[1], 1.73205080756888, delta=1e-9)
         self.assertEqual(eval_coord[2], 5.)
 
 
