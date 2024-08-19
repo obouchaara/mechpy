@@ -38,10 +38,6 @@ class SymbolicNavier:
             data=sp.NDimArray([0, 0, 0]),
         )
 
-    def general_equation(self):
-        if not isinstance(self.coord_system, SymbolicDynamicCoordSystem):
-            raise ValueError("the coord system should be dynamic for general equation.")
-
     def static_equation(self):
         lamda, mu = self.material.get_lame_params()
 
@@ -54,7 +50,10 @@ class SymbolicNavier:
 
         return rhs + f
 
-    def equation(self):
+    def general_equation(self):
+        if not isinstance(self.coord_system, SymbolicDynamicCoordSystem):
+            raise ValueError("the coord system should be dynamic for general equation.")
+        
         lamda, mu = self.material.get_lame_params()
         
         field = self.displacement

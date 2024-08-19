@@ -1,5 +1,11 @@
 import sympy as sp
 
+from .coord import (
+    SymbolicCoordSystem,
+    SymbolicCartesianCoordSystem,
+    SymbolicCylindricalCoordSystem,
+    SymbolicSphericalCoordSystem,
+)
 from .material import (
     SymbolicComplianceTensor,
     SymbolicStiffnessTensor,
@@ -51,6 +57,7 @@ def hookes_law_inverse(
 class SymbolicElasticity:
     def __init__(
         self,
+        coord_system: SymbolicCoordSystem = None,
         material: SymbolicElasticMaterial = None,
         displacement: SymbolicDisplacement = None,
         strain_tensor: SymbolicStrainTensor = None,
@@ -58,18 +65,44 @@ class SymbolicElasticity:
         volume_force: SymbolicVolumeForce = None,
         # boundary_conditions: list[SymbolicBoundaryCondition] = None
     ):
-
-        self.material = material
-        self.displacement = displacement
-        self.strain_tensor = strain_tensor
-        self.stress_tensor = stress_tensor
-        self.volume_force = volume_force
-        # self.boundary_conditions = boundary_conditions or []
+        if coord_system is None:
+            coord_system = SymbolicCartesianCoordSystem()
+        self.coord_system = coord_system
+        
+        if material is not None:
+            self.set_material(material)
+        else:
+            self.material = None
+            
+        if displacement is not None:
+            self.set_displacement(displacement)
+        else:
+            self.displacement = None
+            
+        if strain_tensor is not None:
+            self.set_strain_tensor(strain_tensor)
+        else:
+            self.strain_tensor = None
+            
+        if stress_tensor is not None:
+            self.set_stress_tensor(stress_tensor)
+        else:
+            self.stress_tensor = None
+            
+        if volume_force is not None:
+            self.set_volume_force(volume_force)
+        else:
+            self.volume_force = None
+        
+        # if boundary_condition is not None:
+        #     self.set_boundary_condition(boundary_condition)
 
     def set_material(self, material: SymbolicElasticMaterial):
         self.material = material
 
     def set_displacement(self, displacement: SymbolicDisplacement):
+        if self.coord_system != displacement.coord_system:
+            raise ValueError("Displacement's coordinate system does not match the elasticity problem's coordinate system.")
         self.displacement = displacement
 
     def set_strain_tensor(self, strain_tensor: SymbolicStrainTensor):
@@ -78,13 +111,16 @@ class SymbolicElasticity:
     def set_stress_tensor(self, stress_tensor: SymbolicStressTensor):
         self.stress_tensor = stress_tensor
 
-    # def set_volume_force(self, volume_force: SymbolicVolumeForce):
-    #     self.volume_force = volume_force
+    def set_volume_force(self, volume_force: SymbolicVolumeForce):
+        self.volume_force = volume_force
 
-    # def add_boundary_condition(self, boundary_condition: SymbolicBoundaryCondition):
+    # def set_boundary_condition(self, boundary_condition: SymbolicBoundaryCondition):
     #     self.boundary_conditions.append(boundary_condition)
 
-    def compute_strain(self):
+    def compute_strain(self) -> None:
+        if self.strain_tensor is not None:
+            raise ValueError("Strain tensor is already set/computed.")
+        
         if self.material is None:
             raise ValueError(
                 "Material is not set. Please set a valid SymbolicElasticMaterial."
@@ -95,18 +131,26 @@ class SymbolicElasticity:
             )
         if self.stress_tensor is None:
             raise ValueError(
-                "Stress tensor is not set. Please set a valid SymbolicStressTensor."
+                "Stress tensor is not set/computed."
             )
         if not isinstance(self.stress_tensor, SymbolicStressTensor):
             raise TypeError(
                 f"Expected SymbolicStressTensor, but got {type(self.stress_tensor).__name__}"
             )
-        return hookes_law(
+            
+        strain_tensor = hookes_law(
             self.material.compliance_tensor(),
             self.stress_tensor,
         )
+        
+        self.set_strain_tensor(strain_tensor)
+        
+        return self.strain_tensor
 
-    def compute_stress(self):
+    def compute_stress(self) -> None:
+        if self.stress_tensor is not None:
+            raise ValueError("Stress tensor is already set/computed.")
+        
         if self.material is None:
             raise ValueError(
                 "Material is not set. Please set a valid SymbolicElasticMaterial."
@@ -117,16 +161,21 @@ class SymbolicElasticity:
             )
         if self.strain_tensor is None:
             raise ValueError(
-                "Strain tensor is not set. Please set a valid SymbolicStrainTensor."
+                "Strain tensor is not set/computed"
             )
         if not isinstance(self.strain_tensor, SymbolicStrainTensor):
             raise TypeError(
                 f"Expected SymbolicStrainTensor, but got {type(self.strain_tensor).__name__}"
             )
-        return hookes_law_inverse(
+            
+        stress_tensor = hookes_law_inverse(
             self.material.stiffness_tensor(),
             self.strain_tensor,
         )
+        
+        self.set_stress_tensor(stress_tensor)
+        
+        return self.stress_tensor
 
     @property
     def navier(self):

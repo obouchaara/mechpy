@@ -26,6 +26,11 @@ class SymbolicCoordSystem:
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(origin={self.origin}, basis={self.basis})"
+    
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, SymbolicCoordSystem):
+            return NotImplemented
+        return self.origin == other.origin and self.basis == other.basis
 
     @classmethod
     def auto_detect(cls, data):
