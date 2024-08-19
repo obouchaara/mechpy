@@ -37,13 +37,13 @@ from mechpy.core.symbolic.displacement import (
 
 class TestSymbolicCoordSystem(unittest.TestCase):
     def test_init(self):
-        origin = (sp.Float(0), sp.Float(0), sp.Float(0))
+        origin = (sp.Number(0), sp.Number(0), sp.Number(0))
         basis = sp.symbols("x1 x2 x3")
         coord_system = SymbolicCoordSystem(origin=origin, basis=basis)
         self.assertEqual(coord_system.origin, origin)
         self.assertEqual(coord_system.basis, basis)
 
-        origin = (sp.Float(0), sp.Float(0))
+        origin = (sp.Number(0), sp.Number(0))
         basis = sp.symbols("x1 x2")
         coord_system = SymbolicCoordSystem(origin=origin, basis=basis)
         self.assertEqual(coord_system.origin, origin)
@@ -97,24 +97,24 @@ class TestSymbolicCoordSystem(unittest.TestCase):
         x1, x2, x3 = sp.symbols("x1 x2 x3")
         basis = (-3 * x1 + 10 * x2, -10 * x1 + 23 * x2 + 4 * x3, -4 * x1 + 5 * x2)
         coord_val = SymbolicCoordSystem.coord_eval(basis, subs={x1: 1, x2: 2, x3: 3})
-        self.assertEqual(coord_val, (17, 48, 6))
+        self.assertEqual(coord_val, (17., 48., 6.))
 
 
 class TestSymbolicCartesianCoordSystem(unittest.TestCase):
     def test_init(self):
-        origin = (sp.Float(0), sp.Float(0), sp.Float(0))
+        origin = (sp.Number(0), sp.Number(0), sp.Number(0))
         basis = sp.symbols("x y z")
         cartesian_system = SymbolicCartesianCoordSystem(origin=origin, basis=basis)
         self.assertEqual(cartesian_system.origin, origin)
         self.assertEqual(cartesian_system.basis, basis)
 
-        origin = (sp.Float(0), sp.Float(0), sp.Float(0))
+        origin = (sp.Number(0), sp.Number(0), sp.Number(0))
         basis = sp.symbols("x y z")
         cartesian_system = SymbolicCartesianCoordSystem()
         self.assertEqual(cartesian_system.origin, origin)
         self.assertEqual(cartesian_system.basis, basis)
 
-        origin = (sp.Float(0), sp.Float(0))
+        origin = (sp.Number(0), sp.Number(0))
         basis = sp.symbols("x y")
         with self.assertRaises(ValueError) as context:
             SymbolicCartesianCoordSystem(origin=origin, basis=basis)
@@ -156,9 +156,9 @@ class TestSymbolicCartesianCoordSystem(unittest.TestCase):
         eval_coord = SymbolicCoordSystem.coord_eval(
             cylindrical_coord, subs={a: 3, b: 5}
         )
-        self.assertEqual(eval_coord[0], 3)
+        self.assertEqual(eval_coord[0], 3.)
         self.assertAlmostEqual(eval_coord[1], 1.5707963267949)
-        self.assertEqual(eval_coord[2], 5)
+        self.assertEqual(eval_coord[2], 5.)
 
     def test_get_spherical_coord(self):
         a = sp.symbols("a", positive=True)
@@ -168,20 +168,20 @@ class TestSymbolicCartesianCoordSystem(unittest.TestCase):
         self.assertEqual(spherical_coord, (a, sp.pi / 2, sp.pi / 2))
 
         eval_coord = SymbolicCoordSystem.coord_eval(spherical_coord, subs={a: 1})
-        self.assertEqual(eval_coord[0], 1)
+        self.assertEqual(eval_coord[0], 1.)
         self.assertAlmostEqual(eval_coord[1], 1.5707963267949)
         self.assertAlmostEqual(eval_coord[2], 1.5707963267949)
 
 
 class TestSymbolicCylindricalCoordSystem(unittest.TestCase):
     def test_init(self):
-        origin = (sp.Float(0), sp.Float(0), sp.Float(0))
+        origin = (sp.Number(0), sp.Number(0), sp.Number(0))
         basis = sp.symbols("r theta z")
         cylindrical_system = SymbolicCylindricalCoordSystem(origin=origin, basis=basis)
         self.assertEqual(cylindrical_system.origin, origin)
         self.assertEqual(cylindrical_system.basis, basis)
 
-        origin = (sp.Float(0), sp.Float(0), sp.Float(0))
+        origin = (sp.Number(0), sp.Number(0), sp.Number(0))
         basis = sp.symbols("r theta z")
         cylindrical_system = SymbolicCylindricalCoordSystem()
         self.assertEqual(cylindrical_system.origin, origin)
@@ -207,9 +207,9 @@ class TestSymbolicCylindricalCoordSystem(unittest.TestCase):
         self.assertEqual(cartesian_coord, (a, sp.sqrt(3) * a, b))
 
         eval_coord = SymbolicCoordSystem.coord_eval(cartesian_coord, subs={a: 1, b: 5})
-        self.assertEqual(eval_coord[0], 1)
+        self.assertEqual(eval_coord[0], 1.)
         self.assertAlmostEqual(eval_coord[1], 1.73205080756888)
-        self.assertEqual(eval_coord[2], 5)
+        self.assertEqual(eval_coord[2], 5.)
 
 
 class TestSymbolicField(unittest.TestCase):
@@ -1131,8 +1131,8 @@ class TestSymbolicDisplacement(unittest.TestCase):
             sp.NDimArray(
                 [
                     [1, 0, 0],
-                    [0, 1 / 2, 0],
-                    [0, 0, 1 / 2],
+                    [0, sp.Rational(1, 2), 0],
+                    [0, 0, sp.Rational(1, 2)],
                 ]
             ),
         )
